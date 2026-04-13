@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
 
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { bricolage, dm_sans, montserrat } from "@/styles/font";
+import Navbar from "@/components/Navbar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,9 +22,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} font-geistSans ${geistMono.variable} font-geistMono h-full antialiased`}
+      className={`${montserrat.variable} ${bricolage.variable} ${dm_sans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <Navbar/>
         {children}
         <SpeedInsights />
         <Analytics />
