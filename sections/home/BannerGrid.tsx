@@ -53,6 +53,7 @@ const BannerCard = ({
         src={imageSrc}
         alt={imageAlt}
         fill
+        sizes="(max-width: 768px) 100vw, 50vw"
         className="object-cover object-center rounded-xl"
         loading="lazy"
       />

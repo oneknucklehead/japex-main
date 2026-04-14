@@ -18,17 +18,17 @@ interface Props {
 const ArrowButton = ({ open }: { open: boolean }) => (
   <motion.div
     animate={{
-      backgroundColor: open ? "#de0c0d" : "transparent",
+      backgroundColor: open ? "#de0c0d" : "rgba(0, 0, 0, 0)",
     }}
-    transition={{ duration: 0.3 }}
+    transition={{ duration: 0.15 }}
     className={`w-10 h-10 rounded-xl duration-300 shrink-0 flex items-center justify-center  transition-all border ${
       open ? "border-brand-primary" : " border-gray-300"
     }`}
   >
     <motion.svg
       animate={{ rotate: open ? 225 : 180 }}
-      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      className={`w-3 h-3 ${open ? "text-white" : "text-brand-dark"}`}
+      transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] as const }}
+      className={`w-3 h-3 ${open ? "text-white" : "text-brand-dark"} transition-all`}
       width="15"
       height="15"
       viewBox="0 0 15 15"

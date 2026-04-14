@@ -5,9 +5,7 @@ import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { bricolage, dm_sans, montserrat } from "@/styles/font";
 import Navbar from "@/components/Navbar";
-
-
-
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,10 +23,11 @@ export default function RootLayout({
       className={`${montserrat.variable} ${bricolage.variable} ${dm_sans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Navbar/>
+        <Navbar />
         {children}
         <SpeedInsights />
         <Analytics />
+        <Footer />
       </body>
     </html>
   );
