@@ -114,6 +114,7 @@ create table public.enquiries (
   created_at timestamptz not null default now()
 );
 
+
 create index idx_enquiries_car_id  on public.enquiries (car_id);
 create index idx_enquiries_is_read on public.enquiries (is_read);
 

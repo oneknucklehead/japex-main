@@ -104,7 +104,8 @@ export default function CarCarousel({ cars }: Props) {
             <motion.div
               key={car.id}
               initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.35, delay: i * 0.06 }}
               // Responsive slide widths:
               // xs  (< 640px)  → 1 card  → 100%
