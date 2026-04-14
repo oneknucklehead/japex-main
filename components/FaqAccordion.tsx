@@ -21,8 +21,8 @@ const ArrowButton = ({ open }: { open: boolean }) => (
       backgroundColor: open ? "#de0c0d" : "transparent",
     }}
     transition={{ duration: 0.3 }}
-    className={`w-10 h-10 rounded-xl shrink-0 flex items-center justify-center border transition-all ${
-      open ? "border-brand-primary" : "border-gray-300"
+    className={`w-10 h-10 rounded-xl duration-300 shrink-0 flex items-center justify-center  transition-all border ${
+      open ? "border-brand-primary" : " border-gray-300"
     }`}
   >
     <motion.svg
