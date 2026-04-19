@@ -11,11 +11,11 @@ interface SkeletonImageProps {
   containerClassName?: string;
 }
 
-export default function SkeletonImage({ 
-  src, 
-  alt, 
-  className, 
-  containerClassName 
+export default function SkeletonImage({
+  src,
+  alt,
+  className,
+  containerClassName,
 }: SkeletonImageProps) {
   const [isLoading, setIsLoading] = useState(true);
 
