@@ -14,10 +14,10 @@ export default function Home() {
       <section className="relative h-156.25">
         <MainBanner />
       </section>
-      <section className="pt-24 pb-32 bg-[#efeded]">
+      <section className="pt-40 md:pt-24 pb-24 bg-[#efeded]">
         <ExploreLatestArrivals />
       </section>
-      <section className="relative py-24">
+      <section className="relative py-20 md:py-24">
         <BannerGrid />
       </section>
       <section>

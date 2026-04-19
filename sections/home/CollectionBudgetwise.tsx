@@ -26,13 +26,15 @@ const CollectionBudgetwise = () => {
   return (
     <div>
       <Container>
-        <h1 className="font-extrabold font-montserrat text-5xl text-center">
-          Tailored to Your Budget, Without Compromise
-        </h1>
-        <p className="font-bricolage text-lg text-center mt-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed?
-        </p>
-        <CarCarousel cars={data} />
+        <div className="px-6">
+          <h1 className="font-extrabold font-montserrat text-3xl md:text-5xl text-center px-4 md:px-0">
+            Tailored to Your Budget, Without Compromise
+          </h1>
+          <p className="font-bricolage text-lg text-center mt-2 mb-4">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed?
+          </p>
+          <CarCarousel cars={data} />
+        </div>
       </Container>
     </div>
   );

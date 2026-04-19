@@ -16,8 +16,8 @@ const MainBanner = () => {
     <div>
       {/* TEXT CONTAINER */}
       <Container>
-        <div className="z-20 absolute flex flex-col gap-4 mt-16">
-          <motion.h1 className="font-montserrat font-extrabold text-6xl text-brand-white max-w-xl leading-tight">
+        <div className="z-20 absolute flex flex-col gap-4 mt-20 md:mt-16 px-6 2xl:px-0">
+          <motion.h1 className="font-montserrat font-extrabold text-4xl md:text-6xl text-brand-white max-w-xl leading-tight">
             Buy and sell cars with confidence and ease.
           </motion.h1>
           <div>
@@ -56,8 +56,8 @@ const MainBanner = () => {
           className="object-center object-cover w-full h-full"
         />
       </div>
-      <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 max-w-2xl z-20">
-        <div className="bg-brand-white rounded-[15px] shadow-[0_4px_15px_rgba(0,0,0,0.25)] flex items-center p-4 gap-4">
+      <div className="absolute -bottom-24 md:-bottom-12 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-auto md:max-w-2xl z-20">
+        <div className="bg-brand-white rounded-[15px] shadow-[0_4px_15px_rgba(0,0,0,0.25)] flex flex-col md:flex-row items-center p-4 gap-4 w-full">
           {/* Search input */}
           <div className="flex-1 bg-brand-gray h-full rounded-[15px] flex items-center px-4 gap-3">
             <div className="p-3 bg-black rounded-[15px] flex items-center justify-center shrink-0">
@@ -91,9 +91,9 @@ const MainBanner = () => {
           {/* Browse all CTA */}
           <Link
             href="/cars"
-            className="bg-brand-primary rounded-[15px] px-6 py-4 flex items-center justify-center hover:bg-red-700 transition-colors"
+            className="bg-brand-primary rounded-[15px] px-6 py-4 flex items-center justify-center hover:bg-red-700 transition-colors w-full md:w-auto"
           >
-            <span className="font-montserrat font-extrabold text-lg text-white">
+            <span className="font-montserrat font-extrabold text-lg text-white whitespace-nowrap">
               Browse all cars
             </span>
           </Link>

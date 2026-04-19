@@ -99,7 +99,7 @@ export default function CarCarousel({ cars }: Props) {
 
       {/* Embla viewport */}
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex">
+        <div className="flex items-stretch -ml-4">
           {cars.map((car, i) => (
             <motion.div
               key={car.id}
@@ -112,9 +112,11 @@ export default function CarCarousel({ cars }: Props) {
               // sm  (≥ 640px)  → 2 cards → 50%
               // md  (≥ 768px)  → 3 cards → 33.33%
               // lg+ (≥ 1024px) → 4 cards → 25%
-              className="flex-none w-full sm:w-1/2 md:w-1/3 lg:w-1/4 pl-4 first:pl-0"
+              className="flex-none pl-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
             >
-              <CarCard car={car} />
+              <div className="h-full">
+                <CarCard car={car} />
+              </div>
             </motion.div>
           ))}
         </div>

@@ -46,7 +46,7 @@ const BannerCard = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.35, delay: cardNumber * 0.06 }}
-      className="col-span-1 relative aspect-video w-full rounded-2xl h-full"
+      className="col-span-1 relative aspect-11/12 max-h-100 md:aspect-square  lg:aspect-video w-full rounded-2xl h-full"
     >
       {/* Background image */}
       <Image
@@ -54,7 +54,7 @@ const BannerCard = ({
         alt={imageAlt}
         fill
         sizes="(max-width: 768px) 100vw, 50vw"
-        className="object-cover object-center rounded-xl"
+        className="object-cover object-top md:object-center rounded-xl h-full w-full"
         loading="lazy"
       />
 
@@ -70,7 +70,7 @@ const BannerCard = ({
         </div>
 
         {/* Title */}
-        <h3 className="font-montserrat text-brand-white font-extrabold text-2xl leading-snug">
+        <h3 className="font-montserrat text-brand-white font-extrabold text-xl lg:text-2xl leading-tight">
           {title}
         </h3>
 
@@ -88,7 +88,7 @@ const BannerGrid = () => {
   const banner2 = getAssetsStorageUrl("Homepage/FinanceBanner.jpg");
 
   return (
-    <div>
+    <div className="px-6">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <BannerCard

@@ -11,7 +11,7 @@ const CarCard = ({ car }: { car: Car }) => {
   return (
     <Link
       href={href}
-      className="group font-dm-sans bg-brand-white border border-gray-300 hover:border-gray-400 hover:shadow-md card block overflow-hidden rounded-2xl transition-all duration-200"
+      className="group font-dm-sans flex flex-col h-full bg-brand-white border border-gray-300 hover:border-gray-400 hover:shadow-md card block overflow-hidden rounded-2xl transition-all duration-200"
     >
       {/* Image */}
       <div className="relative aspect-video overflow-hidden">
@@ -46,7 +46,7 @@ const CarCard = ({ car }: { car: Car }) => {
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-1">
         {/* Make / Model */}
         <p className="text-xs text-brand-600 font-semibold uppercase tracking-wider mb-0.5">
           {car?.make}
@@ -57,7 +57,7 @@ const CarCard = ({ car }: { car: Car }) => {
         <p className="text-xs text-gray-400 mb-3">{car?.variant}</p>
 
         {/* Specs row */}
-        <div className="flex items-center gap-3 text-xs text-gray-500 mb-4">
+        <div className="flex flex-wrap items-center space-x-3 space-y-1 text-xs text-gray-500 mb-4">
           <span className="flex items-center gap-1">
             {formatOdometer(car?.odometer_km)}
           </span>
@@ -86,7 +86,7 @@ const CarCard = ({ car }: { car: Car }) => {
         </div>
 
         {/* Price */}
-        <div className="flex items-end justify-between">
+        <div className="flex flex-wrap space-x-4 space-y-1 items-end justify-between mt-auto">
           <div>
             {car?.was_price && (
               <p className="text-xs text-gray-400 line-through">

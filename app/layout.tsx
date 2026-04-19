@@ -20,6 +20,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${montserrat.variable} ${bricolage.variable} ${dm_sans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">

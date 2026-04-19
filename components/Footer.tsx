@@ -104,7 +104,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="w-full bg-white border-t border-gray-200 py-16 px-6">
+    <footer className="w-full bg-white border-t border-gray-200 py-24 px-6">
       <Container>
         <div className="flex flex-col gap-12 lg:gap-16">
           {/* Main content grid */}

@@ -90,7 +90,7 @@ export default function WhyWeStandOut() {
 
   return (
     <section ref={sectionRef} className="bg-black w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 py-16 lg:py-20">
+      <div className="max-w-7xl mx-auto px-6 py-20 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-0 items-center">
           {/* ── LEFT COLUMN ─────────────────────────────────────────── */}
           <div className="relative flex flex-col items-center lg:items-start">

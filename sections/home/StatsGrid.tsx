@@ -64,7 +64,7 @@ const StatCard = ({
       variants={fadeUp(delay)}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      className="rounded-2xl overflow-hidden relative  h-full min-h-0"
+      className="rounded-2xl overflow-hidden relative h-full min-h-0 aspect-4/3 lg:aspect-auto"
     >
       {/* Background image */}
       <Image
@@ -104,7 +104,8 @@ const CtaCard = ({ delay }: { delay: number }) => {
       variants={fadeUp(delay)}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      className="rounded-2xl overflow-hidden relative h-full min-h-0 bg-gray-900"
+      // className="rounded-2xl overflow-hidden relative h-full min-h-0 aspect-square  md:aspect-auto bg-gray-900"
+      className="rounded-2xl overflow-hidden relative h-full min-h-0 bg-gray-900 aspect-4/3 lg:aspect-auto"
     >
       {/* Faint background image for texture */}
       <Image
@@ -144,7 +145,7 @@ const CtaCard = ({ delay }: { delay: number }) => {
 
         {/* Heading */}
         <div className="flex-1 flex items-center">
-          <h3 className="text-white w-full max-w-2/3 font-extrabold text-2xl leading-snug font-montserrat">
+          <h3 className="text-white w-full max-w-full xl:max-w-2/3 font-extrabold text-2xl leading-snug font-montserrat">
             Explore more to get your comfort zone
           </h3>
         </div>
@@ -243,16 +244,11 @@ export default function StatsGrid() {
     },
   ];
   return (
-    <section className="w-full py-10">
+    <section className="w-full pb-24">
       <div className="max-w-7xl mx-auto px-6">
-        {/*
-          Grid layout:
-          - Left side: 2×2 grid of small cards
-          - Right side: 1 tall card spanning 2 rows
-        */}
-        <div className="grid grid-cols-1 lg:grid-cols-2  items-stretch gap-4">
-          {/* Left — 2×2 grid */}
-          <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-4 items-stretch">
+          {/* Left — 2×2 grid (shows BELOW hero on mobile due to flex-col-reverse) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {STATS.map((s, i) => (
               <StatCard
                 key={i}
@@ -265,7 +261,7 @@ export default function StatsGrid() {
             <CtaCard delay={0.3} />
           </div>
 
-          {/* Right — tall hero card */}
+          {/* Right — hero card (shows ON TOP on mobile due to flex-col-reverse) */}
           <HeroCard delay={0.15} />
         </div>
       </div>

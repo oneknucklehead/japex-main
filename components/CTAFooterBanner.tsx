@@ -3,7 +3,7 @@ import Container from "./Container";
 
 const CTAFooterBanner = () => {
   return (
-    <div className="bg-black py-24">
+    <div className="bg-black py-24 px-6">
       <Container>
         <div className="flex gap-4 flex-wrap justify-between items-center">
           <div className="text-brand-white">
