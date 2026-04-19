@@ -7,13 +7,13 @@ import { createClient } from "@/utils/supabase/client";
 import React, { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 
-const CATEGORIES = [
+const CATEGORIES: { label: string; types: string[] }[] = [
   { label: "All Cars", types: [] },
   { label: "People Mover/Wagon", types: ["People Mover", "Wagon"] },
   { label: "Sedan", types: ["Sedan", "Hatchback"] },
   { label: "Campervan/Vans", types: ["Van"] },
   { label: "Prestige", types: ["Coupe"] },
-] as const;
+];
 
 type CategoryLabel = (typeof CATEGORIES)[number]["label"];
 

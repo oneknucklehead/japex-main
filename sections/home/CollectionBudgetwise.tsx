@@ -7,7 +7,7 @@ import { createClient } from "@/utils/supabase/client";
 import React, { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 
-const PRICE_RANGES = [
+const PRICE_RANGES: { label: string; min: number; max: number }[] = [
   { label: "All Prices", min: 0, max: Infinity },
   { label: "Under $20k", min: 0, max: 20000 },
   { label: "$20k – $40k", min: 20000, max: 40000 },
