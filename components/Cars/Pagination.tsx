@@ -35,10 +35,10 @@ export default function Pagination({ page, totalPages, onChange }: Props) {
         whileTap={{ scale: 0.93 }}
         onClick={() => onChange(page - 1)}
         disabled={page === 1}
-        className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all ${
+        className={`w-9 h-9 bg-white  rounded-xl cursor-pointer border flex items-center justify-center transition-all ${
           page === 1
-            ? "border-gray-200 text-gray-300 cursor-not-allowed"
-            : "border-gray-300 text-gray-600 hover:border-gray-400"
+            ? "opacity-40 border-gray-300 text-gray-300 cursor-not-allowed"
+            : " hover:shadow-sm border-gray-300 text-gray-600 hover:border-gray-400"
         }`}
       >
         <svg
@@ -70,10 +70,10 @@ export default function Pagination({ page, totalPages, onChange }: Props) {
             key={p}
             whileTap={{ scale: 0.93 }}
             onClick={() => onChange(p)}
-            className={`w-9 h-9 rounded-full text-sm font-semibold transition-all ${
+            className={`cursor-pointer w-9 h-9 rounded-xl text-sm font-semibold transition-all ${
               p === page
-                ? "bg-red-600 text-white border border-red-600"
-                : "border border-gray-200 text-gray-600 hover:border-gray-400"
+                ? "bg-brand-primary shadow-sm hover:shadow-sm hover:bg-red-700 text-white border border-brand-primary"
+                : "bg-brand-white hover:shadow-sm border border-gray-300 text-gray-600 hover:border-gray-400"
             }`}
           >
             {p}
@@ -86,10 +86,10 @@ export default function Pagination({ page, totalPages, onChange }: Props) {
         whileTap={{ scale: 0.93 }}
         onClick={() => onChange(page + 1)}
         disabled={page === totalPages}
-        className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+        className={`w-9 h-9 bg-white cursor-pointer rounded-xl border flex items-center justify-center transition-all ${
           page === totalPages
-            ? "border border-gray-200 text-gray-300 cursor-not-allowed"
-            : "bg-red-600 text-white"
+            ? "opacity-40 border-gray-300 text-gray-300 cursor-not-allowed"
+            : "hover:shadow-sm border-gray-300 text-gray-600 hover:border-gray-400"
         }`}
       >
         <svg

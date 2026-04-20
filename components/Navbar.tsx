@@ -6,7 +6,13 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 
-const NAV_LINKS = ["Find a Car", "About", "Contact", "Finance", "Service & Parts"];
+const NAV_LINKS = [
+  "Find a Car",
+  "About",
+  "Contact",
+  "Finance",
+  "Service & Parts",
+];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,7 +89,7 @@ const Navbar = () => {
         >
           <div className="w-6 flex flex-col items-end gap-1.5">
             <motion.span
-              animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+              animate={isOpen ? { rotate: 45, y: 2 } : { rotate: 0, y: 0 }}
               className="w-full h-0.5 bg-white block origin-left"
             />
             <motion.span
@@ -91,7 +97,7 @@ const Navbar = () => {
               className="w-4/5 h-0.5 bg-white block"
             />
             <motion.span
-              animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+              animate={isOpen ? { rotate: -45, y: 2 } : { rotate: 0, y: 0 }}
               className="w-full h-0.5 bg-white block origin-left"
             />
           </div>
@@ -106,7 +112,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 z-40 bg-brand-dark/98 backdrop-blur-3xl flex flex-col pt-24 px-6 pb-10 overflow-y-auto"
+            className="fixed inset-0 z-40 bg-brand-dark backdrop-blur-3xl flex flex-col pt-24 px-6 pb-10 overflow-y-auto"
           >
             <nav className="flex flex-col gap-6 mt-8">
               {NAV_LINKS.map((item, i) => (

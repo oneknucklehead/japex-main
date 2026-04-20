@@ -115,7 +115,7 @@ function RangeSelects({
 const PRICE_OPTS = [
   10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60000, 70000,
   80000, 90000, 100000, 150000, 200000, 300000,
-].map((v) => ({ label: `$${v.toLocaleString()}`, value: v }));
+].map((v) => ({ label: `$${v.toLocaleString('en-US')}`, value: v }));
 
 const YEAR_OPTS = Array.from({ length: 15 }, (_, i) => 2024 - i).map((v) => ({
   label: String(v),
@@ -123,7 +123,7 @@ const YEAR_OPTS = Array.from({ length: 15 }, (_, i) => 2024 - i).map((v) => ({
 }));
 
 const KM_OPTS = [10000, 20000, 40000, 60000, 80000, 100000, 150000, 200000].map(
-  (v) => ({ label: `${v.toLocaleString()} km`, value: v }),
+  (v) => ({ label: `${v.toLocaleString('en-US')} km`, value: v }),
 );
 
 const MAKES = [

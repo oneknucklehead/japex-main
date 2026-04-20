@@ -11,7 +11,7 @@ const CarCard = ({ car }: { car: Car }) => {
   return (
     <Link
       href={href}
-      className="group font-dm-sans flex flex-col h-full bg-brand-white border border-gray-300 hover:border-gray-400 hover:shadow-md card block overflow-hidden rounded-2xl transition-all duration-200"
+      className="group font-dm-sans flex flex-col h-full bg-brand-white border border-gray-300 hover:border-gray-400 hover:shadow-md card overflow-hidden rounded-2xl transition-all duration-200"
     >
       {/* Image */}
       <div className="relative aspect-video overflow-hidden">

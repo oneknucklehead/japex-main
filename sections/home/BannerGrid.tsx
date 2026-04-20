@@ -38,7 +38,7 @@ const BannerCard = ({
   imageAlt,
   cardColor,
 }: BannerCardProps) => {
-  const bgClass = cardColor === "red" ? "bg-red-600" : "bg-black";
+  const bgClass = cardColor === "red" ? "bg-brand-primary" : "bg-black";
 
   return (
     <motion.div

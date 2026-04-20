@@ -125,7 +125,7 @@ export default function FaqAccordion({ faqs }: Props) {
   const toggle = (id: string) => setOpenId((prev) => (prev === id ? null : id));
 
   return (
-    <section className="w-full bg-[#f0eeee] py-16 px-6">
+    <section className="w-full bg-[#efeded] py-16 px-6">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <motion.h2

@@ -49,7 +49,7 @@ export default async function AdminCarsPage() {
                     {car.make} {car.model}
                   </td>
                   <td className="px-4 py-3 text-gray-700">
-                    ${car.price.toLocaleString()}
+                    ${car.price.toLocaleString('en-US')}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex gap-1.5 flex-wrap">
