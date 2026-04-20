@@ -68,7 +68,7 @@ export default function CarImageGallery({ images, carName }: Props) {
             {allImages.map((img, i) => (
               <div
                 key={img.id}
-                className="flex-none w-full relative aspect-[4/3]"
+                className="flex-none w-full relative aspect-4/3"
               >
                 {img.url ? (
                   <Image
@@ -93,9 +93,9 @@ export default function CarImageGallery({ images, carName }: Props) {
         {allImages.length > 1 && (
           <>
             <motion.button
-              whileTap={{ scale: 0.93 }}
+              // whileTap={{ scale: 0.93 }}
               onClick={scrollPrev}
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-xl shadow-md flex items-center justify-center hover:shadow-lg transition-shadow z-10"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-xl border border-gray-300 cursor-pointer flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 z-10 hover:border-gray-400"
             >
               <svg
                 className="w-4 h-4 text-gray-700"
@@ -112,9 +112,9 @@ export default function CarImageGallery({ images, carName }: Props) {
               </svg>
             </motion.button>
             <motion.button
-              whileTap={{ scale: 0.93 }}
+              // whileTap={{ scale: 0.93 }}
               onClick={scrollNext}
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-xl shadow-md flex items-center justify-center hover:shadow-lg transition-shadow z-10"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-xl border border-gray-300 cursor-pointer flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 z-10 hover:border-gray-400"
             >
               <svg
                 className="w-4 h-4 text-gray-700"
@@ -148,10 +148,10 @@ export default function CarImageGallery({ images, carName }: Props) {
                 key={img.id}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => scrollTo(i)}
-                className={`flex-none relative w-20 h-16 rounded-xl overflow-hidden border-2 transition-all duration-200 ${
+                className={`flex-none cursor-pointer relative w-20 h-16 rounded-xl overflow-hidden border-2 transition-all duration-200 ${
                   i === selectedIndex
                     ? "border-brand-primary opacity-100"
-                    : "border-transparent opacity-60 hover:opacity-90"
+                    : "border-transparent opacity-60 grayscale-100 hover:grayscale-0 hover:opacity-90"
                 }`}
               >
                 {img.url ? (

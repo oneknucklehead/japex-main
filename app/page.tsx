@@ -7,6 +7,7 @@ import MainBanner from "@/sections/home/MainBanner";
 import StatsGrid from "@/sections/home/StatsGrid";
 import Testimonials from "@/sections/home/Testimonials";
 import WhyWeStandOut from "@/sections/home/WhyWeStandOut";
+import GetInTouch from "@/components/GetInTouch";
 
 export default function Home() {
   return (
@@ -35,6 +36,7 @@ export default function Home() {
       <section>
         <Faqs />
       </section>
+
       <section>
         <CTAFooterBanner />
       </section>

@@ -1,13 +1,10 @@
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import CarDetailClient from "./CarDetailClient";
+import GetInTouch from "@/components/GetInTouch";
 
 // Force dynamic rendering — needed because supabase server client uses cookies()
 export const dynamic = "force-dynamic";
-
-interface Props {
-  params: { slug: string };
-}
 
 export default async function CarDetailPage({
   params,
@@ -30,5 +27,10 @@ export default async function CarDetailPage({
     (a: any, b: any) => a.position - b.position,
   );
 
-  return <CarDetailClient car={car} />;
+  return (
+    <div>
+      <CarDetailClient car={car} />
+      <GetInTouch />
+    </div>
+  );
 }
