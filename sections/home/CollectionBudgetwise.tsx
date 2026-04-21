@@ -57,7 +57,7 @@ const CollectionBudgetwise = () => {
   }, [allCars, activePrice]);
 
   return (
-    <div>
+    <div className="px-6">
       <Container>
         <h1 className="font-extrabold font-montserrat text-3xl md:text-5xl text-center px-4 md:px-0">
           Tailored to Your Budget, Without Compromise
