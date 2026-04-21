@@ -2,6 +2,12 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import AdminNav from "@/components/admin/AdminNav";
 
+export const metadata = {
+  title: "Admin Dashboard",
+  description: "Dashboard to manage your application settings and data",
+  robots: "noindex, nofollow",
+};
+
 export default async function AdminLayout({
   children,
 }: {
