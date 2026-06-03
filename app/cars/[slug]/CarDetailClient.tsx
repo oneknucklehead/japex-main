@@ -115,6 +115,13 @@ export default function CarDetailClient({ car }: Props) {
                     />
                     <SpecPill label="Condition" value={car.condition} />
                     {car.rego && <SpecPill label="Rego" value={car.rego} />}
+                    {car.custom_specs?.map((spec) => (
+                      <SpecPill
+                        key={spec.heading}
+                        label={spec.heading}
+                        value={spec.value}
+                      />
+                    ))}
                   </div>
                 </motion.div>
 

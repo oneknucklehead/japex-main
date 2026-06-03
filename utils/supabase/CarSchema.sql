@@ -50,7 +50,7 @@ create table public.cars (
   created_at       timestamptz not null default now(),
   updated_at       timestamptz not null default now()
 );
-
+alter table public.cars add column custom_specs jsonb not null default '[]'::jsonb;
 -- Auto-update updated_at
 create or replace function public.handle_updated_at()
 returns trigger language plpgsql as $$

@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { createClient } from "@/utils/supabase/client";
 import ImageUploader from "./ImageUploader";
-
+interface CustomSpec {
+  id: string;
+  heading: string;
+  value: string;
+}
 interface CarFormData {
   slug: string;
   make: string;
@@ -97,6 +101,7 @@ interface Props {
   initialData?: Partial<CarFormData> & {
     id?: string;
     car_images?: UploadedImage[];
+    custom_specs?: CustomSpec[];
   };
   mode: "create" | "edit";
 }
@@ -132,6 +137,27 @@ export default function CarForm({ initialData, mode }: Props) {
   const [images, setImages] = useState<UploadedImage[]>(
     initialData?.car_images ?? [],
   );
+  const [customSpecs, setCustomSpecs] = useState<CustomSpec[]>(
+    initialData?.custom_specs ?? [],
+  );
+
+  const addCustomSpec = () =>
+    setCustomSpecs((s) => [
+      ...s,
+      { id: crypto.randomUUID(), heading: "", value: "" },
+    ]);
+
+  const updateCustomSpec = (
+    id: string,
+    field: "heading" | "value",
+    val: string,
+  ) =>
+    setCustomSpecs((s) =>
+      s.map((spec) => (spec.id === id ? { ...spec, [field]: val } : spec)),
+    );
+
+  const removeCustomSpec = (id: string) =>
+    setCustomSpecs((s) => s.filter((spec) => spec.id !== id));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   // Temp car id for image uploads before save (create mode)
@@ -159,10 +185,15 @@ export default function CarForm({ initialData, mode }: Props) {
       .split(",")
       .map((f) => f.trim())
       .filter(Boolean);
+    const cleanedSpecs = customSpecs
+      .filter((s) => s.heading.trim())
+      .map(({ heading, value }) => ({ heading, value })); // strip local id
 
     const payload = {
       ...form,
       features: featuresArray,
+      custom_specs: cleanedSpecs,
+
       was_price: form.was_price || null,
       rego_expiry: form.rego_expiry || null,
       id: mode === "create" ? tempId : initialData?.id,
@@ -384,7 +415,57 @@ export default function CarForm({ initialData, mode }: Props) {
           </Field>
         </div>
       </div>
+      {/* Custom specs */}
+      {customSpecs.length > 0 && (
+        <div className="mt-4 space-y-3">
+          {customSpecs.map((spec) => (
+            <div key={spec.id} className="flex gap-3 items-end">
+              <div className="flex-1">
+                <label className="text-xs font-semibold text-gray-600 block mb-1.5">
+                  Specification
+                </label>
+                <input
+                  className={inputCls}
+                  value={spec.heading}
+                  onChange={(e) =>
+                    updateCustomSpec(spec.id, "heading", e.target.value)
+                  }
+                  placeholder="e.g. Bull Bar"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="text-xs font-semibold text-gray-600 block mb-1.5">
+                  Value
+                </label>
+                <input
+                  className={inputCls}
+                  value={spec.value}
+                  onChange={(e) =>
+                    updateCustomSpec(spec.id, "value", e.target.value)
+                  }
+                  placeholder="e.g. Fitted / 2 inch / Yes"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => removeCustomSpec(spec.id)}
+                className="shrink-0 w-10 h-[42px] rounded-xl border border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-200 transition-colors flex items-center justify-center"
+                aria-label="Remove spec"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
+      <button
+        type="button"
+        onClick={addCustomSpec}
+        className="mt-4 text-sm font-semibold text-red-600 hover:text-red-700 flex items-center gap-1.5"
+      >
+        <span className="text-lg leading-none">+</span> Add Specification
+      </button>
       {/* Pricing */}
       <div className="bg-white rounded-2xl p-5 border border-gray-200">
         <h3 className="font-bold text-gray-900 font-montserrat mb-4">

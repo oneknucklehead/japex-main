@@ -39,6 +39,7 @@ export interface Car {
   // Timestamps
   created_at: string;
   updated_at: string;
+  custom_specs: { heading: string; value: string }[];
 
   // Joined from car_images
   car_images?: CarImage[];
