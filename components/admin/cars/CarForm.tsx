@@ -101,7 +101,7 @@ interface Props {
   initialData?: Partial<CarFormData> & {
     id?: string;
     car_images?: UploadedImage[];
-    custom_specs?: CustomSpec[];
+    custom_specs?: { id?: string; heading: string; value: string }[];
   };
   mode: "create" | "edit";
 }
@@ -130,17 +130,29 @@ const inputCls =
 
 export default function CarForm({ initialData, mode }: Props) {
   const router = useRouter();
-  const [form, setForm] = useState<CarFormData>({
-    ...DEFAULTS,
-    ...initialData,
+  const [form, setForm] = useState<CarFormData>(() => {
+    const merged = { ...DEFAULTS, ...initialData };
+    // A null from a nullable DB column (e.g. rego_expiry) would clobber a
+    // non-null default and break controlled inputs. Restore the default for
+    // any null — but leave was_price alone, since its default is legitimately null.
+    (Object.keys(DEFAULTS) as (keyof CarFormData)[]).forEach((k) => {
+      if (merged[k] === null && DEFAULTS[k] !== null) {
+        (merged as any)[k] = DEFAULTS[k];
+      }
+    });
+    return merged;
   });
   const [images, setImages] = useState<UploadedImage[]>(
     initialData?.car_images ?? [],
   );
-  const [customSpecs, setCustomSpecs] = useState<CustomSpec[]>(
-    initialData?.custom_specs ?? [],
-  );
 
+  const [customSpecs, setCustomSpecs] = useState<CustomSpec[]>(() =>
+    (initialData?.custom_specs ?? []).map((s) => ({
+      id: s.id ?? crypto.randomUUID(),
+      heading: s.heading,
+      value: s.value,
+    })),
+  );
   const addCustomSpec = () =>
     setCustomSpecs((s) => [
       ...s,
@@ -174,12 +186,35 @@ export default function CarForm({ initialData, mode }: Props) {
       .replace(/^-|-$/g, "");
     set("slug", s);
   };
-
+  // HEAD-checks each image against raw storage. Returns false only on a
+  // definitive 4xx ("not there"); treats network/5xx as ambiguous so a
+  // transient blip can't drop a good upload.
+  const imageExists = async (url: string): Promise<boolean> => {
+    try {
+      const res = await fetch(url, { method: "HEAD" });
+      return res.ok || res.status >= 500;
+    } catch {
+      return true;
+    }
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
     setError("");
-
+    // Guard: confirm every image is in storage before writing rows.
+    if (images.length > 0) {
+      const results = await Promise.all(
+        images.map((img) => imageExists(img.url)),
+      );
+      const broken = images.filter((_, i) => !results[i]);
+      if (broken.length > 0) {
+        setError(
+          `${broken.length} image${broken.length > 1 ? "s" : ""} failed to upload to storage. Remove and re-add ${broken.length > 1 ? "them" : "it"} before saving.`,
+        );
+        setSaving(false);
+        return;
+      }
+    }
     const supabase = createClient();
     const featuresArray = form.features
       .split(",")
@@ -189,15 +224,35 @@ export default function CarForm({ initialData, mode }: Props) {
       .filter((s) => s.heading.trim())
       .map(({ heading, value }) => ({ heading, value })); // strip local id
 
+    // form may carry relational keys (car_images, custom_specs, etc.) that
+    // hydrated from the joined edit-mode row. Those aren't columns on `cars`,
+    // so strip anything that isn't a real column before writing.
+    const {
+      car_images,
+      custom_specs,
+      fts,
+      created_at,
+      updated_at,
+      ...formCols
+    } = form as any;
     const payload = {
-      ...form,
+      ...formCols,
       features: featuresArray,
-      custom_specs: cleanedSpecs,
-
+      custom_specs: cleanedSpecs, // the real column, from cleaned state
       was_price: form.was_price || null,
       rego_expiry: form.rego_expiry || null,
       id: mode === "create" ? tempId : initialData?.id,
     };
+
+    // const payload = {
+    //   ...form,
+    //   features: featuresArray,
+    //   custom_specs: cleanedSpecs,
+
+    //   was_price: form.was_price || null,
+    //   rego_expiry: form.rego_expiry || null,
+    //   id: mode === "create" ? tempId : initialData?.id,
+    // };
 
     let carId = initialData?.id ?? tempId;
 
@@ -229,12 +284,21 @@ export default function CarForm({ initialData, mode }: Props) {
     if (mode === "edit") {
       await supabase.from("car_images").delete().eq("car_id", carId);
     }
+    // if (images.length > 0) {
+    //   await supabase
+    //     .from("car_images")
+    //     .insert(images.map((img) => ({ ...img, car_id: carId })));
+    // }
     if (images.length > 0) {
-      await supabase
-        .from("car_images")
-        .insert(images.map((img) => ({ ...img, car_id: carId })));
+      await supabase.from("car_images").insert(
+        images.map((img, i) => ({
+          url: img.url,
+          alt: img.alt,
+          position: i,
+          car_id: carId,
+        })),
+      );
     }
-
     router.push("/admin/cars");
     router.refresh();
   };

@@ -60,7 +60,7 @@ export default function CarImageGallery({ images, carName }: Props) {
       : [{ id: "placeholder", url: "", alt: carName, position: 0 }];
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 w-full">
       {/* ── Main carousel ── */}
       <div className="relative rounded-2xl overflow-hidden bg-gray-100">
         <div className="overflow-hidden" ref={mainRef}>
@@ -68,7 +68,7 @@ export default function CarImageGallery({ images, carName }: Props) {
             {allImages.map((img, i) => (
               <div
                 key={img.id}
-                className="flex-none w-full relative aspect-4/3"
+                className="flex-none w-full relative aspect-4/3 max-h-[70vh]"
               >
                 {img.url ? (
                   <Image

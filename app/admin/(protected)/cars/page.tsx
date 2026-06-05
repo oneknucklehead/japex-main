@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
+import DeleteCarButton from "@/components/admin/cars/DeleteCarButton";
 
 export default async function AdminCarsPage() {
   const supabase = await createClient();
@@ -49,7 +50,7 @@ export default async function AdminCarsPage() {
                     {car.make} {car.model}
                   </td>
                   <td className="px-4 py-3 text-gray-700">
-                    ${car.price.toLocaleString('en-US')}
+                    ${car.price.toLocaleString("en-US")}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex gap-1.5 flex-wrap">
@@ -85,6 +86,25 @@ export default async function AdminCarsPage() {
                       >
                         View
                       </Link>
+                      <DeleteCarButton carId={car.id} />
+
+                      {/* <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <Link
+                        href={`/admin/cars/${car.id}`}
+                        className="text-xs font-semibold text-red-600 hover:underline"
+                      >
+                        Edit
+                      </Link>
+                      <Link
+                        href={`/cars/${car.slug}`}
+                        target="_blank"
+                        className="text-xs font-semibold text-gray-400 hover:underline"
+                      >
+                        View
+                      </Link>
+                    </div>
+                  </td> */}
                     </div>
                   </td>
                 </tr>

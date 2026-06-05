@@ -25,11 +25,15 @@ export default function ImageUploader({
   const [images, setImages] = useState<UploadedImage[]>(existingImages);
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const [errored, setErrored] = useState<Record<string, boolean>>({});
 
   const uploadFiles = async (files: FileList) => {
     setUploading(true);
+    setUploadError("");
     const supabase = createClient();
     const newImages: UploadedImage[] = [];
+    const failed: string[] = [];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -40,22 +44,31 @@ export default function ImageUploader({
         .from("car-images")
         .upload(path, file, { upsert: true });
 
-      if (!error) {
-        const {
-          data: { publicUrl },
-        } = supabase.storage.from("car-images").getPublicUrl(path);
-
-        newImages.push({
-          url: publicUrl,
-          alt: "",
-          position: images.length + i,
-        });
+      if (error) {
+        failed.push(file.name);
+        continue; // never push a URL for a file that didn't land
       }
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("car-images").getPublicUrl(path);
+
+      newImages.push({
+        url: publicUrl,
+        alt: "",
+        position: images.length + newImages.length,
+      });
     }
 
     const updated = [...images, ...newImages];
     setImages(updated);
     onImagesChange?.(updated);
+
+    if (failed.length) {
+      setUploadError(
+        `${failed.length} file${failed.length > 1 ? "s" : ""} failed to upload: ${failed.join(", ")}. Try again.`,
+      );
+    }
     setUploading(false);
   };
 
@@ -75,9 +88,14 @@ export default function ImageUploader({
   const removeImage = async (index: number) => {
     const supabase = createClient();
     const img = images[index];
-    // Extract path from URL
     const path = img.url.split("/car-images/")[1];
+
+    // 1. Remove the file from storage
     if (path) await supabase.storage.from("car-images").remove([path]);
+
+    // 2. Remove the DB row. No-op in create mode (row doesn't exist yet);
+    //    in edit mode this stops an orphaned row pointing at a deleted file.
+    await supabase.from("car_images").delete().eq("url", img.url);
 
     const updated = images
       .filter((_, i) => i !== index)
@@ -149,7 +167,11 @@ export default function ImageUploader({
           )}
         </label>
       </div>
-
+      {uploadError && (
+        <p className="text-red-500 text-xs bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+          {uploadError}
+        </p>
+      )}
       {/* Image previews */}
       {images.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -163,6 +185,29 @@ export default function ImageUploader({
                 className="relative group rounded-xl overflow-hidden border border-gray-200"
               >
                 <div className="relative aspect-video">
+                  {!errored[img.url] ? (
+                    <Image
+                      src={img.url}
+                      alt={img.alt || "Car image"}
+                      fill
+                      className="object-cover"
+                      sizes="200px"
+                      onError={() =>
+                        setErrored((e) => ({ ...e, [img.url]: true }))
+                      }
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
+                      <span className="text-3xl">🚗</span>
+                    </div>
+                  )}
+                  {i === 0 && (
+                    <span className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                      Cover
+                    </span>
+                  )}
+                </div>
+                {/* <div className="relative aspect-video">
                   <Image
                     src={img.url}
                     alt={img.alt || "Car image"}
@@ -175,7 +220,7 @@ export default function ImageUploader({
                       Cover
                     </span>
                   )}
-                </div>
+                </div> */}
                 <div className="p-2">
                   <input
                     type="text"
