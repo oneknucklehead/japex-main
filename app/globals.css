@@ -1,2 +1,25 @@
 @import "tailwindcss";
 
+@theme {
+  --font-montserrat: var(--font-montserrat);
+  --font-bricolage: var(--font-bricolage);
+  --font-dm-sans: var(--font-dm-sans);
+
+  --color-brand-primary: #de0c0d;
+  --color-brand-dark: #161616;
+  --color-brand-white: #ffffff;
+  --color-brand-white-alternate: #dedede;
+  --color-brand-gray: #e7e6e8;
+}
+
+:root {
+  --font-montserrat: var(--font-montserrat);
+  --font-bricolage: var(--font-bricolage);
+  --font-dm-sans: var(--font-dm-sans);
+
+  --color-brand-primary: #de0c0d;
+  --color-brand-dark: #161616;
+  --color-brand-white: #ffffff;
+  --color-brand-white-alternate: #dedede;
+  --color-brand-gray: #e7e6e8;
+}
