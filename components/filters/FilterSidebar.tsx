@@ -24,9 +24,6 @@ function CheckboxGroup({
   selected: string[];
   onChange: (v: string[]) => void;
 }) {
-
-
-
   const toggle = (val: string) =>
     onChange(
       selected.includes(val)
@@ -115,7 +112,7 @@ function RangeSelects({
 const PRICE_OPTS = [
   10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60000, 70000,
   80000, 90000, 100000, 150000, 200000, 300000,
-].map((v) => ({ label: `$${v.toLocaleString('en-US')}`, value: v }));
+].map((v) => ({ label: `$${v.toLocaleString("en-US")}`, value: v }));
 
 const YEAR_OPTS = Array.from({ length: 15 }, (_, i) => 2024 - i).map((v) => ({
   label: String(v),
@@ -123,7 +120,7 @@ const YEAR_OPTS = Array.from({ length: 15 }, (_, i) => 2024 - i).map((v) => ({
 }));
 
 const KM_OPTS = [10000, 20000, 40000, 60000, 80000, 100000, 150000, 200000].map(
-  (v) => ({ label: `${v.toLocaleString('en-US')} km`, value: v }),
+  (v) => ({ label: `${v.toLocaleString("en-US")} km`, value: v }),
 );
 
 const MAKES = [
@@ -242,7 +239,7 @@ export default function FilterSidebar({ filters, onChange, total }: Props) {
     filters.colors?.length,
     filters.features?.length,
     filters.condition?.length,
-    filters.availableOnly,
+    filters.availability?.length,
   ].filter(Boolean).length;
 
   return (
@@ -411,25 +408,15 @@ export default function FilterSidebar({ filters, onChange, total }: Props) {
           selected={filters.condition ?? []}
           onChange={(v) => set({ condition: v.length ? v : undefined })}
         />
-
-        {/* Available only — maps to is_sold = false */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          <span className="text-sm text-gray-700 font-medium">
-            Available only
-          </span>
-          <button
-            onClick={() => set({ availableOnly: !filters.availableOnly })}
-            className={`relative w-11 h-6 rounded-full transition-colors ${
-              filters.availableOnly ? "bg-red-600" : "bg-gray-200"
-            }`}
-          >
-            <span
-              className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${
-                filters.availableOnly ? "translate-x-6" : "translate-x-1"
-              }`}
-            />
-          </button>
-        </div>
+        {/* Availability */}
+        <CheckboxGroup
+          label="Availability"
+          options={["In stock", "Coming soon", "Sold out"]}
+          selected={filters.availability ?? []}
+          onChange={(v) =>
+            set({ availability: v.length ? (v as any) : undefined })
+          }
+        />
       </div>
 
       <p className="text-center text-sm text-gray-500 mt-4">
