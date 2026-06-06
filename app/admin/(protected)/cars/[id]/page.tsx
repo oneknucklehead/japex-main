@@ -16,9 +16,9 @@ export default async function EditCarPage({
       `id, slug, make, model, variant, year,
        body_type, fuel_type, transmission, drive_type, engine,
        odometer_km, color_exterior, color_interior, seats, doors,
-       rego, rego_expiry, price, was_price,
+       power_steering, price, was_price,
        description, features, condition, custom_specs,
-       is_featured, is_sold, is_published,
+       is_featured, availability, is_published,
        car_images(id, url, alt, position)`,
     )
     .eq("id", id)

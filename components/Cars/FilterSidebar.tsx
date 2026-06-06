@@ -61,13 +61,13 @@ const CONDITIONS = ["Excellent", "Good", "Fair"];
 const PRICE_OPTS = [
   10000, 15000, 20000, 25000, 30000, 35000, 40000, 50000, 60000, 70000, 80000,
   100000, 150000, 200000, 300000,
-].map((v) => ({ label: `$${v.toLocaleString('en-US')}`, value: v }));
+].map((v) => ({ label: `$${v.toLocaleString("en-US")}`, value: v }));
 const YEAR_OPTS = Array.from({ length: 15 }, (_, i) => 2024 - i).map((v) => ({
   label: String(v),
   value: v,
 }));
 const KM_OPTS = [10000, 20000, 40000, 60000, 80000, 100000, 150000, 200000].map(
-  (v) => ({ label: `${v.toLocaleString('en-US')} km`, value: v }),
+  (v) => ({ label: `${v.toLocaleString("en-US")} km`, value: v }),
 );
 
 // ── Sub-components ───────────────────────────────────────────────────────────
@@ -242,6 +242,7 @@ export default function FilterSidebar({ filters, onChange, total }: Props) {
     filters.colors?.length,
     filters.features?.length,
     filters.condition?.length,
+    filters.availability?.length,
   ].filter(Boolean).length;
 
   return (
@@ -418,20 +419,16 @@ export default function FilterSidebar({ filters, onChange, total }: Props) {
           />
         </Section>
 
-        {/* Available toggle */}
-        <div className="py-4 flex items-center justify-between">
-          <span className="text-sm font-semibold text-gray-700">
-            Available only
-          </span>
-          <button
-            onClick={() => set({ availableOnly: !filters.availableOnly })}
-            className={`cursor-pointer relative w-10 h-5 rounded-full transition-colors ${filters.availableOnly ? "bg-brand-primary" : "bg-gray-200"}`}
-          >
-            <span
-              className={`absolute top-0.5 w-4 h-4 rounded-full bg-brand-white shadow transition-transform ${filters.availableOnly ? "translate-x-0.5" : "-translate-x-4.5"}`}
-            />
-          </button>
-        </div>
+        {/* Availability */}
+        <Section title="Availability">
+          <CheckList
+            options={["In stock", "Coming soon", "Sold out"]}
+            selected={filters.availability ?? []}
+            onChange={(v) =>
+              set({ availability: v.length ? (v as any) : undefined })
+            }
+          />
+        </Section>
       </div>
     </aside>
   );

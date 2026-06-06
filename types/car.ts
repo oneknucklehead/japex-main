@@ -19,8 +19,7 @@ export interface Car {
   color_interior: string;
   seats: number;
   doors: number;
-  rego: string;
-  rego_expiry: string | null;
+  power_steering: string;
 
   // Pricing
   price: number;
@@ -33,7 +32,7 @@ export interface Car {
 
   // Status
   is_featured: boolean;
-  is_sold: boolean;
+  availability: "In stock" | "Coming soon" | "Sold out";
   is_published: boolean;
 
   // Timestamps
@@ -72,7 +71,7 @@ export interface CarFilters {
   features?: string[];
   condition?: string[];
   isFeatured?: boolean;
-  availableOnly?: boolean; // is_sold = false
+  availability?: ("In stock" | "Coming soon" | "Sold out")[]; // was: availableOnly / is_sold = false
   sortBy?: SortOption;
 }
 

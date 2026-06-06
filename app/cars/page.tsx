@@ -40,7 +40,10 @@ const SkeletonCard = () => (
 );
 
 export default function CarsPage() {
-  const [filters, setFilters] = useState<CarFilters>({ sortBy: "newest" });
+  const [filters, setFilters] = useState<CarFilters>({
+    sortBy: "newest",
+    availability: ["In stock", "Coming soon"],
+  });
   const [page, setPage] = useState(1);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 

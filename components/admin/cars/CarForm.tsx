@@ -26,16 +26,15 @@ interface CarFormData {
   color_interior: string;
   seats: number;
   doors: number;
-  rego: string;
-  rego_expiry: string;
+  power_steering: string;
   price: number;
   was_price: number | null;
   description: string;
   features: string;
   condition: string;
   is_featured: boolean;
-  is_sold: boolean;
   is_published: boolean;
+  availability: "In stock" | "Coming soon" | "Sold out";
 }
 
 interface UploadedImage {
@@ -60,16 +59,15 @@ const DEFAULTS: CarFormData = {
   color_interior: "",
   seats: 5,
   doors: 4,
-  rego: "",
-  rego_expiry: "",
+  power_steering: "",
   price: 0,
   was_price: null,
   description: "",
   features: "",
   condition: "Good",
   is_featured: false,
-  is_sold: false,
   is_published: true,
+  availability: "In stock",
 };
 
 const SELECT_OPTS = {
@@ -238,9 +236,8 @@ export default function CarForm({ initialData, mode }: Props) {
     const payload = {
       ...formCols,
       features: featuresArray,
-      custom_specs: cleanedSpecs, // the real column, from cleaned state
+      custom_specs: cleanedSpecs,
       was_price: form.was_price || null,
-      rego_expiry: form.rego_expiry || null,
       id: mode === "create" ? tempId : initialData?.id,
     };
 
@@ -461,20 +458,12 @@ export default function CarForm({ initialData, mode }: Props) {
               placeholder="Black Leather"
             />
           </Field>
-          <Field label="Rego">
+          <Field label="Power Steering">
             <input
               className={inputCls}
-              value={form.rego}
-              onChange={(e) => set("rego", e.target.value)}
-              placeholder="ABC123"
-            />
-          </Field>
-          <Field label="Rego Expiry">
-            <input
-              type="date"
-              className={inputCls}
-              value={form.rego_expiry}
-              onChange={(e) => set("rego_expiry", e.target.value)}
+              value={form.power_steering}
+              onChange={(e) => set("power_steering", e.target.value)}
+              placeholder="e.g. Electric / Hydraulic / Yes"
             />
           </Field>
         </div>
@@ -594,12 +583,36 @@ export default function CarForm({ initialData, mode }: Props) {
       {/* Status */}
       <div className="bg-white rounded-2xl p-5 border border-gray-200">
         <h3 className="font-bold text-gray-900 font-montserrat mb-4">Status</h3>
+
+        {/* Availability — single choice */}
+        <div className="mb-5">
+          <label className="text-xs font-semibold text-gray-600 block mb-2">
+            Availability
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {(["In stock", "Coming soon", "Sold out"] as const).map((opt) => (
+              <button
+                key={opt}
+                type="button"
+                onClick={() => set("availability", opt)}
+                className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+                  form.availability === opt
+                    ? "bg-red-600 border-red-600 text-white"
+                    : "bg-white border-gray-200 text-gray-600 hover:border-gray-300"
+                }`}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Toggles */}
         <div className="flex flex-wrap gap-6">
           {(
             [
               { key: "is_published", label: "Published" },
               { key: "is_featured", label: "Featured" },
-              { key: "is_sold", label: "Sold" },
             ] as const
           ).map(({ key, label }) => (
             <label

@@ -59,10 +59,23 @@ begin
   return new;
 end;
 $$;
+-- Single availability state (subsumes the old is_sold boolean)
+alter table public.cars
+  add column availability text not null default 'In stock'
+    check (availability in ('In stock', 'Coming soon', 'Sold out'));
 
+-- Backfill: anything previously marked sold becomes 'Sold out'
+update public.cars set availability = 'Sold out' where is_sold = true;
+
+-- Drop the now-redundant boolean
+alter table public.cars drop column is_sold;
 create trigger cars_updated_at
   before update on public.cars
   for each row execute procedure public.handle_updated_at();
+
+alter table public.cars drop column rego;
+alter table public.cars drop column rego_expiry;
+alter table public.cars add column power_steering text not null default '';
 
 -- Indexes for fast filtering
 create index idx_cars_make         on public.cars (make);

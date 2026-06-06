@@ -115,10 +115,15 @@ export default function CarDetailClient({ car }: Props) {
                       value={car.color_interior || "—"}
                     />
                     <SpecPill label="Condition" value={car.condition} />
-                    {car.rego && <SpecPill label="Rego" value={car.rego} />}
-                    {car.custom_specs?.map((spec) => (
+                    {car.power_steering && (
                       <SpecPill
-                        key={spec.heading}
+                        label="Power Steering"
+                        value={car.power_steering}
+                      />
+                    )}
+                    {car.custom_specs?.map((spec, i) => (
+                      <SpecPill
+                        key={`${spec.heading}-${i}`}
                         label={spec.heading}
                         value={spec.value}
                       />
@@ -233,12 +238,19 @@ export default function CarDetailClient({ car }: Props) {
                           ^Fees and charges apply
                         </p>
                       </div>
-                      {car.condition === "Excellent" && (
+                      {car.availability === "Sold out" && (
                         <span className="bg-brand-primary text-white text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shrink-0">
-                          <AssuranceIcon />
-                          Assured
+                          Sold Out
                         </span>
                       )}
+
+                      {car.availability !== "Sold out" &&
+                        car.condition === "Excellent" && (
+                          <span className="bg-brand-primary text-white text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shrink-0">
+                            <AssuranceIcon />
+                            Assured
+                          </span>
+                        )}
                     </div>
                   </div>
 
@@ -255,20 +267,64 @@ export default function CarDetailClient({ car }: Props) {
                     </p>
                   </div>
 
-                  {/* CTAs */}
+                  {/* CTAs — vary by availability */}
                   <div className="flex flex-col gap-3">
-                    <motion.button
-                      whileTap={{ scale: 0.98 }}
-                      className="cursor-pointer w-full bg-brand-primary hover:bg-red-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm"
-                    >
-                      Get started
-                    </motion.button>
+                    {car.availability === "Sold out" ? (
+                      <>
+                        <Link
+                          href="/cars"
+                          className="w-full text-center bg-brand-primary hover:bg-red-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm"
+                        >
+                          View similar cars
+                        </Link>
+                        {/* <motion.button
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setEnquiryOpen(true)}
+                          className="w-full bg-white hover:bg-gray-50 text-gray-900 font-bold py-3.5 rounded-xl border border-gray-200 transition-colors text-sm"
+                        >
+                          Send us an enquiry
+                        </motion.button> */}
+                      </>
+                    ) : car.availability === "Coming soon" ? (
+                      <>
+                        <motion.button
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setEnquiryOpen(true)}
+                          className="cursor-pointer w-full bg-brand-primary hover:bg-red-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm"
+                        >
+                          Get notified
+                        </motion.button>
+                        {/* <motion.button
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setEnquiryOpen(true)}
+                          className="w-full bg-white hover:bg-gray-50 text-gray-900 font-bold py-3.5 rounded-xl border border-gray-200 transition-colors text-sm"
+                        >
+                          Send us an enquiry
+                        </motion.button> */}
+                      </>
+                    ) : (
+                      <>
+                        <motion.button
+                          whileTap={{ scale: 0.98 }}
+                          className="cursor-pointer w-full bg-brand-primary hover:bg-red-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm"
+                        >
+                          Get started
+                        </motion.button>
+                        {/* <motion.button
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setEnquiryOpen(true)}
+                          className="w-full bg-white hover:bg-gray-50 text-gray-900 font-bold py-3.5 rounded-xl border border-gray-200 transition-colors text-sm"
+                        >
+                          Make an enquiry
+                        </motion.button> */}
+                      </>
+                    )}
                     <motion.button
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setEnquiryOpen(true)}
                       className="w-full bg-white hover:bg-gray-50 text-gray-900 font-bold py-3.5 rounded-xl border border-gray-200 transition-colors text-sm"
                     >
-                      Make an enquiry
+                      Send us an enquiry
                     </motion.button>
                   </div>
                 </div>
@@ -313,36 +369,6 @@ export default function CarDetailClient({ car }: Props) {
                     <span className="text-xs text-gray-400">(350)</span>
                   </div>
                 </motion.div>
-
-                {/* Rego expiry if available */}
-                {car.rego_expiry && (
-                  <div className="bg-white rounded-2xl p-4 border border-gray-200 flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-gray-400 shrink-0"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
-                      />
-                    </svg>
-                    <div>
-                      <p className="text-xs text-gray-400">
-                        Registration expires
-                      </p>
-                      <p className="text-sm font-bold text-gray-800">
-                        {new Date(car.rego_expiry).toLocaleDateString("en-AU", {
-                          month: "long",
-                          year: "numeric",
-                        })}
-                      </p>
-                    </div>
-                  </div>
-                )}
               </motion.div>
             </div>
           </div>

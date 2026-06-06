@@ -11,7 +11,9 @@ const CarCard = ({ car }: { car: Car }) => {
   return (
     <Link
       href={href}
-      className="group font-dm-sans flex flex-col h-full bg-brand-white border border-gray-300 hover:border-gray-400 hover:shadow-md card overflow-hidden rounded-2xl transition-all duration-200"
+      className={`group font-dm-sans flex flex-col h-full bg-brand-white border border-gray-300 hover:border-gray-400 hover:shadow-md card overflow-hidden rounded-2xl transition-all duration-200 ${
+        car?.availability === "Sold out" ? "opacity-60 saturate-50" : ""
+      }`}
     >
       {/* Image */}
       <div className="relative aspect-video overflow-hidden">
@@ -31,14 +33,22 @@ const CarCard = ({ car }: { car: Car }) => {
           </div>
         )}
 
-        {/* Badges */}
+        {/* Badges — availability takes priority over Sale/Featured */}
         <div className="absolute top-3 left-3 flex gap-2">
-          {car?.was_price ? (
+          {car?.availability === "Sold out" ? (
+            <span className="bg-gray-800 text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
+              Sold Out
+            </span>
+          ) : car?.availability === "Coming soon" ? (
+            <span className="bg-amber-500 text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
+              Coming Soon
+            </span>
+          ) : car?.was_price ? (
             <span className="bg-brand-primary text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
               Sale
             </span>
           ) : car?.is_featured ? (
-            <span className="bg-brand-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+            <span className="bg-brand-primary text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
               Featured
             </span>
           ) : null}

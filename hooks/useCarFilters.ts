@@ -52,8 +52,8 @@ export function useCarFilters(filters: CarFilters, page: number = 1) {
     if (filters.condition?.length)
       query = query.in("condition", filters.condition);
     if (filters.isFeatured) query = query.eq("is_featured", true);
-    if (filters.availableOnly) query = query.eq("is_sold", false);
-
+    if (filters.availability?.length)
+      query = query.in("availability", filters.availability);
     switch (filters.sortBy) {
       case "price_asc":
         query = query.order("price", { ascending: true });

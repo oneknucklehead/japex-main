@@ -7,7 +7,7 @@ export default async function AdminCarsPage() {
   const { data: cars } = await supabase
     .from("cars")
     .select(
-      "id, slug, make, model, year, price, is_published, is_featured, is_sold",
+      "id, slug, make, model, year, price, is_published, is_featured, availability",
     )
     .order("created_at", { ascending: false });
 
@@ -64,9 +64,19 @@ export default async function AdminCarsPage() {
                           Featured
                         </span>
                       )}
-                      {car.is_sold && (
+                      {car.availability === "In stock" && (
+                        <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-semibold">
+                          In Stock
+                        </span>
+                      )}
+                      {car.availability === "Coming soon" && (
+                        <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-semibold">
+                          Coming soon
+                        </span>
+                      )}
+                      {car.availability === "Sold out" && (
                         <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-semibold">
-                          Sold
+                          Sold out
                         </span>
                       )}
                     </div>
