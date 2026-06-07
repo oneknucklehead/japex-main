@@ -172,7 +172,7 @@ export default function AboutClient() {
                   Delivered to Your Driveway.
                 </span>
               </h1>
-              <p className="text-base lg:text-lg text-gray-300 max-w-2xl leading-relaxed">
+              <p className="text-base lg:text-lg text-brand-white-alternate max-w-2xl leading-relaxed">
                 Japex Motors brings the best of Japanese automotive culture to
                 the Central Coast — precision-sourced vehicles, custom-finished
                 to our own standard, expertly complied, and backed by a team
@@ -189,13 +189,13 @@ export default function AboutClient() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 px-6">
             <motion.div className="lg:col-span-5" {...fadeUp}>
               <Eyebrow>Our Story</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-extrabold text-black font-montserrat leading-tight">
                 Australians deserve the best Japan has to offer.
               </h2>
             </motion.div>
 
             <motion.div
-              className="lg:col-span-7 space-y-4 text-sm lg:text-base text-gray-600 leading-relaxed"
+              className="lg:col-span-7 space-y-4 text-sm lg:text-base text-gray-500 leading-relaxed"
               {...fadeUp}
             >
               <p>

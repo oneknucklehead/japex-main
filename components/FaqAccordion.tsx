@@ -84,9 +84,7 @@ const FaqItem = ({
           className="w-full  cursor-pointer flex items-center justify-between gap-4 px-6 py-5 text-left"
         >
           <span
-            className={`font-bold text-base leading-snug font-montserrat transition-colors ${
-              isOpen ? "text-gray-900" : "text-gray-900"
-            }`}
+            className={`font-bold text-base leading-snug font-montserrat transition-colors`}
           >
             {faq.question}
           </span>
@@ -133,7 +131,7 @@ export default function FaqAccordion({ faqs }: Props) {
           initial={{ opacity: 0, y: 24 }}
           animate={headerInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center font-extrabold text-3xl lg:text-5xl text-gray-900 font-montserrat mb-10"
+          className="text-center font-extrabold text-3xl lg:text-5xl text-black font-montserrat mb-10"
         >
           Frequently Asked Questions
         </motion.h2>

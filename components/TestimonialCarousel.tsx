@@ -53,7 +53,7 @@ const TestimonialCard = ({
     <AvatarIcon />
 
     {/* Review text */}
-    <p className="text-gray-800 text-sm leading-relaxed flex-1 font-bricolage">
+    <p className="text-brand-dark text-sm leading-relaxed flex-1 font-bricolage">
       {testimonial.review}
     </p>
 
