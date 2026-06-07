@@ -30,7 +30,7 @@ export default async function AdminCarsPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100 bg-gray-50">
-                {["Year", "Make / Model", "Price", "Status", "Actions"].map(
+                {["Year", "Brand / Model", "Price", "Status", "Actions"].map(
                   (h) => (
                     <th
                       key={h}

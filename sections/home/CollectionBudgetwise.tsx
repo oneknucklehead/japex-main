@@ -57,8 +57,8 @@ const CollectionBudgetwise = () => {
   }, [allCars, activePrice]);
 
   return (
-    <div className="px-6">
-      <Container>
+    <Container>
+      <div className="px-6">
         <h1 className="font-extrabold font-montserrat text-3xl md:text-5xl text-center px-4 md:px-0">
           Tailored to Your Budget, Without Compromise
         </h1>
@@ -104,8 +104,8 @@ const CollectionBudgetwise = () => {
         ) : (
           <CarCarousel cars={filteredCars} />
         )}
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
 };
 

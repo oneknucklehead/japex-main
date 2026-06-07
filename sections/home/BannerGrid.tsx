@@ -88,8 +88,8 @@ const BannerGrid = () => {
   const banner2 = getAssetsStorageUrl("Homepage/FinanceBanner.jpg");
 
   return (
-    <div className="px-6">
-      <Container>
+    <Container>
+      <div className="px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <BannerCard
             title="Your Trusted Source for Quality Car Parts & Global Export Services"
@@ -108,8 +108,8 @@ const BannerGrid = () => {
             cardColor="black"
           />
         </div>
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
 };
 

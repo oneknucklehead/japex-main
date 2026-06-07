@@ -78,6 +78,7 @@ const SELECT_OPTS = {
     "Ute",
     "Coupe",
     "Van",
+    "Minivan",
     "People Mover",
     "Wagon",
     "Convertible",
@@ -318,7 +319,7 @@ export default function CarForm({ initialData, mode }: Props) {
           Identification
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Make" required>
+          <Field label="Brand" required>
             <input
               className={inputCls}
               value={form.make}

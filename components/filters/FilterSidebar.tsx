@@ -149,6 +149,7 @@ const BODY_TYPES = [
   "Ute",
   "Coupe",
   "Van",
+  "Minivan",
   "People Mover",
   "Wagon",
   "Convertible",
@@ -298,7 +299,7 @@ export default function FilterSidebar({ filters, onChange, total }: Props) {
 
         {/* Make */}
         <CheckboxGroup
-          label="Make"
+          label="Brand"
           options={MAKES}
           selected={filters.make ?? []}
           onChange={(v) => set({ make: v.length ? v : undefined })}

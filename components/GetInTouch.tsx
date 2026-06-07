@@ -129,37 +129,39 @@ export default function GetInTouch() {
   return (
     <section className="w-full bg-[#efeded] py-12 px-6">
       <Container>
-        <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-10">
-          {/* ── Left: heading + hours ─────────────────────────────────────── */}
-          <motion.div
-            variants={leftVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.4 }}
-            className="text-left"
-          >
-            <h2 className="text-2xl md:text-4xl font-extrabold leading-snug text-brand-dark font-montserrat">
-              Let&apos;s get in touch,{" "}
-              <span className="block">We&apos;re here to help</span>
-            </h2>
-            <div className="mt-4 text-sm md:text-base text-brand-dark font-dm-sans space-y-1">
-              <p>Mon – Fri : 8AM – 9PM</p>
-              <p>Sat – Sun : 9AM – 6PM</p>
-            </div>
-          </motion.div>
+        <div className="px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-10">
+            {/* ── Left: heading + hours ─────────────────────────────────────── */}
+            <motion.div
+              variants={leftVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.4 }}
+              className="text-left"
+            >
+              <h2 className="text-2xl md:text-4xl font-extrabold leading-snug text-brand-dark font-montserrat">
+                Let&apos;s get in touch,{" "}
+                <span className="block">We&apos;re here to help</span>
+              </h2>
+              <div className="mt-4 text-sm md:text-base text-brand-dark font-dm-sans space-y-1">
+                <p>Mon – Fri : 8AM – 9PM</p>
+                <p>Sat – Sun : 9AM – 6PM</p>
+              </div>
+            </motion.div>
 
-          {/* ── Right: 2×2 card grid ──────────────────────────────────────── */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3 w-full"
-          >
-            {CARDS.map((card) => (
-              <ContactCard key={card.id} card={card} />
-            ))}
-          </motion.div>
+            {/* ── Right: 2×2 card grid ──────────────────────────────────────── */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3 w-full"
+            >
+              {CARDS.map((card) => (
+                <ContactCard key={card.id} card={card} />
+              ))}
+            </motion.div>
+          </div>
         </div>
       </Container>
     </section>

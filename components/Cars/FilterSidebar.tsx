@@ -31,6 +31,7 @@ const BODY_TYPES = [
   "Ute",
   "Coupe",
   "Van",
+  "Minivan",
   "People Mover",
   "Wagon",
   "Convertible",
@@ -287,11 +288,11 @@ export default function FilterSidebar({ filters, onChange, total }: Props) {
             </button>
           </div>
         )}
-        <Section title="Make and Model">
+        <Section title="Brand and Model">
           <div className="relative flex items-center justify-between">
             <input
               type="text"
-              placeholder="Search Makes, Models..."
+              placeholder="Search Brands, Models..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) =>
@@ -320,7 +321,7 @@ export default function FilterSidebar({ filters, onChange, total }: Props) {
             </button>
           </div>
           <p className="text-sm font-bold text-brand-dark my-4">
-            Popular Makes
+            Popular Brands
           </p>
           <CheckList
             options={MAKES}
