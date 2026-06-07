@@ -163,7 +163,8 @@ export default function AboutClient() {
         <Container>
           <div className="px-6 py-20 lg:py-28 relative">
             <motion.div {...fadeUp}>
-              <Eyebrow>About Us</Eyebrow>
+              <Eyebrow>Experience Life.</Eyebrow>
+
               <h1 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold font-montserrat leading-[1.05] mb-5 max-w-3xl">
                 Japanese Excellence.
                 <br />
@@ -331,7 +332,7 @@ export default function AboutClient() {
                   variants={fadeUp}
                   className="bg-brand-white rounded-2xl p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer flex gap-4"
                 >
-                  <span className="shrink-0 w-10 h-10 rounded-xl bg-brand-primary text-white font-black font-montserrat flex items-center justify-center">
+                  <span className="shrink-0 w-fit h-fit py-2 px-4 rounded-xl bg-brand-primary text-white font-black font-montserrat flex items-center justify-center">
                     {step.n}
                   </span>
                   <div>
@@ -473,7 +474,7 @@ export default function AboutClient() {
                   variants={fadeUp}
                   className="bg-white rounded-2xl p-6 border shadow-sm cursor-pointer border-gray-300 hover:border-gray-400 hover:shadow-md transition-all duration-200"
                 >
-                  <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-brand-primary/10 text-brand-primary font-black font-montserrat text-sm mb-4">
+                  <span className="inline-flex items-center justify-center w-fit h-fit p-2 rounded-lg bg-brand-primary text-brand-white font-black font-montserrat text-sm mb-4">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <h3 className="font-bold text-gray-900 font-montserrat mb-2 leading-snug">
@@ -499,8 +500,11 @@ export default function AboutClient() {
             >
               <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-brand-primary/20 blur-3xl" />
               <div className="relative">
+                <p className="text-brand-primary font-montserrat font-bold text-sm uppercase tracking-[0.25em] mb-4">
+                  Experience Life.
+                </p>
                 <h2 className="text-2xl lg:text-3xl font-extrabold font-montserrat mb-3">
-                  Find your next car the Japex way.
+                  Japex Motors — Gosford's Japanese automotive experts.
                 </h2>
                 <p className="text-gray-300 text-sm lg:text-base max-w-xl mx-auto mb-7">
                   Browse the current range — every vehicle sourced from Japan,
