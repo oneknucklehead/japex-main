@@ -240,7 +240,7 @@ export default function CarDetailClient({ car }: Props) {
                       </div>
                       {car.availability === "Sold out" && (
                         <span className="bg-brand-primary text-white text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shrink-0">
-                          Sold Out
+                          Sold
                         </span>
                       )}
 

@@ -37,7 +37,7 @@ const CarCard = ({ car }: { car: Car }) => {
         <div className="absolute top-3 left-3 flex gap-2">
           {car?.availability === "Sold out" ? (
             <span className="bg-gray-800 text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
-              Sold Out
+              Sold
             </span>
           ) : car?.availability === "Coming soon" ? (
             <span className="bg-amber-500 text-white text-xs font-semibold px-2.5 py-1 rounded-lg">

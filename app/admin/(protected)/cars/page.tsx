@@ -76,7 +76,7 @@ export default async function AdminCarsPage() {
                       )}
                       {car.availability === "Sold out" && (
                         <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-semibold">
-                          Sold out
+                          Sold
                         </span>
                       )}
                     </div>

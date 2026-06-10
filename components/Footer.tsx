@@ -66,7 +66,7 @@ export default function Footer() {
   const facebookIcon = getAssetsStorageUrl("Logo/Facebook.png");
   const linkedinIcon = getAssetsStorageUrl("Logo/LinkedIn.png");
   const xIcon = getAssetsStorageUrl("Logo/X.png");
-  const logo = getAssetsStorageUrl("Logo/logo.png");
+  const logo = getAssetsStorageUrl("Logo/logo.svg");
   // Define footer sections and links
   const sections = [
     {
@@ -116,9 +116,9 @@ export default function Footer() {
                   <Image
                     src={logo}
                     alt="JAPEX Motors"
-                    width={99}
-                    height={60}
-                    className="object-contain w-25 h-auto"
+                    width={199}
+                    height={120}
+                    className="object-contain w-32 h-auto"
                     priority
                   />
                 </Link>

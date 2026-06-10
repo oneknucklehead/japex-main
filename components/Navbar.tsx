@@ -19,7 +19,7 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const bucketName = "assets";
-  const logoPath = "Logo/logo.png";
+  const logoPath = "Logo/logo.svg";
   const logoUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${logoPath}`;
 
   // Prevent scrolling when menu is open
@@ -40,10 +40,10 @@ const Navbar = () => {
   }, [pathname]);
 
   return (
-    <header className="bg-brand-dark flex items-center justify-center py-4 md:py-6 px-4 md:px-8 sticky top-0 z-50">
+    <header className="bg-brand-dark flex items-center justify-center h-fit py-2 md:py-5 px-4 md:px-8 sticky top-0 z-50">
       <div className="flex items-center justify-between w-full max-w-7xl mx-auto">
         {/* Logo */}
-        <Link href={"/"} className="relative w-20 h-8 md:w-25 md:h-10 z-50">
+        <Link href={"/"} className="relative w-12 h-12 md:w-15 md:h-15 z-50">
           <Image
             src={logoUrl}
             alt="JAPEX Motors"
