@@ -6,6 +6,7 @@ import Link from "next/link";
 import { formatOdometer, formatPrice } from "@/utils/helpers";
 import type { Car } from "@/types/car";
 import CarImageGallery from "@/components/Cars/CarImageGallery";
+import PopularFeaturesCarousel from "@/components/Cars/PopularFeaturesCarousel";
 import EnquiryModal from "@/components/Cars/EnquiryModal";
 import Container from "@/components/Container";
 import {
@@ -18,6 +19,7 @@ import {
 
 interface Props {
   car: Car & { car_images: any[] };
+  popularFeatures?: { id: string; name: string; image_url: string }[];
 }
 
 // Trust badge data
@@ -36,7 +38,7 @@ const SpecPill = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
-export default function CarDetailClient({ car }: Props) {
+export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -82,6 +84,8 @@ export default function CarDetailClient({ car }: Props) {
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
                 <CarImageGallery images={car.car_images} carName={carName} />
+                {/* Popular features */}
+                <PopularFeaturesCarousel features={popularFeatures} />
 
                 {/* Specs grid — below gallery on desktop */}
                 <motion.div

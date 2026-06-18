@@ -27,9 +27,23 @@ export default async function CarDetailPage({
     (a: any, b: any) => a.position - b.position,
   );
 
+  // Resolve popular feature IDs → catalog rows (name + image)
+  const ids: string[] = car.popular_feature_ids ?? [];
+  let popularFeatures: { id: string; name: string; image_url: string }[] = [];
+  if (ids.length) {
+    const { data: pf } = await supabase
+      .from("popular_features")
+      .select("id, name, image_url")
+      .in("id", ids);
+    // .in() returns arbitrary order — restore the admin-defined sequence
+    popularFeatures = (pf ?? []).sort(
+      (a, b) => ids.indexOf(a.id) - ids.indexOf(b.id),
+    );
+  }
+
   return (
     <div>
-      <CarDetailClient car={car} />
+      <CarDetailClient car={car} popularFeatures={popularFeatures} />
       <GetInTouch />
     </div>
   );

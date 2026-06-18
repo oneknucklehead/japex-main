@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { createClient } from "@/utils/supabase/client";
 import ImageUploader from "./ImageUploader";
+import PopularFeaturesSelector from "./PopularFeaturesSelector";
 interface CustomSpec {
   id: string;
   heading: string;
@@ -31,6 +32,7 @@ interface CarFormData {
   was_price: number | null;
   description: string;
   features: string;
+  popular_feature_ids: string[];
   condition: string;
   is_featured: boolean;
   is_published: boolean;
@@ -64,6 +66,7 @@ const DEFAULTS: CarFormData = {
   was_price: null,
   description: "",
   features: "",
+  popular_feature_ids: [],
   condition: "Good",
   is_featured: false,
   is_published: true,
@@ -188,14 +191,28 @@ export default function CarForm({ initialData, mode }: Props) {
   // HEAD-checks each image against raw storage. Returns false only on a
   // definitive 4xx ("not there"); treats network/5xx as ambiguous so a
   // transient blip can't drop a good upload.
+
+  // const imageExists = async (url: string): Promise<boolean> => {
+  //   try {
+  //     const res = await fetch(url, { method: "HEAD" });
+  //     return res.ok || res.status >= 500;
+  //   } catch {
+  //     return true;
+  //   }
+  // };
   const imageExists = async (url: string): Promise<boolean> => {
     try {
-      const res = await fetch(url, { method: "HEAD" });
-      return res.ok || res.status >= 500;
+      const res = await fetch(url, {
+        method: "GET",
+        headers: { Range: "bytes=0-0" },
+        cache: "no-store",
+      });
+      return res.ok || res.status === 206 || res.status >= 500;
     } catch {
       return true;
     }
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -580,7 +597,16 @@ export default function CarForm({ initialData, mode }: Props) {
           </Field>
         </div>
       </div>
-
+      {/* Popular Features */}
+      <div className="bg-white rounded-2xl p-5 border border-gray-200">
+        <h3 className="font-bold text-gray-900 font-montserrat mb-4">
+          Popular Features
+        </h3>
+        <PopularFeaturesSelector
+          value={form.popular_feature_ids ?? []}
+          onChange={(ids) => set("popular_feature_ids", ids)}
+        />
+      </div>
       {/* Status */}
       <div className="bg-white rounded-2xl p-5 border border-gray-200">
         <h3 className="font-bold text-gray-900 font-montserrat mb-4">Status</h3>
