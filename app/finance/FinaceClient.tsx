@@ -38,7 +38,7 @@ const FINANCE_STEPS = [
   {
     n: "4",
     title: "Approved and on the road",
-    body: "We handle the paperwork. Most approvals same day. Drive away fast.",
+    body: "We handle the paperwork. Most approvals same day. Drive away fast",
   },
 ];
 
@@ -56,7 +56,7 @@ const FINANCE_OPTIONS = [
   {
     tag: "Salaried Employees",
     title: "Novated Lease",
-    body: "Pre-tax salary repayments. Reduce your taxable income. We will walk you through it.",
+    body: "Pre-tax salary repayments. Reduce your taxable income. We'll walk you through it.",
   },
   {
     tag: "Flexible Cashflow",
@@ -91,6 +91,16 @@ const WHY_DIFFERENT = [
     body: "Fair market appraisal on the spot, applied to your deal.",
   },
 ];
+const INSPECTION_CHECKS = [
+  "Full mechanical inspection",
+  "Accident and repair record review",
+  "Undercarriage and chassis check",
+  "Interior and electrical check",
+  "Engine bay assessment",
+  "Cross-referenced against auction grade",
+  "Verified service history",
+  "Final sign-off before shipping",
+];
 
 const FAQS = [
   {
@@ -115,7 +125,7 @@ const FAQS = [
   },
   {
     q: "What does the warranty cover?",
-    a: "Major mechanical, engine, and drivetrain as standard. Upgrade available for broader coverage.",
+    a: "Major mechanical, engine, and drivetrain as standard, through our trusted warranty partner. Upgrade available for broader coverage.",
   },
   {
     q: "Can I trade in my car?",
@@ -132,9 +142,20 @@ const WARRANTY_TIERS = [
   {
     tag: "Optional Upgrade",
     title: "Extended Coverage Plan",
-    body: "Broader component coverage, electrical systems, and enhanced roadside assistance. Talk to our team about what is right for your vehicle.",
+    body: "Broader component coverage, electrical systems, and enhanced roadside assistance. Talk to our team about what's right for your vehicle.",
   },
 ];
+const CheckIcon = () => (
+  <svg
+    className="w-4 h-4 text-brand-primary shrink-0"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={3}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+  </svg>
+);
 
 // ── Small reusable bits ──────────────────────────────────────────────────────
 const Eyebrow = ({ children }: { children: React.ReactNode }) => (
@@ -168,29 +189,117 @@ export default function FinanceClient() {
           </div>
         </Container>
       </section>
+      {/* INSEPCTION CHECKLIST */}
+      {/* <section className="">
+        <Container>
+          <div className="px-6">
+            <motion.div
+              className="mt-10 bg-brand-white rounded-2xl p-6 lg:p-8 border  border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+              {...fadeUp}
+            >
+              <Eyebrow>OUR TEAM ON THE GROUND IN JAPAN</Eyebrow>
+              <p className="text-normal font-bold text-gray-900 font-montserrat mb-2">
+                Every car personally inspected before it leaves Japan
+              </p>
+              <p className="text-sm text-gray-700 font-montserrat mb-5">
+                We don't rely on auction listings, online photos, or third-party
+                reports. Our dedicated team of inspectors travels throughout
+                Japan to physically assess every vehicle we consider — before a
+                single bid is placed. They check what photos never show: the
+                undercarriage, the engine bay, the full history behind the
+                grade.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+                {INSPECTION_CHECKS.map((c) => (
+                  <div
+                    key={c}
+                    className="flex items-center gap-3 text-sm text-gray-700"
+                  >
+                    <CheckIcon />
+                    {c}
+                  </div>
+                ))}
+              </div>
+              <p className="text-sm text-gray-500 italic mt-6 pt-5 border-t border-gray-200">
+                If it doesn't meet our standard on the ground in Japan, it
+                doesn't come to Australia. Simple as that.
+              </p>
+            </motion.div>
+          </div>
+        </Container>
+      </section> */}
+
+      {/* ── Our Team On The Ground In Japan ───────────────────────────────── */}
+      <section className="py-16 lg:py-24 bg-white">
+        <Container>
+          <div className="px-6">
+            <motion.div className="" {...fadeUp}>
+              <Eyebrow>Our Team On The Ground In Japan</Eyebrow>
+              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight mb-3">
+                Every car personally inspected before it leaves Japan.
+              </h2>
+              <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
+                We don&apos;t rely on auction listings, online photos, or
+                third-party reports. Our dedicated team of inspectors travels
+                throughout Japan to physically assess every vehicle we consider
+                — before a single bid is placed. They check what photos never
+                show: the undercarriage, the engine bay, the full history behind
+                the grade.
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="mt-10 bg-[#efeded] rounded-2xl p-6 lg:p-8 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+              {...fadeUp}
+            >
+              {/* <p className="text-sm font-bold text-gray-900 font-montserrat mb-5">
+                Every car personally inspected before it leaves Japan
+              </p> */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+                {INSPECTION_CHECKS.map((c) => (
+                  <div
+                    key={c}
+                    className="flex items-center gap-3 text-sm text-gray-700"
+                  >
+                    <CheckIcon />
+                    {c}
+                  </div>
+                ))}
+              </div>
+              <p className="text-sm text-gray-500 italic mt-6 pt-5 border-t border-gray-200">
+                If it doesn&apos;t meet our standard on the ground in Japan, it
+                doesn&apos;t come to Australia. Simple as that.
+              </p>
+            </motion.div>
+          </div>
+        </Container>
+      </section>
 
       {/* ── Warranty Protection ───────────────────────────────────────────── */}
       <section className="py-16 lg:py-24">
         <Container>
           <div className="px-6">
-            <motion.div className="max-w-3xl mb-10" {...fadeUp}>
-              <Eyebrow>Japex Warranty Protection</Eyebrow>
+            <motion.div className="" {...fadeUp}>
+              <Eyebrow>Warranty Protection</Eyebrow>
               <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight mb-3">
-                5-Year Warranty — standard on every Japex vehicle.
+                5-Year Warranty — Standard on Every Vehicle
               </h2>
               <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                Full peace of mind, applicable Australia-wide. Drive anywhere,
-                covered everywhere. Every vehicle that leaves the Japex lot
-                comes with our 5-year warranty plan as standard — because our
-                confidence in what we sell should translate directly into
-                confidence for you. Whether driving daily in Gosford or heading
-                up to Port Macquarie for the weekend, you are covered.
+                <b>
+                  Full peace of mind, provided through our trusted warranty
+                  partner, applicable Australia wide.
+                </b>{" "}
+                Every vehicle that leaves the Japex lot comes with a 5-year
+                warranty plan as standard — provided through our trusted
+                warranty partner, so you get proper cover backed by a dedicated
+                provider. Whether you're driving daily in Gosford or heading up
+                to Port Macquarie for the weekend, you're covered.
               </p>
             </motion.div>
 
             {/* Warranty tiers */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-5"
+              className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-4"
               variants={stagger}
               initial="initial"
               whileInView="whileInView"

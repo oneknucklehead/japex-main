@@ -86,11 +86,11 @@ const STOCK = [
 const VALUES = [
   {
     title: "Straight talk",
-    body: "The price is the price. The condition is exactly what we say. We would rather earn your trust than your signature.",
+    body: "The price is the price. The condition is exactly what we say. We'd rather earn your trust than your signature.",
   },
   {
     title: "Excellence at every price point",
-    body: "12k or 120k — the sourcing rigour and Japex finish do not change. Every car earns its spot on our lot.",
+    body: "$12k or $120k — the sourcing rigour and Japex finish don't change. Every car earns its spot on our lot.",
   },
   {
     title: "One roof. No referrals.",
@@ -105,11 +105,11 @@ const VALUES = [
 const WHY = [
   {
     title: "Direct from Japan — not second-hand wholesale",
-    body: "Our founders' network means a cleaner history, a more honest grade, and provenance we can stand behind.",
+    body: "Our founder's network means a cleaner history, a more honest grade, and provenance we can stand behind.",
   },
   {
     title: "Our own inspectors on the ground",
-    body: "Our team physically travels Japan to inspect every vehicle before a bid is placed. If it does not pass on the ground, it does not come to Australia.",
+    body: "Our team physically travels Japan to inspect every vehicle before a bid is placed. If it doesn't pass on the ground, it doesn't come to Australia.",
   },
   {
     title: "Expert in-house compliance",
@@ -121,7 +121,7 @@ const WHY = [
   },
   {
     title: "5-year warranty as standard",
-    body: "Every Japex vehicle comes with a 5-year warranty plan, upgradeable for broader coverage. Valid Australia-wide.",
+    body: "Every vehicle comes with a 5-year warranty plan through our trusted provider, upgradeable for broader coverage. Valid Australia wide.",
   },
   {
     title: "Finance built around real people",
@@ -173,7 +173,7 @@ export default function AboutClient() {
                 </span>
               </h1>
               <p className="text-base lg:text-lg text-brand-white-alternate max-w-2xl leading-relaxed">
-                Japex Motors brings the best of Japanese automotive culture to
+                Japex Motors brings the best of Japan's automotive culture to
                 the Central Coast — precision-sourced vehicles, custom-finished
                 to our own standard, expertly complied, and backed by a team
                 that lives and breathes Japanese cars.
@@ -204,10 +204,10 @@ export default function AboutClient() {
                 filters through the wholesale market.
               </p>
               <p>
-                Our founders spent their careers inside the Japanese automotive
+                Our founder spent his career inside the Japanese automotive
                 industry, building direct relationships with auction houses,
                 specialist dealers, and suppliers across Japan. Those years gave
-                Japex something most dealerships do not have: on-the-ground
+                Japex something most dealerships don't have: on-the-ground
                 expertise, trusted partnerships, and the knowledge to manage the
                 full import and compliance process without handing it off to
                 anyone else.
@@ -226,24 +226,24 @@ export default function AboutClient() {
                 source our own accessories — bullbars, roof racks, side steps,
                 lighting rigs, interior fittings — and apply them in-house to
                 create vehicles with a look and feel that is entirely our own.
-                Every build is deliberate. Every detail considered. Whether it
-                is a kitted-out 4WD ready for the trails or a refined daily
-                driver with subtle Japanese character, you will not find it
-                anywhere else. That is the Japex style.
+                Every build is deliberate. Every detail considered. Whether it's
+                a kitted-out 4WD ready for the trails or a refined daily driver
+                with subtle Japanese character, you won't find it anywhere else.
+                That's the Japex style.
               </p>
 
               <blockquote className="border-l-4 border-brand-primary pl-5 py-1 my-6">
                 <p className="text-lg lg:text-xl font-semibold text-gray-900 font-montserrat italic">
-                  &ldquo;We do not just sell Japanese cars. We finish them — so
+                  &ldquo;We don't just sell Japanese cars. We finish them — so
                   when you pull up, people notice.&rdquo;
                 </p>
               </blockquote>
 
               <p>
-                We have since grown into a full-service dealership — finance,
-                servicing, genuine parts — because the experience should not
-                stop at the sale. Over 10,000 vehicles sold. Over 5,000
-                customers who keep coming back. That is the Japex standard.
+                We've since grown into a full-service dealership — finance,
+                servicing, genuine parts — because the experience shouldn't stop
+                at the sale. Over 10,000 vehicles sold. Over 5,000 customers who
+                keep coming back. That's the Japex standard.
               </p>
             </motion.div>
           </div>
@@ -278,18 +278,14 @@ export default function AboutClient() {
       {/* ── How We Source ─────────────────────────────────────────────────── */}
       <section className="py-16 lg:py-24 bg-white">
         <Container>
-          <motion.div className="px-6 max-w-3xl" {...fadeUp}>
+          <motion.div className="px-6" {...fadeUp}>
             <Eyebrow>How We Source Our Vehicles</Eyebrow>
             <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight mb-3">
               We go further back in the chain — all the way to Japan.
             </h2>
             <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-              Most dealerships buy from Australian wholesale auctions. We don't
-              rely on auction listings, online photos, or third-party reports.
-              Our dedicated team of inspectors travels throughout Japan to
-              physically assess every vehicle we consider — before a single bid
-              is placed. They check what photos never show: the undercarriage,
-              the engine bay, the full history behind the grade.
+              Most dealerships buy from Australian wholesale auctions. We go
+              further back in the chain — all the way to Japan.
             </p>
           </motion.div>
           <div className="px-6">
@@ -298,8 +294,17 @@ export default function AboutClient() {
               className="mt-10 bg-[#efeded] rounded-2xl p-6 lg:p-8 border  border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
               {...fadeUp}
             >
-              <p className="text-sm font-bold text-gray-900 font-montserrat mb-5">
+              <Eyebrow>OUR TEAM ON THE GROUND IN JAPAN</Eyebrow>
+              <p className="text-normal font-bold text-gray-900 font-montserrat mb-2">
                 Every car personally inspected before it leaves Japan
+              </p>
+              <p className="text-sm text-gray-700 font-montserrat mb-5">
+                We don't rely on auction listings, online photos, or third-party
+                reports. Our dedicated team of inspectors travels throughout
+                Japan to physically assess every vehicle we consider — before a
+                single bid is placed. They check what photos never show: the
+                undercarriage, the engine bay, the full history behind the
+                grade.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
                 {INSPECTION_CHECKS.map((c) => (
@@ -355,7 +360,7 @@ export default function AboutClient() {
               <div className="pointer-events-none absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-brand-primary/20 blur-3xl" />
               <div className="relative">
                 <Eyebrow>Why Japan?</Eyebrow>
-                <p className="text-base lg:text-lg text-gray-200 leading-relaxed max-w-3xl">
+                <p className="text-base lg:text-lg text-gray-200 leading-relaxed ">
                   Japan's domestic car market is uniquely well-suited to
                   Australia. Vehicles are maintained to an exceptional standard,
                   mileage is low relative to age, service records are detailed
@@ -374,7 +379,7 @@ export default function AboutClient() {
       <section className="py-16 lg:py-24">
         <Container>
           <div className="px-6">
-            <motion.div className="max-w-3xl mb-10" {...fadeUp}>
+            <motion.div className="mb-10" {...fadeUp}>
               <Eyebrow>What We Stock</Eyebrow>
               <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
                 From everyday commuters to weekend warriors.
@@ -417,7 +422,7 @@ export default function AboutClient() {
       <section className="py-16 lg:py-24 bg-white">
         <Container>
           <div className="px-6">
-            <motion.div className="max-w-3xl mb-10" {...fadeUp}>
+            <motion.div className="mb-10" {...fadeUp}>
               <Eyebrow>What We Stand For</Eyebrow>
               <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
                 The Japex standard isn&apos;t a slogan.
@@ -454,7 +459,7 @@ export default function AboutClient() {
       <section className="py-16 lg:py-24">
         <Container>
           <div className="px-6">
-            <motion.div className="max-w-3xl mb-10" {...fadeUp}>
+            <motion.div className="mb-10" {...fadeUp}>
               <Eyebrow>Why Japex Motors</Eyebrow>
               <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
                 Seven reasons buyers keep coming back.
