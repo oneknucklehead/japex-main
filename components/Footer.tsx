@@ -66,39 +66,35 @@ export default function Footer() {
   const facebookIcon = getAssetsStorageUrl("Logo/Facebook.png");
   const linkedinIcon = getAssetsStorageUrl("Logo/LinkedIn.png");
   const xIcon = getAssetsStorageUrl("Logo/X.png");
-  const logo = getAssetsStorageUrl("Logo/logo.svg");
+  const logo = getAssetsStorageUrl("Logo/footer.png");
   // Define footer sections and links
   const sections = [
     {
       title: "Quick Links",
       links: [
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
+        { label: "Find a car", href: "/cars" },
+        { label: "About", href: "/about" },
+        { label: "Contact", href: "/contact" },
+        { label: "Finance", href: "/finance" },
+        { label: "Service & Parts", href: "/service-and-parts" },
       ],
     },
-    {
-      title: "Explore",
-      links: [
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
-      ],
-    },
+    // {
+    //   title: "Explore",
+    //   links: [
+    //     { label: "Lorem Ipsum", href: "#" },
+    //     { label: "Lorem Ipsum", href: "#" },
+    //     { label: "Lorem Ipsum", href: "#" },
+    //     { label: "Lorem Ipsum", href: "#" },
+    //     { label: "Lorem Ipsum", href: "#" },
+    //   ],
+    // },
     {
       title: "Car Types",
       links: [
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
-        { label: "Lorem Ipsum", href: "#" },
+        { label: "Wagons", href: "/cars?body=Wagon" },
+        { label: "Sedans", href: "/cars?body=Sedan" },
+        { label: "Camper Vans", href: "/cars?body=Van" },
       ],
     },
   ];
@@ -116,9 +112,9 @@ export default function Footer() {
                   <Image
                     src={logo}
                     alt="JAPEX Motors"
-                    width={199}
-                    height={120}
-                    className="object-contain w-32 h-auto"
+                    width={1920}
+                    height={1080}
+                    className="object-cover h-fit w-fit"
                     priority
                   />
                 </Link>
@@ -159,7 +155,7 @@ export default function Footer() {
 
             {/* Bottom copyright/links */}
             <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-6 border-t border-gray-100 pt-8 mt-12 text-gray-600 text-sm">
-              <p>&copy; {currentYear} JAPX Motors | All Right Reserved</p>
+              <p>&copy; {currentYear} JAPEX Motors | All Right Reserved</p>
               <div className="flex items-center gap-6">
                 <Link
                   href="/terms"

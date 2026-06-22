@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Japx Motors",
+  title: "Japex Motors",
   description: "Buy and sell cars with confidence and ease.",
 };
 

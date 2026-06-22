@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useCarFilters } from "@/hooks/useCarFilters";
@@ -11,6 +11,7 @@ import Pagination from "@/components/Cars/Pagination";
 import Container from "@/components/Container";
 import GetInTouch from "@/components/GetInTouch";
 import Testimonials from "@/sections/home/TestimonialsClient";
+import { useSearchParams } from "next/navigation";
 
 const SORT_OPTIONS: { label: string; value: SortOption }[] = [
   { label: "New Arrivals", value: "newest" },
@@ -39,11 +40,20 @@ const SkeletonCard = () => (
   </div>
 );
 
-export default function CarsPage() {
+function CarsPageInner() {
+  const searchParams = useSearchParams();
+  const body = searchParams.get("body");
+
   const [filters, setFilters] = useState<CarFilters>({
     sortBy: "newest",
     availability: ["In stock", "Coming soon"],
+    ...(body ? { bodyTypes: [body] } : {}),
   });
+
+  // const [filters, setFilters] = useState<CarFilters>({
+  //   sortBy: "newest",
+  //   availability: ["In stock", "Coming soon"],
+  // });
   const [page, setPage] = useState(1);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
@@ -54,8 +64,13 @@ export default function CarsPage() {
     setFilters(f);
     setPage(1);
   };
-
-  // Scroll to top on page change
+  // Re-apply the body filter whenever the URL param changes
+  const [prevBody, setPrevBody] = useState(body);
+  if (body !== prevBody) {
+    setPrevBody(body);
+    setFilters((f) => ({ ...f, bodyTypes: body ? [body] : undefined }));
+    setPage(1);
+  }
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page]);
@@ -269,5 +284,12 @@ export default function CarsPage() {
         <GetInTouch />
       </Container>
     </div>
+  );
+}
+export default function CarsPage() {
+  return (
+    <Suspense fallback={null}>
+      <CarsPageInner />
+    </Suspense>
   );
 }

@@ -3,6 +3,7 @@
 import Container from "@/components/Container";
 import GetInTouch from "@/components/GetInTouch";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 
 // ── Shared motion presets ──────────────────────────────────────────────────
@@ -171,6 +172,10 @@ const FeaturePill = ({
 );
 
 export default function ServiceClient() {
+  const bucketName = "assets";
+  const logoPath = "Logo/logo.svg";
+  const logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${logoPath}`;
+
   return (
     <div className="min-h-screen bg-[#efeded] font-dm-sans">
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
@@ -471,27 +476,37 @@ export default function ServiceClient() {
               className="bg-brand-dark text-white rounded-2xl p-8 lg:p-12 text-center relative overflow-hidden"
               {...fadeUp}
             >
-              <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-brand-primary/20 blur-3xl" />
-              <div className="relative max-w-3xl mx-auto">
-                <span className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-primary text-white font-black font-montserrat text-xl mb-6">
-                  JP
-                </span>
-                <p className="text-brand-primary font-montserrat font-bold text-sm uppercase tracking-[0.25em] mb-4">
-                  The Japex Badge
-                </p>
-                <h2 className="text-2xl lg:text-3xl font-extrabold font-montserrat mb-4">
-                  More than a badge — a mark of the family.
-                </h2>
-                <p className="text-gray-300 text-sm lg:text-base leading-relaxed">
-                  Every vehicle that leaves our workshop carries the Japex
-                  badge. It&apos;s not just branding — it&apos;s our signature
-                  on the work, and proof that the vehicle has been through our
-                  process: sourced with care, inspected on the ground in Japan,
-                  finished by hand in Gosford. When you see that badge,
-                  you&apos;re looking at a vehicle that meets the Japex
-                  standard. And when it&apos;s on your car, you&apos;re part of
-                  the Japex family — for as long as you own it.
-                </p>
+              <div className="pointer-events-none absolute -top-10  left-1/9 w-96 h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+              {/* <div className="pointer-events-none absolute -right-12 -bottom-64 w-96 h-96 rounded-full bg-brand-primary/20 blur-3xl" /> */}
+              <div className="relative mx-auto grid grid-cols-1 gap-12 md:grid-cols-2">
+                <div className="flex items-center justify-center">
+                  <Image
+                    src={logo}
+                    alt="JAPEX Motors"
+                    width={1920}
+                    height={1080}
+                    className="object-cover max-w-52 h-fit w-fit"
+                    priority
+                  />
+                </div>
+                <div className="text-center md:text-left">
+                  <p className="text-brand-primary font-montserrat font-bold text-sm uppercase tracking-[0.25em] mb-4">
+                    The Japex Badge
+                  </p>
+                  <h2 className="text-2xl lg:text-3xl font-extrabold font-montserrat mb-4">
+                    More than a badge — a mark of the family.
+                  </h2>
+                  <p className="text-gray-300 text-sm lg:text-base leading-relaxed">
+                    Every vehicle that leaves our workshop carries the Japex
+                    badge. It&apos;s not just branding — it&apos;s our signature
+                    on the work, and proof that the vehicle has been through our
+                    process: sourced with care, inspected on the ground in
+                    Japan, finished by hand in Gosford. When you see that badge,
+                    you&apos;re looking at a vehicle that meets the Japex
+                    standard. And when it&apos;s on your car, you&apos;re part
+                    of the Japex family — for as long as you own it.
+                  </p>
+                </div>
               </div>
             </motion.div>
           </div>
