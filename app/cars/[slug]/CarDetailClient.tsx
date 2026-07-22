@@ -34,14 +34,6 @@ interface Props {
   popularFeatures?: { id: string; name: string; image_url: string }[];
 }
 
-// Trust badge data
-const TRUST_BADGES = [
-  { icon: <ExpertIcon />, label: "Examined by experts" },
-  { icon: <WarrantyIcon />, label: "3 months warranty" },
-  { icon: <GuaranteeIcon />, label: "7 day money back guarantee" },
-  { icon: <DeliveryIcon />, label: "Free delivery to your door*" },
-];
-
 // Stagger container for grids/lists
 const staggerContainer = {
   hidden: { opacity: 0 },

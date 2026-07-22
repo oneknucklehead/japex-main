@@ -5,7 +5,6 @@ import { useRef } from "react";
 export default function GlowingTransparentDivTestimonial({
   children,
   border = "full",
-  onViewMore,
 }) {
   const cardRef = useRef(null);
   const mouseX = useMotionValue(50); // percent
