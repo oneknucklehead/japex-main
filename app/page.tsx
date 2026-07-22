@@ -1,23 +1,11 @@
-import CTAFooterBanner from "@/components/CTAFooterBanner";
 import BannerGrid from "@/sections/home/BannerGrid";
 import CollectionBudgetwise from "@/sections/home/CollectionBudgetwise";
 import ExploreLatestArrivals from "@/sections/home/ExploreLatestArrivals";
 import Faqs from "@/sections/home/Faqs";
-import MainBanner from "@/sections/home/MainBanner";
-import StatsGrid from "@/sections/home/StatsGrid";
-import Testimonials from "@/sections/home/Testimonials";
 import WhyWeStandOut from "@/sections/home/WhyWeStandOut";
-import GetInTouch from "@/components/GetInTouch";
-import { motion } from "framer-motion";
-
-import CarCardNew from "@/components/tryouts/CarCardNew";
-import CarCardFirst from "@/components/tryouts/CarCardFirst";
 import HeroBanner from "@/components/Herobanner";
-import ExploreCollection from "@/sections/home/ExploreCollection";
-import Image from "next/image";
 import callmecard from "../assets/callmecard.png";
 import CallExpertCard from "@/components/Callexpertcard";
-import ContactCTA from "@/sections/common/ContactCTA";
 import LightShard from "@/components/LightShard";
 
 export default function Home() {

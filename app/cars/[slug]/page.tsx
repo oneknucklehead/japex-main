@@ -1,7 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import CarDetailClient from "./CarDetailClient";
-import GetInTouch from "@/components/GetInTouch";
 import LightShard from "@/components/LightShard";
 import FinanceCalculator from "@/components/tryouts/Financecalculator";
 
