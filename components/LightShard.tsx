@@ -1,0 +1,34 @@
+// components/LightShard.tsx
+"use client";
+import Image, { StaticImageData } from "next/image";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import lightshardleft from "../assets/lightshardleft.png";
+
+export default function LightShard({
+  src,
+  className,
+}: {
+  src?: StaticImageData;
+  className: string;
+}) {
+  const sectionRef = useRef(null);
+  const inView = useInView(sectionRef, { once: true, margin: "-100px" });
+  return (
+    <motion.div
+      ref={sectionRef}
+      initial={{ opacity: 0 }}
+      animate={inView ? { opacity: 1 } : {}}
+      transition={{ duration: 1, delay: 0.3 }}
+      //   viewport={{ once: true }}
+      className={className}
+    >
+      <Image
+        src={src ? src : lightshardleft}
+        alt="glowing background"
+        priority
+        className="w-full h-full object-cover object-center"
+      />
+    </motion.div>
+  );
+}

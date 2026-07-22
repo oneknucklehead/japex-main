@@ -62,7 +62,7 @@ export default function CarImageGallery({ images, carName }: Props) {
   return (
     <div className="flex flex-col gap-3 w-full">
       {/* ── Main carousel ── */}
-      <div className="relative rounded-2xl overflow-hidden bg-gray-100">
+      <div className="relative rounded-2xl overflow-hidden bg-[#0d0d0d]">
         <div className="overflow-hidden" ref={mainRef}>
           <div className="flex">
             {allImages.map((img, i) => (
@@ -91,52 +91,59 @@ export default function CarImageGallery({ images, carName }: Props) {
 
         {/* Prev / Next arrows */}
         {allImages.length > 1 && (
-          <>
-            <motion.button
-              // whileTap={{ scale: 0.93 }}
-              onClick={scrollPrev}
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-xl border border-gray-300 cursor-pointer flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 z-10 hover:border-gray-400"
-            >
-              <svg
-                className="w-4 h-4 text-gray-700"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
+          <div className="absolute right-4 bottom-4 flex gap-4">
+            <div className="bg-linear-to-r from-white to-[#666666] rounded-full p-px">
+              <motion.button
+                // whileTap={{ scale: 0.93 }}
+                onClick={scrollPrev}
+                className="w-10 h-10 bg-linear-to-b from-black to-[#313131] rounded-full cursor-pointer flex items-center justify-center shadow-sm hover:shadow-md transition-colors duration-300 z-10 hover:bg-linear-to-b
+                hover:from-black hover:to-brand-primary
+                "
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </motion.button>
-            <motion.button
-              // whileTap={{ scale: 0.93 }}
-              onClick={scrollNext}
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-xl border border-gray-300 cursor-pointer flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 z-10 hover:border-gray-400"
-            >
-              <svg
-                className="w-4 h-4 text-gray-700"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
+                <svg
+                  className="w-4 h-4 text-brand-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </motion.button>
+            </div>
+            <div className="bg-linear-to-r from-white to-[#666666] rounded-full p-px">
+              <motion.button
+                // whileTap={{ scale: 0.93 }}
+                onClick={scrollNext}
+                className="w-10 h-10 bg-linear-to-b from-black to-[#313131] rounded-full cursor-pointer flex items-center justify-center shadow-sm hover:shadow-md transition-colors duration-300 z-10 hover:bg-linear-to-b
+                hover:from-black hover:to-brand-primary"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </motion.button>
-          </>
+                <svg
+                  className="w-4 h-4 text-brand-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </motion.button>
+            </div>
+          </div>
         )}
 
         {/* Image counter pill */}
-        <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">
+        {/* <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">
           {selectedIndex + 1} / {allImages.length}
-        </div>
+        </div> */}
       </div>
 
       {/* ── Thumbnail strip ── */}

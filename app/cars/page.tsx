@@ -12,6 +12,8 @@ import Container from "@/components/Container";
 import GetInTouch from "@/components/GetInTouch";
 import Testimonials from "@/sections/home/TestimonialsClient";
 import { useSearchParams } from "next/navigation";
+import CarCardFirst from "@/components/tryouts/CarCardFirst";
+import LightShard from "@/components/LightShard";
 
 const SORT_OPTIONS: { label: string; value: SortOption }[] = [
   { label: "New Arrivals", value: "newest" },
@@ -24,18 +26,17 @@ const SORT_OPTIONS: { label: string; value: SortOption }[] = [
   { label: "Highest KM", value: "km_desc" },
 ];
 
-// Skeleton card
 const SkeletonCard = () => (
-  <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 animate-pulse">
-    <div className="aspect-video bg-gray-200" />
-    <div className="p-4 space-y-3">
-      <div className="h-3 bg-gray-200 rounded w-1/3" />
-      <div className="h-5 bg-gray-200 rounded w-2/3" />
-      <div className="h-3 bg-gray-200 rounded w-1/2" />
-      <div className="flex justify-between items-center pt-2">
-        <div className="h-6 bg-gray-200 rounded w-1/4" />
-        <div className="h-9 bg-gray-200 rounded-xl w-1/3" />
-      </div>
+  <div className="bg-[#0d0d0d] rounded-2xl overflow-hidden border border-white/10 animate-pulse">
+    <div className="aspect-video bg-white/5" />
+    <div className="p-4 flex flex-col justify-center items-center space-y-3">
+      <div className="h-3 bg-white/10 rounded w-1/3" />
+      <div className="h-5 bg-white/10 rounded w-2/3" />
+      <div className="h-3 bg-white/10 rounded w-1/2" />
+      {/* <div className="flex justify-between items-center pt-2"> */}
+      <div className="h-6 bg-brand-primary/20 rounded-full w-full " />
+      {/* <div className="h-9 bg-white/10 rounded-xl w-1/3" /> */}
+      {/* </div> */}
     </div>
   </div>
 );
@@ -76,69 +77,18 @@ function CarsPageInner() {
   }, [page]);
 
   return (
-    <div className="min-h-screen bg-[#efeded]">
-      <div className="px-6">
+    <div className="relative overflow-hidden">
+      <div className="">
+        <LightShard
+          // src={lightshardleft}
+          className="absolute left-0 w-72 h-72 -ml-10 -z-10"
+        />
+        <LightShard
+          // src={lightshardleft}
+          className="-rotate-90 absolute right-0 w-72 h-72 -mr-10 -z-10"
+        />
         <Container>
-          <div className="py-8">
-            {/* ── Page header ─────────────────────────────────────────── */}
-            <div className="flex flex-wrap items-end justify-between mb-8">
-              <div className="mb-4 lg:mb-0">
-                <h1 className="text-3xl font-extrabold text-gray-900 font-montserrat">
-                  Our Cars
-                </h1>
-                {!loading && (
-                  <p className="text-sm text-gray-400 mt-1">{total} results</p>
-                )}
-              </div>
-
-              {/* Sort dropdown + mobile filter trigger */}
-              <div className="flex flex-wrap items-center justify-between sm:justify-end w-full gap-3">
-                {/* Sort dropdown */}
-                <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm">
-                  <span className="text-xs text-gray-400 font-medium hidden sm:block">
-                    Sort By
-                  </span>
-                  <select
-                    value={filters.sortBy ?? "newest"}
-                    onChange={(e) =>
-                      handleFiltersChange({
-                        ...filters,
-                        sortBy: e.target.value as SortOption,
-                      })
-                    }
-                    className="text-sm font-semibold text-gray-700 bg-transparent focus:outline-none cursor-pointer"
-                  >
-                    {SORT_OPTIONS.map((o) => (
-                      <option key={o.value} value={o.value}>
-                        {o.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Mobile filter button */}
-                <button
-                  onClick={() => setMobileSidebarOpen(true)}
-                  className="xl:hidden flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm text-sm font-semibold text-gray-700"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3 4h18M7 12h10M11 20h2"
-                    />
-                  </svg>
-                  Filters
-                </button>
-              </div>
-            </div>
-
+          <div className="mt-24 py-8">
             {/* ── Main layout ──────────────────────────────────────────── */}
             <div className="flex gap-6 items-start">
               {/* Desktop sidebar */}
@@ -212,6 +162,66 @@ function CarsPageInner() {
 
               {/* ── Cars grid ─────────────────────────────────────────── */}
               <div className="flex-1 min-w-0">
+                {/* ── Page header ─────────────────────────────────────────── */}
+                <div className="text-white w-full flex items-center justify-between mb-8">
+                  <div className="">
+                    <h1 className="text-3xl font-extrabold font-poppins">
+                      Our Cars
+                    </h1>
+                    {!loading && (
+                      <p className="text-sm text-brand-gray mt-1">
+                        {total} results
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Sort dropdown + mobile filter trigger */}
+                  <div className="flex  w-fit gap-3">
+                    {/* Sort dropdown */}
+                    <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm">
+                      <span className="text-xs text-gray-400 font-medium hidden sm:block">
+                        Sort By
+                      </span>
+                      <select
+                        value={filters.sortBy ?? "newest"}
+                        onChange={(e) =>
+                          handleFiltersChange({
+                            ...filters,
+                            sortBy: e.target.value as SortOption,
+                          })
+                        }
+                        className="text-sm font-semibold text-gray-700 bg-transparent focus:outline-none cursor-pointer"
+                      >
+                        {SORT_OPTIONS.map((o) => (
+                          <option key={o.value} value={o.value}>
+                            {o.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Mobile filter button */}
+                    <button
+                      onClick={() => setMobileSidebarOpen(true)}
+                      className="xl:hidden flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm text-sm font-semibold text-gray-700"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3 4h18M7 12h10M11 20h2"
+                        />
+                      </svg>
+                      Filters
+                    </button>
+                  </div>
+                </div>
                 {loading ? (
                   // Skeleton grid
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -259,7 +269,7 @@ function CarsPageInner() {
                           delay: Math.min(i * 0.05, 0.25),
                         }}
                       >
-                        <CarCard car={car} />
+                        <CarCardFirst car={car} />
                       </motion.div>
                     ))}
                   </motion.div>
@@ -278,11 +288,6 @@ function CarsPageInner() {
           </div>
         </Container>
       </div>
-
-      <Testimonials />
-      <Container>
-        <GetInTouch />
-      </Container>
     </div>
   );
 }

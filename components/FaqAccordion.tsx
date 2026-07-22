@@ -2,6 +2,8 @@
 
 import { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+import Tagline from "./Tagline";
+import Container from "./Container";
 
 interface Faq {
   id: string;
@@ -18,27 +20,30 @@ interface Props {
 const ArrowButton = ({ open }: { open: boolean }) => (
   <motion.div
     animate={{
-      backgroundColor: open ? "#de0c0d" : "rgba(0, 0, 0, 0)",
+      backgroundColor: open ? "#ffffff" : "rgba(0, 0, 0, 0)",
     }}
     transition={{ duration: 0.15 }}
-    className={`w-10 h-10 rounded-xl duration-300 shrink-0 flex items-center justify-center  transition-all border ${
-      open ? "border-brand-primary" : " border-gray-300"
+    className={`w-10 h-10 rounded-full duration-300 shrink-0 flex items-center justify-center  transition-all border ${
+      open
+        ? "border-brand-white bg-brand-white"
+        : " border-gray-300 bg-transparent"
     }`}
   >
     <motion.svg
       animate={{ rotate: open ? 225 : 180 }}
       transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] as const }}
-      className={`w-3 h-3 ${open ? "text-white" : "text-brand-dark"} transition-all`}
+      className={`w-3 h-3 ${open ? "text-brand-dark" : "text-brand-white"} transition-all `}
       width="15"
       height="15"
       viewBox="0 0 15 15"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      stroke="currentColor"
+      // stroke="currentColor"
     >
       <path
         d="M0.292893 6.65666C-0.0976314 7.04719 -0.0976315 7.68035 0.292893 8.07088L6.65685 14.4348C7.04738 14.8254 7.68054 14.8254 8.07107 14.4348C8.46159 14.0443 8.46159 13.4111 8.07107 13.0206L2.41421 7.36377L8.07107 1.70691C8.46159 1.31639 8.46159 0.683226 8.07107 0.292701C7.68054 -0.0978233 7.04738 -0.0978234 6.65686 0.292701L0.292893 6.65666ZM15 7.36377L15 6.36377L1 6.36377L1 7.36377L1 8.36377L15 8.36377L15 7.36377Z"
-        fill="currentColor"
+        fill={`${open ? "#161616" : "#ffffff"}`}
+        className="transition-all duration-300"
       />
     </motion.svg>
   </motion.div>
@@ -69,6 +74,7 @@ const FaqItem = ({
         delay: index * 0.08,
         ease: [0.22, 1, 0.36, 1],
       }}
+      className={`p-px bg-linear-to-b from-white ${isOpen ? "to-[#9C9C9C]" : "to-[#CA281C]"}  rounded-[17px]`}
     >
       <motion.div
         animate={{
@@ -76,15 +82,15 @@ const FaqItem = ({
             ? "0 4px 24px rgba(0,0,0,0.08)"
             : "0 1px 4px rgba(0,0,0,0.04)",
         }}
-        className="bg-white  cursor-pointer rounded-2xl overflow-hidden"
+        className={`bg-linear-to-b from-black ${isOpen ? "to-[#CA281C]" : "to-[#313131]"} cursor-pointer rounded-2xl overflow-hidden`}
       >
         {/* Question row — clickable */}
         <button
           onClick={onToggle}
-          className="w-full  cursor-pointer flex items-center justify-between gap-4 px-6 py-5 text-left"
+          className="w-full text-white cursor-pointer flex items-center justify-between gap-4 px-6 py-5 text-left"
         >
           <span
-            className={`font-bold text-base leading-snug font-montserrat transition-colors`}
+            className={`font-extrabold text-xl leading-snug font-bricolage transition-colors`}
           >
             {faq.question}
           </span>
@@ -102,7 +108,7 @@ const FaqItem = ({
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               className="overflow-hidden"
             >
-              <p className="px-6 pb-6 text-gray-500 text-sm leading-relaxed font-dm-sans">
+              <p className="px-6 pb-6 text-brand-gray text-sm md:text-base max-w-4xl leading-relaxed font-dm-sans">
                 {faq.answer}
               </p>
             </motion.div>
@@ -123,32 +129,38 @@ export default function FaqAccordion({ faqs }: Props) {
   const toggle = (id: string) => setOpenId((prev) => (prev === id ? null : id));
 
   return (
-    <section className="w-full bg-[#efeded] py-16 px-6">
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <motion.h2
-          ref={headerRef}
-          initial={{ opacity: 0, y: 24 }}
-          animate={headerInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center font-extrabold text-3xl lg:text-5xl text-black font-montserrat mb-10"
-        >
-          Frequently Asked Questions
-        </motion.h2>
+    <section className="w-full  py-16 px-6">
+      <Container>
+        <div className="mx-auto">
+          <Tagline text="Have Questions?" />
+          {/* Header */}
+          <motion.h2
+            ref={headerRef}
+            initial={{ opacity: 0, y: 24 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center font-extrabold text-3xl text-white lg:text-5xl font-bricolage mb-2"
+          >
+            Frequently Asked Questions
+          </motion.h2>
+          <motion.p className="text-center font-semibold text-lg text-brand-gray mb-10">
+            Lorem ipsum dolor sit amet, consectetur sed?
+          </motion.p>
 
-        {/* FAQ list */}
-        <div className="flex flex-col gap-4">
-          {faqs.map((faq, i) => (
-            <FaqItem
-              key={faq.id}
-              faq={faq}
-              index={i}
-              isOpen={openId === faq.id}
-              onToggle={() => toggle(faq.id)}
-            />
-          ))}
+          {/* FAQ list */}
+          <div className="flex flex-col gap-4">
+            {faqs.map((faq, i) => (
+              <FaqItem
+                key={faq.id}
+                faq={faq}
+                index={i}
+                isOpen={openId === faq.id}
+                onToggle={() => toggle(faq.id)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

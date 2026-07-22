@@ -35,10 +35,10 @@ export default function Pagination({ page, totalPages, onChange }: Props) {
         whileTap={{ scale: 0.93 }}
         onClick={() => onChange(page - 1)}
         disabled={page === 1}
-        className={`w-9 h-9 bg-white  rounded-xl cursor-pointer border flex items-center justify-center transition-all ${
+        className={`w-9 h-9 rounded-full  border flex items-center justify-center transition-all ${
           page === 1
-            ? "opacity-40 border-gray-300 text-gray-300 cursor-not-allowed"
-            : " hover:shadow-sm border-gray-300 text-gray-600 hover:border-gray-400"
+            ? "opacity-40 border-white/30 text-gray-300 cursor-not-allowed"
+            : "cursor-pointer border-white/30 text-white hover:border-brand-primary hover:bg-brand-primary"
         }`}
       >
         <svg
@@ -73,7 +73,7 @@ export default function Pagination({ page, totalPages, onChange }: Props) {
             className={`cursor-pointer w-9 h-9 rounded-xl text-sm font-semibold transition-all ${
               p === page
                 ? "bg-brand-primary shadow-sm hover:shadow-sm hover:bg-red-700 text-white border border-brand-primary"
-                : "bg-brand-white hover:shadow-sm border border-gray-300 text-gray-600 hover:border-gray-400"
+                : " border border-white/30 text-white hover:border-white"
             }`}
           >
             {p}
@@ -86,10 +86,10 @@ export default function Pagination({ page, totalPages, onChange }: Props) {
         whileTap={{ scale: 0.93 }}
         onClick={() => onChange(page + 1)}
         disabled={page === totalPages}
-        className={`w-9 h-9 bg-white cursor-pointer rounded-xl border flex items-center justify-center transition-all ${
+        className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all ${
           page === totalPages
             ? "opacity-40 border-gray-300 text-gray-300 cursor-not-allowed"
-            : "hover:shadow-sm border-gray-300 text-gray-600 hover:border-gray-400"
+            : "cursor-pointer hover:bg-brand-primary border-white/30 text-white hover:border-brand-primary"
         }`}
       >
         <svg

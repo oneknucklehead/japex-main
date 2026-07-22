@@ -13,10 +13,13 @@ const NAV_LINKS = [
   "Finance",
   "Service & Parts",
 ];
+const SCROLL_THRESHOLD = 20;
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const isHome = pathname === "/";
 
   const bucketName = "assets";
   const logoPath = "Logo/logo-horizontal.png";
@@ -24,11 +27,7 @@ const Navbar = () => {
 
   // Prevent scrolling when menu is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "unset";
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -39,11 +38,35 @@ const Navbar = () => {
     setIsOpen(false);
   }, [pathname]);
 
+  // Track scroll for compact/blur state
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // transparent + dark text ONLY on homepage, at the very top
+  const transparentAtTop = isHome && !scrolled;
+  const textColorClass = transparentAtTop ? "text-black" : "text-white";
+  const bgClass = transparentAtTop
+    ? "bg-transparent"
+    : scrolled
+      ? "bg-black/80 backdrop-blur-md"
+      : "bg-black";
+  const paddingClass = scrolled ? "py-2 lg:py-3" : "py-4 lg:py-7";
+  const logoSizeClass = scrolled ? "w-20 md:w-24" : "w-28 md:w-32";
+
   return (
-    <header className="bg-brand-dark flex items-center justify-center h-fit py-4 lg:py-7 px-4 md:px-8 sticky top-0 z-50">
+    <header
+      className={`fixed top-0 left-0 w-full z-50 flex items-center justify-center px-4 md:px-8 transition-all duration-300 ${bgClass} ${paddingClass}`}
+    >
       <div className="flex items-center justify-between w-full max-w-7xl mx-auto">
         {/* Logo */}
-        <Link href={"/"} className="relative w-28 md:w-32 z-50">
+        <Link
+          href={"/"}
+          className={`relative z-50 transition-all duration-300 ${logoSizeClass}`}
+        >
           <Image
             src={logoUrl}
             alt="JAPEX Motors"
@@ -65,7 +88,7 @@ const Navbar = () => {
                   ? "/cars"
                   : `/${item.toLowerCase().replace(/\s+/g, "-").replace("&", "and")}`
               }
-              className="font-dm-sans font-medium text-sm text-white hover:text-brand-primary transition-colors"
+              className={`font-dm-sans font-medium transition-colors duration-300 hover:text-brand-primary ${textColorClass}`}
             >
               {item}
             </Link>
@@ -76,7 +99,7 @@ const Navbar = () => {
         <div className="hidden lg:block">
           <a
             href="tel:0297560203"
-            className="bg-brand-primary text-white font-dm-sans font-bold text-sm px-4 py-2 rounded-xl hover:bg-red-700 transition-colors"
+            className="bg-brand-primary text-white font-dm-sans font-bold text-sm px-4 py-2 rounded-full duration-300 hover:bg-red-700 transition-colors"
           >
             02 9756 0203
           </a>
@@ -85,21 +108,21 @@ const Navbar = () => {
         {/* Mobile Hamburger Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden z-50 p-2 -mr-2 text-white focus:outline-none"
+          className={`lg:hidden z-50 p-2 -mr-2 focus:outline-none transition-colors duration-300 ${textColorClass}`}
           aria-label="Toggle Menu"
         >
           <div className="w-6 flex flex-col items-end gap-1.5">
             <motion.span
               animate={isOpen ? { rotate: 45, y: 2 } : { rotate: 0, y: 0 }}
-              className="w-full h-0.5 bg-white block origin-left"
+              className="w-full h-0.5 bg-current block origin-left"
             />
             <motion.span
               animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="w-4/5 h-0.5 bg-white block"
+              className="w-4/5 h-0.5 bg-current block"
             />
             <motion.span
               animate={isOpen ? { rotate: -45, y: 2 } : { rotate: 0, y: 0 }}
-              className="w-full h-0.5 bg-white block origin-left"
+              className="w-full h-0.5 bg-current block origin-left"
             />
           </div>
         </button>

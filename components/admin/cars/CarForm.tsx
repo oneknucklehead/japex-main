@@ -566,6 +566,29 @@ export default function CarForm({ initialData, mode }: Props) {
             />
           </Field>
         </div>
+        {/* Toggles */}
+        <div className="flex flex-wrap gap-6">
+          {(
+            [{ key: "extended_warranty", label: "Extended Warranty" }] as const
+          ).map(({ key, label }) => (
+            <label
+              key={key}
+              className="flex items-center gap-2.5 cursor-pointer"
+            >
+              <div
+                onClick={() => set(key, !form[key])}
+                className={`w-10 h-5 rounded-full transition-colors relative ${form[key] ? "bg-red-600" : "bg-gray-200"}`}
+              >
+                <span
+                  className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${form[key] ? "translate-x-5" : "translate-x-0.5"}`}
+                />
+              </div>
+              <span className="text-sm font-semibold text-gray-700">
+                {label}
+              </span>
+            </label>
+          ))}
+        </div>
       </div>
 
       {/* Content */}

@@ -3,9 +3,15 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { bricolage, dm_sans, montserrat } from "@/styles/font";
+import { bricolage, dm_sans, koulen, montserrat, poppins } from "@/styles/font";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Image from "next/image";
+
+import lightshardLeft from "../assets/lightshardleft.png";
+import lightshardRight from "../assets/lightshardright.png";
+import ContactCTA from "@/sections/common/ContactCTA";
+import Testimonials from "@/sections/home/Testimonials";
 
 export const metadata: Metadata = {
   title: "Japex Motors",
@@ -21,13 +27,15 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${montserrat.variable} ${bricolage.variable} ${dm_sans.variable} h-full antialiased`}
+      className={`${montserrat.variable} ${bricolage.variable} ${koulen.variable} ${poppins.variable} ${dm_sans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="relative min-h-full flex flex-col bg-black overflow-hidden">
         <Navbar />
         {children}
         <SpeedInsights />
         <Analytics />
+        <Testimonials />
+        <ContactCTA />
         <Footer />
       </body>
     </html>

@@ -272,3 +272,103 @@ export const ArrowIcon = () => (
     />
   </svg>
 );
+
+export const BookTickIcon = () => {
+  return (
+    <svg
+      width="35"
+      height="35"
+      viewBox="0 0 35 35"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5.83203 28.4373V6.56234C5.83203 5.5954 6.21614 4.66807 6.89987 3.98434C7.5836 3.30062 8.51093 2.9165 9.47786 2.9165H27.707C28.0938 2.9165 28.4647 3.07015 28.7382 3.34364C29.0117 3.61713 29.1654 3.98806 29.1654 4.37484V30.6248C29.1654 31.0116 29.0117 31.3825 28.7382 31.656C28.4647 31.9295 28.0938 32.0832 27.707 32.0832H9.47786C8.51093 32.0832 7.5836 31.6991 6.89987 31.0153C6.21614 30.3316 5.83203 29.4043 5.83203 28.4373ZM5.83203 28.4373C5.83203 27.4704 6.21614 26.5431 6.89987 25.8593C7.5836 25.1756 8.51093 24.7915 9.47786 24.7915H29.1654"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13.125 13.8542L16.0417 16.7708L21.875 10.9375"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+export const MessageIcon = () => {
+  return (
+    <svg
+      width="35"
+      height="35"
+      viewBox="0 0 35 35"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M21.1994 31.6255C21.2548 31.7636 21.3511 31.8814 21.4754 31.9631C21.5997 32.0449 21.746 32.0867 21.8947 32.0829C22.0435 32.0791 22.1875 32.0298 22.3074 31.9418C22.4274 31.8538 22.5175 31.7312 22.5658 31.5905L32.045 3.88214C32.0916 3.75293 32.1006 3.61309 32.0707 3.479C32.0408 3.3449 31.9733 3.22209 31.8761 3.12495C31.779 3.0278 31.6562 2.96033 31.5221 2.93042C31.388 2.90052 31.2482 2.90943 31.1189 2.9561L3.4106 12.4353C3.26987 12.4835 3.14726 12.5737 3.05925 12.6936C2.97123 12.8136 2.92202 12.9576 2.91821 13.1063C2.9144 13.2551 2.95618 13.4014 3.03794 13.5257C3.1197 13.65 3.23752 13.7463 3.3756 13.8017L14.9402 18.4392C15.3058 18.5856 15.6379 18.8045 15.9166 19.0827C16.1953 19.3609 16.4148 19.6927 16.5619 20.058L21.1994 31.6255Z"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M31.8721 3.13086L15.918 19.0836"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+export const CalendarIcon = () => {
+  return (
+    <svg
+      width="35"
+      height="35"
+      viewBox="0 0 35 35"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M11.668 2.9165V8.74984"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M23.332 2.9165V8.74984"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M27.7083 5.8335H7.29167C5.68084 5.8335 4.375 7.13933 4.375 8.75016V29.1668C4.375 30.7777 5.68084 32.0835 7.29167 32.0835H27.7083C29.3192 32.0835 30.625 30.7777 30.625 29.1668V8.75016C30.625 7.13933 29.3192 5.8335 27.7083 5.8335Z"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.375 14.5835H30.625"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13.125 23.3332L16.0417 26.2498L21.875 20.4165"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};

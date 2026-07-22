@@ -4,8 +4,10 @@
   --font-montserrat: var(--font-montserrat);
   --font-bricolage: var(--font-bricolage);
   --font-dm-sans: var(--font-dm-sans);
+  --font-koulen: var(--font-koulen);
+  --font-poppins: var(--font-poppins);
 
-  --color-brand-primary: #de0c0d;
+  --color-brand-primary: #ca281c;
   --color-brand-dark: #161616;
   --color-brand-white: #ffffff;
   --color-brand-white-alternate: #dedede;
@@ -16,6 +18,8 @@
   --font-montserrat: var(--font-montserrat);
   --font-bricolage: var(--font-bricolage);
   --font-dm-sans: var(--font-dm-sans);
+  --font-koulen: var(--font-koulen);
+  --font-poppins: var(--font-poppins);
 
   --color-brand-primary: #de0c0d;
   --color-brand-dark: #161616;

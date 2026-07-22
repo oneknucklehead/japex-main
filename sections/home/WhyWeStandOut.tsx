@@ -5,29 +5,6 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { getAssetsStorageUrl } from "@/utils/helpers";
 
-const FEATURES = [
-  {
-    title: "Lorem Ipsum",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed porta lacus.",
-  },
-  {
-    title: "Lorem Ipsum",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed porta lacus.",
-  },
-  {
-    title: "Lorem Ipsum",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed porta lacus.",
-  },
-  {
-    title: "Lorem Ipsum",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed porta lacus.",
-  },
-];
-
 // Animation variants
 const containerVariants = {
   hidden: {},
@@ -86,8 +63,49 @@ const phoneFrameVariants = {
 export default function WhyWeStandOut() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
-  const whiteTesla = getAssetsStorageUrl("Homepage/tesla.png");
-
+  const whiteTesla = getAssetsStorageUrl("Homepage/whyStandOut.png");
+  const checkmark = getAssetsStorageUrl("Homepage/checkmark.png");
+  const inspection = getAssetsStorageUrl("Homepage/inspection.png");
+  const spanner = getAssetsStorageUrl("Homepage/spanner.png");
+  const shield = getAssetsStorageUrl("Homepage/shield.png");
+  const FEATURES = [
+    {
+      logo: checkmark,
+      title: "Premium Quality Vehicles",
+      description:
+        "Hand-selected from trusted Japanese auctions with high grades and low mileage.",
+    },
+    {
+      logo: inspection,
+      title: "Comprehensive Inspections",
+      description:
+        "Every vehicle is thoroughly inspected in Japan and again locally for your peace of mind.",
+    },
+    {
+      logo: spanner,
+      title: "Compliance & Safety Guaranteed",
+      description:
+        "All vehicles are fully complied to Australian standards – ready to register and drive away.",
+    },
+    {
+      logo: shield,
+      title: "5 Year Warranty & Roadside Assist",
+      description:
+        "Drive with confidence knowing you're covered with our 5 year warranty and 12 months roadside assist.",
+    },
+    {
+      logo: inspection,
+      title: "Finance Made Easy",
+      description:
+        "In-house finance solutions tailored to your needs. Fast approvals and competitive rates.",
+    },
+    {
+      logo: inspection,
+      title: "After-Sales Support You Can Trust",
+      description:
+        "We're here long after the sale – service, parts, and support from a team that cares.",
+    },
+  ];
   return (
     <section ref={sectionRef} className="bg-black w-full overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 py-20 md:py-24">
@@ -155,9 +173,19 @@ export default function WhyWeStandOut() {
               >
                 {/* Red square bullet */}
                 <motion.div
-                  whileHover={{ scale: 1.2 }}
-                  className="w-6 h-6 bg-brand-primary rounded-sm shrink-0 mt-1"
-                />
+                  // whileHover={{ scale: 1.2 }}
+                  className="w-18 h-18 p-2 bg-brand-primary rounded-sm shrink-0 mt-1"
+                >
+                  {feature.logo && (
+                    <Image
+                      src={feature.logo}
+                      alt="Checkmark"
+                      width={1920}
+                      height={1080}
+                      className="w-full h-full object-contain"
+                    />
+                  )}
+                </motion.div>
 
                 {/* Text */}
                 <div>

@@ -5,7 +5,10 @@ import { getAssetsStorageUrl } from "@/utils/helpers";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import React from "react";
-
+import ServiceCard from "./ServiceCard";
+import ServiceCardTwo from "./ServiceCardTwo";
+import image1 from "../../assets/carparts.png";
+import image2 from "../../assets/finance.png";
 const ArrowIcon = () => (
   <svg
     width="10"
@@ -89,23 +92,21 @@ const BannerGrid = () => {
 
   return (
     <Container>
-      <div className="px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <BannerCard
-            title="Your Trusted Source for Quality Car Parts & Global Export Services"
-            description="Lorem ipsum dolor sit amet, consectetur sed?"
-            imageSrc={banner1}
-            cardNumber={1}
-            imageAlt="Car parts banner"
-            cardColor="red"
+      <div className="">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-full items-start">
+          {/* <div className="bg-white"> */}
+          <ServiceCard
+            image={image1}
+            headline={
+              "Your Trusted Source for Quality Car Parts & Global Export Services"
+            }
           />
-          <BannerCard
-            title="Car Finance Made Simple with Our Expert Team"
-            description="Lorem ipsum dolor sit amet, consectetur sed?"
-            imageSrc={banner2}
-            cardNumber={2}
-            imageAlt="Finance banner"
-            cardColor="black"
+          {/* </div> */}
+          <ServiceCardTwo
+            image={image2}
+            headline={
+              "Car Finance Made Simple with Our Expert Team & Financing Options"
+            }
           />
         </div>
       </div>

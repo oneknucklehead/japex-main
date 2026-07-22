@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { getAssetsStorageUrl } from "@/utils/helpers";
 import Container from "./Container";
+import FooterJapex from "./FooterJapex";
 
 // ── Shared motion variants for list items ───────────────────────────────────
 const listItemVariants = {
@@ -30,7 +31,7 @@ const FooterLink = ({
 }) => (
   <Link href={href}>
     <motion.span
-      className="text-gray-600 text-sm hover:text-red-600 transition-colors"
+      className="text-brand-gray text-sm hover:text-brand-primary transition-colors"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
@@ -70,73 +71,66 @@ export default function Footer() {
   // Define footer sections and links
   const sections = [
     {
-      title: "Quick Links",
+      title: "Popular Brands",
       links: [
-        { label: "Find a car", href: "/cars" },
-        { label: "About", href: "/about" },
-        { label: "Contact", href: "/contact" },
-        { label: "Finance", href: "/finance" },
-        { label: "Service & Parts", href: "/service-and-parts" },
+        { label: "Toyota", href: "/cars?brand=Toyota" },
+        { label: "Hyundai", href: "/cars?brand=Hyundai" },
+        { label: "Mitshubishi", href: "/cars?brand=Mitshubishi" },
+        { label: "Mazda", href: "/cars?brand=Mazda" },
+        { label: "Kia", href: "/cars?brand=Kia" },
+        { label: "Ford", href: "/cars?brand=Ford" },
+        { label: "Volkswagen", href: "/cars?brand=Volkswagen" },
       ],
     },
-    // {
-    //   title: "Explore",
-    //   links: [
-    //     { label: "Lorem Ipsum", href: "#" },
-    //     { label: "Lorem Ipsum", href: "#" },
-    //     { label: "Lorem Ipsum", href: "#" },
-    //     { label: "Lorem Ipsum", href: "#" },
-    //     { label: "Lorem Ipsum", href: "#" },
-    //   ],
-    // },
     {
       title: "Car Types",
       links: [
-        { label: "Wagons", href: "/cars?body=Wagon" },
-        { label: "Sedans", href: "/cars?body=Sedan" },
-        { label: "Camper Vans", href: "/cars?body=Van" },
+        { label: "SUVs", href: "/cars?body=SUV" },
+        { label: "Sedan", href: "/cars?body=Sedan" },
+        { label: "Campervans / Vans", href: "/cars?body=Van" },
+        { label: "People Mover / Wagon", href: "/cars?body=Wagon" },
+        { label: "Prestige", href: "/cars?type=Prestige" },
+        { label: "Hatchbacks", href: "/cars?body=Hatchback" },
+        { label: "All", href: "/cars" },
+      ],
+    },
+    {
+      title: "Explore",
+      links: [
+        { label: "Service & Parts", href: "/service-and-parts" },
+        { label: "Why Japex", href: "/why-japex" },
+        { label: "Warranty", href: "/warranty" },
+        { label: "Car Financing", href: "/finance" },
+        { label: "Quality Standards", href: "/quality-standards" },
+        { label: "Blogs", href: "/blogs" },
+      ],
+    },
+    {
+      title: "Resources",
+      links: [
+        { label: "Contact us", href: "/contact" },
+        { label: "About us", href: "/about" },
+        { label: "FAQs", href: "/faqs" },
+        { label: "Partnerships", href: "/partnerships" },
+        { label: "Careers", href: "/careers" },
       ],
     },
   ];
 
   return (
-    <footer className="w-full bg-white border-t border-gray-200 py-24 px-6">
+    <footer className="w-full py-24">
       <Container>
         <div className="px-6">
           <div className="flex flex-col gap-12 lg:gap-16">
             {/* Main content grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 md:gap-12">
-              {/* Company info */}
-              <div className="flex flex-col gap-6 md:max-w-xs lg:col-span-2">
-                <Link href="/">
-                  <Image
-                    src={logo}
-                    alt="JAPEX Motors"
-                    width={1920}
-                    height={1080}
-                    className="object-cover h-fit w-fit"
-                    priority
-                  />
-                </Link>
-                <p className="text-gray-600 text-sm leading-relaxed font-bricolage">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-                {/* Social icons */}
-                <div className="flex items-center gap-3">
-                  <SocialIcon src={facebookIcon} alt="Facebook" href="#" />
-                  <SocialIcon src={xIcon} alt="X" href="#" />
-                  <SocialIcon src={linkedinIcon} alt="LinkedIn" href="#" />
-                </div>
-              </div>
-
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
               {/* Links sections */}
               {sections.map((section) => (
                 <div key={section.title} className="flex flex-col gap-4">
-                  <h4 className="font-bold text-gray-900 text-sm lg:text-base font-montserrat">
+                  <h4 className="font-bold text-brand-white text-sm lg:text-base font-montserrat">
                     {section.title}
                   </h4>
-                  <ul className="flex flex-col gap-2">
+                  <ul className="flex flex-col gap-2 transition-all">
                     {section.links.map((link, i) => (
                       <motion.li
                         key={i}
@@ -152,28 +146,10 @@ export default function Footer() {
                 </div>
               ))}
             </div>
-
-            {/* Bottom copyright/links */}
-            <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-6 border-t border-gray-100 pt-8 mt-12 text-gray-600 text-sm">
-              <p>&copy; {currentYear} JAPEX Motors | All Right Reserved</p>
-              <div className="flex items-center gap-6">
-                <Link
-                  href="/terms"
-                  className="hover:text-red-600 transition-colors"
-                >
-                  Terms & Conditions
-                </Link>
-                <Link
-                  href="/privacy"
-                  className="hover:text-red-600 transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-              </div>
-            </div>
           </div>
         </div>
       </Container>
+      <FooterJapex />
     </footer>
   );
 }

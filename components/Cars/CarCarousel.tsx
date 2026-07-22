@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Car } from "@/types/car";
 import CarCard from "./CarCard";
+import CarCardFirst from "../tryouts/CarCardFirst";
 
 interface Props {
   cars: Car[];
@@ -40,7 +41,7 @@ export default function CarCarousel({ cars }: Props) {
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full z-10">
       {/* Arrow buttons — top right, exactly like the image */}
       <div className="flex justify-end gap-2 mb-4 px-1">
         <motion.button
@@ -48,25 +49,26 @@ export default function CarCarousel({ cars }: Props) {
           whileTap={{ scale: 0.92 }}
           disabled={!canScrollPrev}
           aria-label="Previous"
-          className={`w-10 h-10 cursor-pointer rounded-xl border border-gray-300 bg-white flex items-center justify-center shadow-sm transition-all duration-200
+          className={`w-10 h-10  text-white rounded-full border border-white/20 bg-black flex  items-center justify-center shadow-sm transition-colors duration-300
             ${
               canScrollPrev
-                ? "hover:border-gray-400 hover:shadow-md text-gray-700"
+                ? "cursor-pointer hover:border-brand-primary hover:bg-brand-primary text-gray-700"
                 : "opacity-40 cursor-not-allowed text-gray-400"
             }`}
         >
           <svg
-            className="rotate-180"
-            width="12"
-            height="12"
-            viewBox="0 0 15 15"
-            fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-chevron-left-icon lucide-chevron-left"
           >
-            <path
-              d="M14.7071 8.07112C15.0976 7.6806 15.0976 7.04743 14.7071 6.65691L8.34315 0.292946C7.95262 -0.0975785 7.31946 -0.0975785 6.92893 0.292946C6.53841 0.68347 6.53841 1.31664 6.92893 1.70716L12.5858 7.36401L6.92893 13.0209C6.53841 13.4114 6.53841 14.0446 6.92893 14.4351C7.31946 14.8256 7.95262 14.8256 8.34315 14.4351L14.7071 8.07112ZM0 7.36401L0 8.36401L14 8.36401V7.36401V6.36401L0 6.36401L0 7.36401Z"
-              fill="black"
-            />
+            <path d="m15 18-6-6 6-6" />
           </svg>
         </motion.button>
 
@@ -75,24 +77,26 @@ export default function CarCarousel({ cars }: Props) {
           whileTap={{ scale: 0.92 }}
           disabled={!canScrollNext}
           aria-label="Next"
-          className={`w-10 h-10 rounded-xl border border-gray-300 cursor-pointer bg-white flex items-center justify-center shadow-sm transition-all duration-200
+          className={`w-10 h-10 rounded-full border text-white border-white/20  cursor-pointer bg-black flex items-center justify-center shadow-sm transition-colors duration-300
             ${
               canScrollNext
-                ? "hover:border-gray-400 hover:shadow-md text-gray-700"
+                ? "cursor-pointer hover:border-brand-primary hover:bg-brand-primary text-gray-700"
                 : "opacity-40 cursor-not-allowed text-gray-400"
             }`}
         >
           <svg
-            width="12"
-            height="12"
-            viewBox="0 0 15 15"
-            fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-chevron-right-icon lucide-chevron-right"
           >
-            <path
-              d="M14.7071 8.07112C15.0976 7.6806 15.0976 7.04743 14.7071 6.65691L8.34315 0.292946C7.95262 -0.0975785 7.31946 -0.0975785 6.92893 0.292946C6.53841 0.68347 6.53841 1.31664 6.92893 1.70716L12.5858 7.36401L6.92893 13.0209C6.53841 13.4114 6.53841 14.0446 6.92893 14.4351C7.31946 14.8256 7.95262 14.8256 8.34315 14.4351L14.7071 8.07112ZM0 7.36401L0 8.36401L14 8.36401V7.36401V6.36401L0 6.36401L0 7.36401Z"
-              fill="black"
-            />
+            <path d="m9 18 6-6-6-6" />
           </svg>
         </motion.button>
       </div>
@@ -114,8 +118,9 @@ export default function CarCarousel({ cars }: Props) {
               // lg+ (≥ 1024px) → 4 cards → 25%
               className="flex-none pl-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
             >
-              <div className="h-full">
-                <CarCard car={car} />
+              <div className="h-full w-full">
+                {/* <CarCard car={car} /> */}
+                <CarCardFirst car={car} />
               </div>
             </motion.div>
           ))}

@@ -34,6 +34,7 @@ export interface Car {
   is_featured: boolean;
   availability: "In stock" | "Coming soon" | "Sold out";
   is_published: boolean;
+  extended_warranty: boolean;
 
   // Timestamps
   created_at: string;

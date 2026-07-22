@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import GlowingTransparentDivTestimonial from "../GlowingTransparentDivTestimonial";
 
 interface PopularFeature {
   id: string;
@@ -46,48 +48,67 @@ export default function PopularFeaturesCarousel({
       className="mt-8"
     >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-bold text-gray-900 font-montserrat text-lg">
+        <h3 className="font-bold text-brand-white font-poppins text-lg">
           Popular features
         </h3>
         <div className="flex gap-2">
-          <button
+          <motion.button
             type="button"
+            whileTap={{ scale: 0.92 }}
             onClick={() => emblaApi?.scrollPrev()}
             disabled={!canPrev}
             aria-label="Previous"
-            className="w-9 h-9 cursor-pointer rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-600 hover:border-gray-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className={`w-10 h-10  text-white rounded-full border border-white/20 bg-black flex  items-center justify-center shadow-sm transition-colors duration-300
+            ${
+              canPrev
+                ? "cursor-pointer hover:border-brand-primary hover:bg-brand-primary text-gray-700"
+                : "opacity-40 cursor-not-allowed text-gray-400"
+            }`}
           >
             <svg
-              className="w-4 h-4"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className="lucide lucide-chevron-left-icon lucide-chevron-left"
             >
-              <path d="M15 18l-6-6 6-6" />
+              <path d="m15 18-6-6 6-6" />
             </svg>
-          </button>
-          <button
+          </motion.button>
+
+          <motion.button
             type="button"
+            whileTap={{ scale: 0.92 }}
             onClick={() => emblaApi?.scrollNext()}
             disabled={!canNext}
             aria-label="Next"
-            className="w-9 h-9  cursor-pointer rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-600 hover:border-gray-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className={`w-10 h-10 rounded-full border text-white border-white/20  cursor-pointer bg-black flex items-center justify-center shadow-sm transition-colors duration-300
+            ${
+              canNext
+                ? "cursor-pointer hover:border-brand-primary hover:bg-brand-primary text-gray-700"
+                : "opacity-40 cursor-not-allowed text-gray-400"
+            }`}
           >
             <svg
-              className="w-4 h-4"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className="lucide lucide-chevron-right-icon lucide-chevron-right"
             >
-              <path d="M9 18l6-6-6-6" />
+              <path d="m9 18 6-6-6-6" />
             </svg>
-          </button>
+          </motion.button>
         </div>
       </div>
 
@@ -98,20 +119,26 @@ export default function PopularFeaturesCarousel({
               key={f.id}
               className="min-w-0 pl-4 flex-[0_0_80%] sm:flex-[0_0_50%] md:flex-[0_0_33.333%] lg:flex-[0_0_25%]"
             >
-              <div className="relative rounded-2xl overflow-hidden aspect-5/4 bg-gray-100">
+              {/* <GlowingTransparentDivTestimonial border="xl"> */}
+              <div className="relative rounded-xl overflow-hidden aspect-3/4 ">
                 {f.image_url && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={f.image_url}
                     alt={f.name}
+                    fill
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 )}
                 <div className="absolute inset-0 bg-linear-to-t from-black/55 via-black/0 to-transparent" />
-                <p className="absolute bottom-3 left-3 right-3 text-white font-bold text-sm leading-tight font-montserrat drop-shadow">
-                  {f.name}
-                </p>
+                <div className="absolute bottom-3 left-3 right-3 ">
+                  <div className="w-6 h-0.5 mb-2 bg-brand-primary"></div>
+                  <p className="text-white font-bold text-sm leading-tight font-poppins drop-shadow">
+                    {f.name}
+                  </p>
+                </div>
               </div>
+              {/* </GlowingTransparentDivTestimonial> */}
             </div>
           ))}
         </div>
