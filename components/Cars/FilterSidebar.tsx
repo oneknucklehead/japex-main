@@ -268,13 +268,11 @@ function RangeRow({
 
 // ── Main Sidebar ─────────────────────────────────────────────────────────────
 interface Props {
-  border: string;
   filters: CarFilters;
   onChange: (f: CarFilters) => void;
-  total: number;
 }
 
-export default function FilterSidebar({ filters, onChange, total }: Props) {
+export default function FilterSidebar({ filters, onChange }: Props) {
   const [search, setSearch] = useState(filters.search ?? "");
   const set = (p: Partial<CarFilters>) => onChange({ ...filters, ...p });
 

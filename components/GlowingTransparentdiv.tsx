@@ -7,11 +7,12 @@ import imgsrc from "../../assets/images/tryoutimg.png";
 import BlurRevealText from "./BlurRevealText";
 
 export default function GlowingTransparentdiv({ children, border = "full" }) {
-  const cardRef = useRef(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(50); // percent
   const mouseY = useMotionValue(50); // percent
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
