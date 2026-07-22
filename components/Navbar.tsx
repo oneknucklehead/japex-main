@@ -22,7 +22,7 @@ const Navbar = () => {
   const isHome = pathname === "/";
 
   const bucketName = "assets";
-  const logoPath = "Logo/logo-horizontal.png";
+  const logoPath = "Logo/logo-vertical.png";
   const logoUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${logoPath}`;
 
   // Prevent scrolling when menu is open
@@ -54,8 +54,8 @@ const Navbar = () => {
     : scrolled
       ? "bg-black/80 backdrop-blur-md"
       : "bg-black";
-  const paddingClass = scrolled ? "py-2 lg:py-3" : "py-4 lg:py-7";
-  const logoSizeClass = scrolled ? "w-20 md:w-24" : "w-28 md:w-32";
+  const paddingClass = scrolled ? "py-2 lg:py-1" : "py-4 lg:py-2";
+  const logoSizeClass = scrolled ? "w-20 md:w-14" : "w-28 md:w-20";
 
   return (
     <header

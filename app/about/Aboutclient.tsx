@@ -1,9 +1,11 @@
 "use client";
 
 import Container from "@/components/Container";
-import GetInTouch from "@/components/GetInTouch";
-import { motion } from "framer-motion";
+import GlowingTransparentDivTestimonial from "@/components/GlowingTransparentDivTestimonial";
+import GlowingTransparentNoBackground from "@/components/GlowingTransparentNoBackground";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import Link from "next/link";
+import { useRef } from "react";
 
 // ── Shared motion presets ──────────────────────────────────────────────────
 const fadeUp = {
@@ -135,7 +137,7 @@ const WHY = [
 
 // ── Small reusable bits ──────────────────────────────────────────────────────
 const Eyebrow = ({ children }: { children: React.ReactNode }) => (
-  <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-primary mb-3 font-montserrat">
+  <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-primary mb-3 font-dm-sans">
     {children}
   </p>
 );
@@ -154,25 +156,25 @@ const CheckIcon = () => (
 
 export default function AboutClient() {
   return (
-    <div className="min-h-screen bg-[#efeded] font-dm-sans">
+    <div className="min-h-screen font-dm-sans overflow-hidden">
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-brand-dark text-white">
+      <section className="relative text-brand-white">
         {/* subtle red glow */}
-        <div className="pointer-events-none absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brand-primary/20 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-40 -left-20 w-80 h-80 rounded-full bg-brand-primary/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6 py-20 lg:py-28 relative">
+          <div className="px-6 pt-28 pb-16 lg:pt-36 lg:pb-24 relative">
             <motion.div {...fadeUp}>
               <Eyebrow>Experience Life.</Eyebrow>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold font-montserrat leading-[1.05] mb-5 max-w-3xl">
+              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-poppins leading-[1.1] mb-5 max-w-3xl">
                 Japanese Excellence.
                 <br />
                 <span className="text-brand-primary">
                   Delivered to Your Driveway.
                 </span>
               </h1>
-              <p className="text-base lg:text-lg text-brand-white-alternate max-w-2xl leading-relaxed">
+              <p className="text-base lg:text-lg text-brand-gray max-w-2xl leading-relaxed font-dm-sans">
                 Japex Motors brings the best of Japan's automotive culture to
                 the Central Coast — precision-sourced vehicles, custom-finished
                 to our own standard, expertly complied, and backed by a team
@@ -184,18 +186,20 @@ export default function AboutClient() {
       </section>
 
       {/* ── Our Story ─────────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute bottom-0 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/15 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-0 -right-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/15 blur-3xl" />
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 px-6">
             <motion.div className="lg:col-span-5" {...fadeUp}>
               <Eyebrow>Our Story</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-black font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 Australians deserve the best Japan has to offer.
               </h2>
             </motion.div>
 
             <motion.div
-              className="lg:col-span-7 space-y-4 text-sm lg:text-base text-gray-500 leading-relaxed"
+              className="lg:col-span-7 space-y-4 text-sm lg:text-base text-brand-gray leading-relaxed"
               {...fadeUp}
             >
               <p>
@@ -233,7 +237,7 @@ export default function AboutClient() {
               </p>
 
               <blockquote className="border-l-4 border-brand-primary pl-5 py-1 my-6">
-                <p className="text-lg lg:text-xl font-semibold text-gray-900 font-montserrat italic">
+                <p className="text-lg lg:text-xl font-semibold text-brand-white font-poppins italic">
                   &ldquo;We don't just sell Japanese cars. We finish them — so
                   when you pull up, people notice.&rdquo;
                 </p>
@@ -260,15 +264,18 @@ export default function AboutClient() {
               <motion.div
                 key={s.label}
                 variants={fadeUp}
-                className="bg-white rounded-2xl p-4 sm:p-6 border border-gray-300
-                hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-center"
+                whileHover={{ y: -2 }}
               >
-                <p className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-primary font-montserrat leading-tight wrap-break-word">
-                  {s.value}
-                </p>
-                <p className="text-xs lg:text-sm text-gray-500 mt-1">
-                  {s.label}
-                </p>
+                <GlowingTransparentDivTestimonial border="2xl">
+                  <div className="reltaive p-4 sm:p-6 text-center">
+                    <p className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-gray font-poppins leading-tight wrap-break-word">
+                      {s.value}
+                    </p>
+                    <p className="text-xs lg:text-base font-semibold text-brand-primary mt-1">
+                      {s.label}
+                    </p>
+                  </div>
+                </GlowingTransparentDivTestimonial>
               </motion.div>
             ))}
           </motion.div>
@@ -276,51 +283,58 @@ export default function AboutClient() {
       </section>
 
       {/* ── How We Source ─────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="py-16 lg:py-24">
         <Container>
           <motion.div className="px-6" {...fadeUp}>
             <Eyebrow>How We Source Our Vehicles</Eyebrow>
-            <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight mb-3">
+            <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight mb-3">
               We go further back in the chain — all the way to Japan.
             </h2>
-            <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
+            <p className="text-sm lg:text-base text-brand-gray leading-relaxed">
               Most dealerships buy from Australian wholesale auctions. We go
               further back in the chain — all the way to Japan.
             </p>
           </motion.div>
           <div className="px-6">
             {/* Inspection checklist */}
-            <motion.div
-              className="mt-10 bg-[#efeded] rounded-2xl p-6 lg:p-8 border  border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
-              {...fadeUp}
-            >
-              <Eyebrow>OUR TEAM ON THE GROUND IN JAPAN</Eyebrow>
-              <p className="text-normal font-bold text-gray-900 font-montserrat mb-2">
-                Every car personally inspected before it leaves Japan
-              </p>
-              <p className="text-sm text-gray-700 font-montserrat mb-5">
-                We don't rely on auction listings, online photos, or third-party
-                reports. Our dedicated team of inspectors travels throughout
-                Japan to physically assess every vehicle we consider — before a
-                single bid is placed. They check what photos never show: the
-                undercarriage, the engine bay, the full history behind the
-                grade.
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
-                {INSPECTION_CHECKS.map((c) => (
-                  <div
-                    key={c}
-                    className="flex items-center gap-3 text-sm text-gray-700"
-                  >
-                    <CheckIcon />
-                    {c}
+            <motion.div className="mt-10 relative group/card" {...fadeUp}>
+              <GlowingTransparentNoBackground border="2xl">
+                <div className="relative overflow-hidden rounded-2xl">
+                  {/* glow — behind, clipped, non-interactive */}
+                  <div className="pointer-events-none absolute -top-48 left-1/2 -translate-x-1/2 w-72 h-72 sm:w-full sm:h-96 rounded-full bg-brand-primary/15 blur-3xl z-0" />
+
+                  {/* content — above the glow */}
+                  <div className="relative z-10 p-6 lg:p-8">
+                    <Eyebrow>OUR TEAM ON THE GROUND IN JAPAN</Eyebrow>
+                    <p className="text-base font-bold text-brand-white font-poppins mb-2">
+                      Every car personally inspected before it leaves Japan
+                    </p>
+                    <p className="text-sm text-brand-gray mb-5 leading-relaxed">
+                      We don't rely on auction listings, online photos, or
+                      third-party reports. Our dedicated team of inspectors
+                      travels throughout Japan to physically assess every
+                      vehicle we consider — before a single bid is placed. They
+                      check what photos never show: the undercarriage, the
+                      engine bay, the full history behind the grade.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+                      {INSPECTION_CHECKS.map((c) => (
+                        <div
+                          key={c}
+                          className="flex items-center gap-3 text-sm text-brand-gray"
+                        >
+                          <CheckIcon />
+                          {c}
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-sm text-brand-gray italic mt-6 pt-5 border-t border-white/10">
+                      If it doesn't meet our standard on the ground in Japan, it
+                      doesn't come to Australia. Simple as that.
+                    </p>
                   </div>
-                ))}
-              </div>
-              <p className="text-sm text-gray-500 italic mt-6 pt-5 border-t border-gray-200">
-                If it doesn't meet our standard on the ground in Japan, it
-                doesn't come to Australia. Simple as that.
-              </p>
+                </div>
+              </GlowingTransparentNoBackground>
             </motion.div>
 
             {/* 4-step process */}
@@ -335,40 +349,46 @@ export default function AboutClient() {
                 <motion.div
                   key={step.n}
                   variants={fadeUp}
-                  className="bg-brand-white rounded-2xl p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer flex gap-4"
+                  whileHover={{ y: -2 }}
                 >
-                  <span className="shrink-0 w-fit h-fit py-2 px-4 rounded-xl bg-brand-primary text-white font-black font-montserrat flex items-center justify-center">
-                    {step.n}
-                  </span>
-                  <div>
-                    <h3 className="font-bold text-gray-900 font-montserrat mb-1.5">
-                      {step.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      {step.body}
-                    </p>
-                  </div>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6 flex gap-4 h-full">
+                      <span className="shrink-0 w-fit h-fit py-2 px-4 rounded-xl bg-brand-primary text-white font-black font-poppins flex items-center justify-center">
+                        {step.n}
+                      </span>
+                      <div>
+                        <h3 className="font-bold text-brand-white font-poppins mb-1.5">
+                          {step.title}
+                        </h3>
+                        <p className="text-sm text-brand-gray leading-relaxed">
+                          {step.body}
+                        </p>
+                      </div>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
 
             {/* Why Japan */}
             <motion.div
-              className="mt-12 bg-brand-dark text-white rounded-2xl p-8 lg:p-10 relative overflow-hidden"
+              className="mt-12 bg-linear-to-r from-white to-[#CA281C] p-px rounded-2xl"
               {...fadeUp}
             >
-              <div className="pointer-events-none absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-brand-primary/20 blur-3xl" />
-              <div className="relative">
-                <Eyebrow>Why Japan?</Eyebrow>
-                <p className="text-base lg:text-lg text-gray-200 leading-relaxed ">
-                  Japan's domestic car market is uniquely well-suited to
-                  Australia. Vehicles are maintained to an exceptional standard,
-                  mileage is low relative to age, service records are detailed
-                  and reliable, and the auction grading system is among the most
-                  transparent in the world. For buyers who care about what's
-                  under the bonnet — not just what's on the sticker — the
-                  Japanese experience is in a different class.
-                </p>
+              <div className="relative overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-8 lg:p-10">
+                <div className="pointer-events-none absolute -bottom-20 -right-20 w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-brand-primary/20 blur-3xl" />
+                <div className="relative">
+                  <Eyebrow>Why Japan?</Eyebrow>
+                  <p className="text-base lg:text-lg text-brand-gray leading-relaxed">
+                    Japan's domestic car market is uniquely well-suited to
+                    Australia. Vehicles are maintained to an exceptional
+                    standard, mileage is low relative to age, service records
+                    are detailed and reliable, and the auction grading system is
+                    among the most transparent in the world. For buyers who care
+                    about what's under the bonnet — not just what's on the
+                    sticker — the Japanese experience is in a different class.
+                  </p>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -381,10 +401,10 @@ export default function AboutClient() {
           <div className="px-6">
             <motion.div className="mb-10" {...fadeUp}>
               <Eyebrow>What We Stock</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 From everyday commuters to weekend warriors.
               </h2>
-              <p className="text-sm lg:text-base text-gray-600 mt-3">
+              <p className="text-sm lg:text-base text-brand-gray mt-3">
                 All sourced from Japan and finished to the Japex standard.
               </p>
             </motion.div>
@@ -400,17 +420,21 @@ export default function AboutClient() {
                 <motion.div
                   key={s.title}
                   variants={fadeUp}
-                  className="bg-white rounded-2xl p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                  whileHover={{ y: -2 }}
                 >
-                  <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">
-                    {s.tag}
-                  </p>
-                  <h3 className="text-lg font-bold text-gray-900 font-montserrat mb-2">
-                    {s.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {s.body}
-                  </p>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6">
+                      <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">
+                        {s.tag}
+                      </p>
+                      <h3 className="text-lg font-bold text-brand-white font-poppins mb-2">
+                        {s.title}
+                      </h3>
+                      <p className="text-sm text-brand-gray leading-relaxed">
+                        {s.body}
+                      </p>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
@@ -419,12 +443,12 @@ export default function AboutClient() {
       </section>
 
       {/* ── What We Stand For ─────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="py-16 lg:py-24">
         <Container>
-          <div className="px-6">
+          <div className="px-6 ">
             <motion.div className="mb-10" {...fadeUp}>
               <Eyebrow>What We Stand For</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 The Japex standard isn&apos;t a slogan.
               </h2>
             </motion.div>
@@ -440,14 +464,18 @@ export default function AboutClient() {
                 <motion.div
                   key={v.title}
                   variants={fadeUp}
-                  className="bg-brand-white rounded-2xl p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                  whileHover={{ y: -2 }}
                 >
-                  <h3 className="text-lg font-bold text-gray-900 font-montserrat mb-2">
-                    {v.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {v.body}
-                  </p>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6">
+                      <h3 className="text-lg font-bold text-brand-white font-poppins mb-2">
+                        {v.title}
+                      </h3>
+                      <p className="text-sm text-brand-gray leading-relaxed">
+                        {v.body}
+                      </p>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
@@ -461,7 +489,7 @@ export default function AboutClient() {
           <div className="px-6">
             <motion.div className="mb-10" {...fadeUp}>
               <Eyebrow>Why Japex Motors</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 Seven reasons buyers keep coming back.
               </h2>
             </motion.div>
@@ -477,17 +505,21 @@ export default function AboutClient() {
                 <motion.div
                   key={w.title}
                   variants={fadeUp}
-                  className="bg-white rounded-2xl p-6 border shadow-sm cursor-pointer border-gray-300 hover:border-gray-400 hover:shadow-md transition-all duration-200"
+                  whileHover={{ y: -2 }}
                 >
-                  <span className="inline-flex items-center justify-center w-fit h-fit p-2 rounded-lg bg-brand-primary text-brand-white font-black font-montserrat text-sm mb-4">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="font-bold text-gray-900 font-montserrat mb-2 leading-snug">
-                    {w.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {w.body}
-                  </p>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6 h-full">
+                      <span className="inline-flex items-center justify-center w-fit h-fit p-2 rounded-lg bg-brand-primary text-brand-white font-black font-poppins text-sm mb-4">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="font-bold text-brand-white font-poppins mb-2 leading-snug">
+                        {w.title}
+                      </h3>
+                      <p className="text-sm text-brand-gray leading-relaxed">
+                        {w.body}
+                      </p>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
@@ -500,34 +532,40 @@ export default function AboutClient() {
         <Container>
           <div className="px-6">
             <motion.div
-              className="bg-brand-dark text-white rounded-2xl p-8 lg:p-12 text-center relative overflow-hidden"
               {...fadeUp}
+              className=" bg-linear-to-r from-white to-[#CA281C] p-px rounded-2xl"
             >
-              <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-brand-primary/20 blur-3xl" />
-              <div className="relative">
-                <p className="text-brand-primary font-montserrat font-bold text-sm uppercase tracking-[0.25em] mb-4">
-                  Experience Life.
-                </p>
-                <h2 className="text-2xl lg:text-3xl font-extrabold font-montserrat mb-3">
-                  Japex Motors — Gosford's Japanese automotive experts.
-                </h2>
-                <p className="text-gray-300 text-sm lg:text-base max-w-xl mx-auto mb-7">
-                  Browse the current range — every vehicle sourced from Japan,
-                  finished in-house, and backed end to end.
-                </p>
-                <Link
-                  href="/cars"
-                  className="inline-block bg-brand-primary hover:bg-red-700 text-white font-bold px-7 py-3.5 rounded-xl transition-colors text-sm"
-                >
-                  View our cars
-                </Link>
+              <div className="relative  overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-8 lg:p-12 text-center">
+                <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+                <div className="relative">
+                  <p className="text-brand-primary font-dm-sans font-bold text-sm uppercase tracking-[0.25em] mb-4">
+                    Experience Life.
+                  </p>
+                  <h2 className="text-2xl lg:text-3xl font-bold font-poppins mb-3 text-brand-white">
+                    Japex Motors — Gosford's Japanese automotive experts.
+                  </h2>
+                  <p className="text-brand-gray text-sm lg:text-base max-w-xl mx-auto mb-7">
+                    Browse the current range — every vehicle sourced from Japan,
+                    finished in-house, and backed end to end.
+                  </p>
+                  <motion.div
+                    whileHover={{ y: -1 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="inline-block"
+                  >
+                    <Link
+                      href="/cars"
+                      className="inline-block bg-brand-primary hover:bg-red-700 text-white font-bold px-7 py-3.5 rounded-full transition-colors text-sm"
+                    >
+                      View our cars
+                    </Link>
+                  </motion.div>
+                </div>
               </div>
             </motion.div>
           </div>
         </Container>
       </section>
-
-      <GetInTouch />
     </div>
   );
 }
