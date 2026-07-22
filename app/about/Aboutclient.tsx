@@ -283,7 +283,9 @@ export default function AboutClient() {
       </section>
 
       {/* ── How We Source ─────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <motion.div className="px-6" {...fadeUp}>
             <Eyebrow>How We Source Our Vehicles</Eyebrow>
@@ -396,7 +398,9 @@ export default function AboutClient() {
       </section>
 
       {/* ── What We Stock ─────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6">
             <motion.div className="mb-10" {...fadeUp}>
@@ -443,7 +447,9 @@ export default function AboutClient() {
       </section>
 
       {/* ── What We Stand For ─────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6 ">
             <motion.div className="mb-10" {...fadeUp}>
@@ -484,7 +490,9 @@ export default function AboutClient() {
       </section>
 
       {/* ── Why Japex ─────────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6">
             <motion.div className="mb-10" {...fadeUp}>

@@ -2,6 +2,8 @@
 
 import Container from "@/components/Container";
 import GetInTouch from "@/components/GetInTouch";
+import GlowingTransparentDivTestimonial from "@/components/GlowingTransparentDivTestimonial";
+import GlowingTransparentNoBackground from "@/components/GlowingTransparentNoBackground";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
@@ -91,6 +93,7 @@ const WHY_DIFFERENT = [
     body: "Fair market appraisal on the spot, applied to your deal.",
   },
 ];
+
 const INSPECTION_CHECKS = [
   "Full mechanical inspection",
   "Accident and repair record review",
@@ -145,6 +148,14 @@ const WARRANTY_TIERS = [
     body: "Broader component coverage, electrical systems, and enhanced roadside assistance. Talk to our team about what's right for your vehicle.",
   },
 ];
+
+// ── Small reusable bits ──────────────────────────────────────────────────────
+const Eyebrow = ({ children }: { children: React.ReactNode }) => (
+  <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-primary mb-3 font-dm-sans">
+    {children}
+  </p>
+);
+
 const CheckIcon = () => (
   <svg
     className="w-4 h-4 text-brand-primary shrink-0"
@@ -157,30 +168,23 @@ const CheckIcon = () => (
   </svg>
 );
 
-// ── Small reusable bits ──────────────────────────────────────────────────────
-const Eyebrow = ({ children }: { children: React.ReactNode }) => (
-  <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-primary mb-3 font-montserrat">
-    {children}
-  </p>
-);
-
 export default function FinanceClient() {
   return (
-    <div className="min-h-screen bg-[#efeded] font-dm-sans">
+    <div className="min-h-screen overflow-hidden bg-black font-dm-sans">
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-brand-dark text-white">
-        <div className="pointer-events-none absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brand-primary/20 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-40 -left-20 w-80 h-80 rounded-full bg-brand-primary/10 blur-3xl" />
+      <section className="relative bg-black text-brand-white">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6 py-20 lg:py-28 relative">
+          <div className="px-6 pt-28 pb-16 lg:pt-36 lg:pb-24 relative">
             <motion.div {...fadeUp}>
               <Eyebrow>Experience Life. Drive It Your Way.</Eyebrow>
-              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold font-montserrat leading-[1.05] mb-5 max-w-3xl">
+              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-poppins leading-[1.1] mb-5 max-w-3xl">
                 Finance Without
                 <br />
                 <span className="text-brand-primary">the Headache.</span>
               </h1>
-              <p className="text-base lg:text-lg text-gray-300 max-w-2xl leading-relaxed">
+              <p className="text-base lg:text-lg text-brand-gray max-w-2xl leading-relaxed font-dm-sans">
                 Multiple lenders, one team, zero runaround. We find the right
                 structure for your life — and because compliance is handled
                 in-house, the price you see is the price you pay.
@@ -189,56 +193,17 @@ export default function FinanceClient() {
           </div>
         </Container>
       </section>
-      {/* INSEPCTION CHECKLIST */}
-      {/* <section className="">
-        <Container>
-          <div className="px-6">
-            <motion.div
-              className="mt-10 bg-brand-white rounded-2xl p-6 lg:p-8 border  border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
-              {...fadeUp}
-            >
-              <Eyebrow>OUR TEAM ON THE GROUND IN JAPAN</Eyebrow>
-              <p className="text-normal font-bold text-gray-900 font-montserrat mb-2">
-                Every car personally inspected before it leaves Japan
-              </p>
-              <p className="text-sm text-gray-700 font-montserrat mb-5">
-                We don't rely on auction listings, online photos, or third-party
-                reports. Our dedicated team of inspectors travels throughout
-                Japan to physically assess every vehicle we consider — before a
-                single bid is placed. They check what photos never show: the
-                undercarriage, the engine bay, the full history behind the
-                grade.
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
-                {INSPECTION_CHECKS.map((c) => (
-                  <div
-                    key={c}
-                    className="flex items-center gap-3 text-sm text-gray-700"
-                  >
-                    <CheckIcon />
-                    {c}
-                  </div>
-                ))}
-              </div>
-              <p className="text-sm text-gray-500 italic mt-6 pt-5 border-t border-gray-200">
-                If it doesn't meet our standard on the ground in Japan, it
-                doesn't come to Australia. Simple as that.
-              </p>
-            </motion.div>
-          </div>
-        </Container>
-      </section> */}
 
       {/* ── Our Team On The Ground In Japan ───────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="py-16 lg:py-24">
         <Container>
           <div className="px-6">
-            <motion.div className="" {...fadeUp}>
+            <motion.div {...fadeUp}>
               <Eyebrow>Our Team On The Ground In Japan</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight mb-3">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight mb-3">
                 Every car personally inspected before it leaves Japan.
               </h2>
-              <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
+              <p className="text-sm lg:text-base text-brand-gray leading-relaxed">
                 We don&apos;t rely on auction listings, online photos, or
                 third-party reports. Our dedicated team of inspectors travels
                 throughout Japan to physically assess every vehicle we consider
@@ -248,44 +213,48 @@ export default function FinanceClient() {
               </p>
             </motion.div>
 
-            <motion.div
-              className="mt-10 bg-[#efeded] rounded-2xl p-6 lg:p-8 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
-              {...fadeUp}
-            >
-              {/* <p className="text-sm font-bold text-gray-900 font-montserrat mb-5">
-                Every car personally inspected before it leaves Japan
-              </p> */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
-                {INSPECTION_CHECKS.map((c) => (
-                  <div
-                    key={c}
-                    className="flex items-center gap-3 text-sm text-gray-700"
-                  >
-                    <CheckIcon />
-                    {c}
+            <motion.div className="mt-10" {...fadeUp}>
+              <GlowingTransparentNoBackground border="2xl">
+                <div className="relative overflow-hidden rounded-2xl">
+                  {/* glow — behind, clipped, non-interactive */}
+                  <div className="pointer-events-none absolute -top-48 left-1/2 -translate-x-1/2 w-72 h-72 sm:w-full sm:h-96 rounded-full bg-brand-primary/15 blur-3xl z-0" />
+                  <div className="relative z-10 p-6 lg:p-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+                      {INSPECTION_CHECKS.map((c) => (
+                        <div
+                          key={c}
+                          className="flex items-center gap-3 text-sm text-brand-gray"
+                        >
+                          <CheckIcon />
+                          {c}
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-sm text-brand-gray italic mt-6 pt-5 border-t border-white/10">
+                      If it doesn&apos;t meet our standard on the ground in
+                      Japan, it doesn&apos;t come to Australia. Simple as that.
+                    </p>
                   </div>
-                ))}
-              </div>
-              <p className="text-sm text-gray-500 italic mt-6 pt-5 border-t border-gray-200">
-                If it doesn&apos;t meet our standard on the ground in Japan, it
-                doesn&apos;t come to Australia. Simple as that.
-              </p>
+                </div>
+              </GlowingTransparentNoBackground>
             </motion.div>
           </div>
         </Container>
       </section>
 
       {/* ── Warranty Protection ───────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6">
-            <motion.div className="" {...fadeUp}>
+            <motion.div {...fadeUp}>
               <Eyebrow>Warranty Protection</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight mb-3">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight mb-3">
                 5-Year Warranty — Standard on Every Vehicle
               </h2>
-              <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                <b>
+              <p className="text-sm lg:text-base text-brand-gray leading-relaxed">
+                <b className="text-brand-white">
                   Full peace of mind, provided through our trusted warranty
                   partner, applicable Australia wide.
                 </b>{" "}
@@ -299,7 +268,7 @@ export default function FinanceClient() {
 
             {/* Warranty tiers */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-4"
+              className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8"
               variants={stagger}
               initial="initial"
               whileInView="whileInView"
@@ -309,51 +278,59 @@ export default function FinanceClient() {
                 <motion.div
                   key={t.title}
                   variants={fadeUp}
-                  className="bg-white rounded-2xl p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                  // whileHover={{ y: -2 }}
                 >
-                  <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">
-                    {t.tag}
-                  </p>
-                  <h3 className="text-lg font-bold text-gray-900 font-montserrat mb-2">
-                    {t.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {t.body}
-                  </p>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6">
+                      <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">
+                        {t.tag}
+                      </p>
+                      <h3 className="text-lg font-bold text-brand-white font-poppins mb-2">
+                        {t.title}
+                      </h3>
+                      <p className="text-sm text-brand-gray leading-relaxed">
+                        {t.body}
+                      </p>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
 
             {/* Warranty highlights */}
             <motion.div
-              className="mt-5 bg-brand-dark text-white rounded-2xl p-6 lg:p-7 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 sm:gap-8 text-sm font-semibold relative overflow-hidden"
+              className="mt-5 bg-linear-to-r from-white to-[#CA281C] p-px rounded-2xl"
               {...fadeUp}
             >
-              <div className="pointer-events-none absolute -bottom-16 -right-16 w-48 h-48 rounded-full bg-brand-primary/20 blur-3xl" />
-              <span className="relative flex items-center gap-2">
-                <span className="text-brand-primary">✦</span> Australia-wide
-                coverage
-              </span>
-              <span className="relative flex items-center gap-2">
-                <span className="text-brand-primary">✦</span> Transferable if
-                you sell
-              </span>
-              <span className="relative flex items-center gap-2">
-                <span className="text-brand-primary">✦</span> Upgrade available
-                at any time
-              </span>
+              <div className="relative overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-6 lg:p-7 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 sm:gap-8 text-sm font-semibold text-brand-white">
+                <div className="pointer-events-none absolute -bottom-16 -right-16 w-40 h-40 sm:w-48 sm:h-48 rounded-full bg-brand-primary/20 blur-3xl" />
+                <span className="relative flex items-center gap-2">
+                  <span className="text-brand-primary">✦</span> Australia-wide
+                  coverage
+                </span>
+                <span className="relative flex items-center gap-2">
+                  <span className="text-brand-primary">✦</span> Transferable if
+                  you sell
+                </span>
+                <span className="relative flex items-center gap-2">
+                  <span className="text-brand-primary">✦</span> Upgrade
+                  available at any time
+                </span>
+              </div>
             </motion.div>
           </div>
         </Container>
       </section>
 
       {/* ── How Finance Works ─────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6">
             <motion.div className="max-w-3xl mb-10" {...fadeUp}>
               <Eyebrow>How Finance Works</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 Four steps from conversation to keys.
               </h2>
             </motion.div>
@@ -369,19 +346,23 @@ export default function FinanceClient() {
                 <motion.div
                   key={step.n}
                   variants={fadeUp}
-                  className="bg-brand-white rounded-2xl p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer flex gap-4"
+                  // whileHover={{ y: -2 }}
                 >
-                  <span className="shrink-0 w-fit h-fit py-2 px-4 rounded-xl bg-brand-primary text-white font-black font-montserrat flex items-center justify-center">
-                    {step.n}
-                  </span>
-                  <div>
-                    <h3 className="font-bold text-gray-900 font-montserrat mb-1.5">
-                      {step.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      {step.body}
-                    </p>
-                  </div>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6 flex gap-4 h-full">
+                      <span className="shrink-0 w-fit h-fit py-2 px-4 rounded-xl bg-brand-primary text-white font-black font-poppins flex items-center justify-center">
+                        {step.n}
+                      </span>
+                      <div>
+                        <h3 className="font-bold text-brand-white font-poppins mb-1.5">
+                          {step.title}
+                        </h3>
+                        <p className="text-sm text-brand-gray leading-relaxed">
+                          {step.body}
+                        </p>
+                      </div>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
@@ -390,12 +371,14 @@ export default function FinanceClient() {
       </section>
 
       {/* ── Finance Options ───────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6">
             <motion.div className="max-w-3xl mb-10" {...fadeUp}>
               <Eyebrow>Finance Options</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 A structure for every situation.
               </h2>
             </motion.div>
@@ -411,17 +394,21 @@ export default function FinanceClient() {
                 <motion.div
                   key={o.title}
                   variants={fadeUp}
-                  className="bg-white rounded-2xl p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                  // whileHover={{ y: -2 }}
                 >
-                  <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">
-                    {o.tag}
-                  </p>
-                  <h3 className="text-lg font-bold text-gray-900 font-montserrat mb-2">
-                    {o.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {o.body}
-                  </p>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6">
+                      <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">
+                        {o.tag}
+                      </p>
+                      <h3 className="text-lg font-bold text-brand-white font-poppins mb-2">
+                        {o.title}
+                      </h3>
+                      <p className="text-sm text-brand-gray leading-relaxed">
+                        {o.body}
+                      </p>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
@@ -430,12 +417,14 @@ export default function FinanceClient() {
       </section>
 
       {/* ── Why Our Finance Is Different ──────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6">
             <motion.div className="max-w-3xl mb-10" {...fadeUp}>
               <Eyebrow>Why Our Finance Is Different</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 Built around you, not the lender.
               </h2>
             </motion.div>
@@ -451,23 +440,27 @@ export default function FinanceClient() {
                 <motion.div
                   key={w.title}
                   variants={fadeUp}
-                  className="bg-brand-white rounded-2xl p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                  whileHover={{ y: -2 }}
                 >
-                  <span className="inline-flex items-center justify-center w-fit h-fit p-2 rounded-lg bg-brand-primary text-white font-black font-montserrat text-sm mb-4">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="font-bold text-gray-900 font-montserrat mb-2 leading-snug">
-                    {w.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {w.body}
-                  </p>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6 h-full">
+                      <span className="inline-flex items-center justify-center w-fit h-fit p-2 rounded-lg bg-brand-primary text-brand-white font-black font-poppins text-sm mb-4">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="font-bold text-brand-white font-poppins mb-2 leading-snug">
+                        {w.title}
+                      </h3>
+                      <p className="text-sm text-brand-gray leading-relaxed">
+                        {w.body}
+                      </p>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
 
             <motion.p
-              className="text-xs text-gray-400 italic mt-8 max-w-3xl"
+              className="text-xs text-brand-gray/70 italic mt-8 max-w-3xl"
               {...fadeUp}
             >
               Finance is subject to lender approval. All fees, charges, and
@@ -478,12 +471,14 @@ export default function FinanceClient() {
       </section>
 
       {/* ── Common Questions ──────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6">
             <motion.div className="max-w-3xl mb-10" {...fadeUp}>
               <Eyebrow>Common Questions</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 Straight answers, before you ask.
               </h2>
             </motion.div>
@@ -496,15 +491,17 @@ export default function FinanceClient() {
               viewport={{ once: true, margin: "-80px" }}
             >
               {FAQS.map((f) => (
-                <motion.div
-                  key={f.q}
-                  variants={fadeUp}
-                  className="bg-white rounded-2xl p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
-                >
-                  <h3 className="font-bold text-gray-900 font-montserrat mb-2">
-                    {f.q}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{f.a}</p>
+                <motion.div key={f.q} variants={fadeUp} whileHover={{ y: -2 }}>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6">
+                      <h3 className="font-bold text-brand-white font-poppins mb-2">
+                        {f.q}
+                      </h3>
+                      <p className="text-sm text-brand-gray leading-relaxed">
+                        {f.a}
+                      </p>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
@@ -515,35 +512,72 @@ export default function FinanceClient() {
       {/* ── CTA ───────────────────────────────────────────────────────────── */}
       <section className="pb-20">
         <Container>
-          <div className="px-6">
+          <div className="px-6 ">
             <motion.div
-              className="bg-brand-dark text-white rounded-2xl p-8 lg:p-12 text-center relative overflow-hidden"
               {...fadeUp}
+              className=" bg-linear-to-r from-white to-[#CA281C] p-px rounded-2xl"
             >
-              <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-brand-primary/20 blur-3xl" />
-              <div className="relative">
-                <p className="text-brand-primary font-montserrat font-bold text-sm uppercase tracking-[0.25em] mb-4">
-                  Experience Life.
-                </p>
-                <h2 className="text-2xl lg:text-3xl font-extrabold font-montserrat mb-3">
-                  Ready to experience life?
-                </h2>
-                <p className="text-gray-300 text-sm lg:text-base max-w-xl mx-auto mb-7">
-                  No jargon. No pressure. Just the best options we can find you.
-                </p>
-                <Link
-                  href="/cars"
-                  className="inline-block bg-brand-primary hover:bg-red-700 text-white font-bold px-7 py-3.5 rounded-xl transition-colors text-sm"
-                >
-                  View our cars
-                </Link>
+              <div className="relative overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-8 lg:p-12 text-center">
+                <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+                <div className="relative">
+                  <p className="text-brand-primary font-dm-sans font-bold text-sm uppercase tracking-[0.25em] mb-4">
+                    Experience Life.
+                  </p>
+                  <h2 className="text-2xl lg:text-3xl font-bold font-poppins mb-3 text-brand-white">
+                    Ready to experience life?
+                  </h2>
+                  <p className="text-brand-gray text-sm lg:text-base max-w-xl mx-auto mb-7">
+                    No jargon. No pressure. Just the best options we can find
+                    you.
+                  </p>
+                  <motion.button
+                    whileHover={"hover"}
+                    whileTap={{ scale: 0.98 }}
+                    className="inline-block"
+                  >
+                    <Link
+                      href="/cars"
+                      className="flex items-center gap-2 bg-brand-primary hover:bg-red-700 text-white font-bold px-7 py-3.5 rounded-full transition-colors text-sm"
+                    >
+                      View our cars
+                      <motion.span
+                        variants={{
+                          rest: { rotate: 0 },
+                          hover: { rotate: 45 },
+                        }}
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-white"
+                      >
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M7 7h10v10"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M7 17 17 7"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </motion.span>
+                    </Link>
+                  </motion.button>
+                </div>
               </div>
             </motion.div>
           </div>
         </Container>
       </section>
-
-      <GetInTouch />
     </div>
   );
 }
