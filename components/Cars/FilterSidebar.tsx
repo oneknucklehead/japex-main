@@ -270,9 +270,10 @@ function RangeRow({
 interface Props {
   filters: CarFilters;
   onChange: (f: CarFilters) => void;
+  total?: number;
 }
 
-export default function FilterSidebar({ filters, onChange }: Props) {
+export default function FilterSidebar({ filters, onChange, total }: Props) {
   const [search, setSearch] = useState(filters.search ?? "");
   const set = (p: Partial<CarFilters>) => onChange({ ...filters, ...p });
 
