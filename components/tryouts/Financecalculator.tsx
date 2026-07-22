@@ -136,33 +136,41 @@ export default function FinanceCalculator({ car }: Props) {
                     {TERM_OPTIONS.map((year) => {
                       const active = year === termYears;
                       return (
-                        <motion.button
+                        <div
                           key={year}
-                          type="button"
-                          onClick={() => setTermYears(year)}
-                          whileTap={{ scale: 0.9 }}
-                          whileHover={{ scale: active ? 1 : 1.06 }}
-                          className={`relative flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
-                            active
-                              ? "bg-red-600 text-white"
-                              : "bg-white/5 text-white/70 hover:bg-white/10"
-                          }`}
+                          className="p-px bg-linear-to-r from-white to-[#666666] rounded-full"
                         >
-                          {active && (
-                            <motion.span
-                              layoutId="term-active"
-                              className="absolute inset-0 rounded-full bg-red-600"
-                              transition={{
-                                type: "spring",
-                                stiffness: 400,
-                                damping: 28,
-                              }}
-                            />
-                          )}
-                          <span className="relative font-bricolage">
-                            {year}
-                          </span>
-                        </motion.button>
+                          <motion.button
+                            type="button"
+                            onClick={() => setTermYears(year)}
+                            whileTap={{ scale: 0.9 }}
+                            // whileHover={{ scale: active ? 1 : 1.06 }}
+                            className={`relative flex h-9 px-6 items-center justify-center rounded-full text-sm font-semibold transition-colors
+                             cursor-pointer shadow-sm hover:shadow-md duration-300 z-10 
+                            hover:bg-linear-to-b hover:from-black hover:to-brand-primary
+                            bg-linear-to-b from-black to-[#313131]
+                            ${
+                              active
+                                ? "bg-linear-to-b from-black to-brand-primary"
+                                : "bg-linear-to-b from-black to-[#313131]"
+                            }`}
+                          >
+                            {active && (
+                              <motion.span
+                                layoutId="term-active"
+                                className="absolute inset-0 rounded-full"
+                                transition={{
+                                  type: "spring",
+                                  stiffness: 400,
+                                  damping: 28,
+                                }}
+                              />
+                            )}
+                            <span className="relative font-bricolage">
+                              {year}
+                            </span>
+                          </motion.button>
+                        </div>
                       );
                     })}
                   </div>
@@ -176,9 +184,11 @@ export default function FinanceCalculator({ car }: Props) {
                         Slide between {MIN_RATE}% and {MAX_RATE}%
                       </p>
                     </div>
-                    <div className="rounded-full font-bricolage border border-white/20 px-4 py-1.5 text-sm font-semibold">
+                    {/* <div className="p-px bg-linear-to-r from-white to-[#666666] rounded-xl"> */}
+                    <div className="rounded-xl border border-white font-bricolage px-4 py-1.5 text-sm font-semibold">
                       {interestRate}%
                     </div>
+                    {/* </div> */}
                   </div>
 
                   <div className="relative mt-4 flex h-5 items-center">

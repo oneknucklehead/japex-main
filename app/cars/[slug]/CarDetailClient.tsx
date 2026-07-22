@@ -93,11 +93,11 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
     interestRate: 10, // match default rate
     frequency: "weekly",
   });
-  const cardRef = useRef(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(50); // percent
   const mouseY = useMotionValue(50); // percent
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = cardRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
