@@ -4,7 +4,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import type { Car } from "@/types/car";
-import CarCardFirst from "./CarCardFirst";
+import CarCard from "../Cars/CarCard";
 
 interface Props {
   cars: Car[];
@@ -30,7 +30,13 @@ export default function CarCarousel({ cars }: Props) {
     if (!emblaApi) return;
     emblaApi.on("select", updateButtons);
     emblaApi.on("reInit", updateButtons);
-    updateButtons();
+    emblaApi.on("init", updateButtons);
+
+    return () => {
+      emblaApi.off("select", updateButtons);
+      emblaApi.off("reInit", updateButtons);
+      emblaApi.off("init", updateButtons);
+    };
   }, [emblaApi, updateButtons]);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
