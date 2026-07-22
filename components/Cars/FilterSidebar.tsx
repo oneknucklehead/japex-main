@@ -295,11 +295,12 @@ export default function FilterSidebar({ filters, onChange, total }: Props) {
     filters.condition?.length,
     filters.availability?.length,
   ].filter(Boolean).length;
-  const cardRef = useRef(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(50); // percent
   const mouseY = useMotionValue(50); // percent
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
