@@ -6,10 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { bricolage, dm_sans, koulen, montserrat, poppins } from "@/styles/font";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Image from "next/image";
 
-import lightshardLeft from "../assets/lightshardleft.png";
-import lightshardRight from "../assets/lightshardright.png";
 import ContactCTA from "@/sections/common/ContactCTA";
 import Testimonials from "@/sections/home/Testimonials";
 

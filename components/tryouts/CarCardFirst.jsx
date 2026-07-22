@@ -1,8 +1,6 @@
 "use client";
 import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
 import { useRef } from "react";
-// import { ArrowUpRight } from "lucide-react";
-import imgsrc from "../../assets/images/tryoutimg.png";
 
 import BlurRevealText from "./BlurRevealText";
 import { formatOdometer, formatPrice, getCoverImage } from "@/utils/helpers";
@@ -76,13 +74,6 @@ export default function CarCardFirst({ car }) {
         />
 
         <div className="relative flex items-center justify-center">
-          <div className="absolute top-4 left-4 z-10">
-            <BlurRevealText delay={0.2}>
-              <div className=" bg-red-700 text-white px-3 py-1 rounded-full text-xs font-semibold ">
-                New
-              </div>
-            </BlurRevealText>
-          </div>
           <div className="relative w-full aspect-video overflow-hidden">
             {coverImage ? (
               <Image
@@ -101,7 +92,7 @@ export default function CarCardFirst({ car }) {
             )}
 
             {/* Badges — availability takes priority over Sale/Featured */}
-            <div className="absolute top-4 left-4 flex gap-2">
+            <div className="absolute font-dm-sans top-4 left-4 flex gap-2">
               {car?.availability === "Sold out" ? (
                 <span className="bg-gray-800 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
                   Sold
@@ -111,10 +102,12 @@ export default function CarCardFirst({ car }) {
                   Coming Soon
                 </span>
               ) : car?.was_price ? (
+                // <div className="flex justify-between bg-amber-200">
                 <span className="bg-brand-primary text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-                  Sale
+                  Save ${car.was_price - car.price}!
                 </span>
-              ) : car?.is_featured ? (
+              ) : // </div>
+              car?.is_featured ? (
                 <span className="bg-brand-primary text-white text-xs font-semibold px-2.5 py-1 rounded-full">
                   Featured
                 </span>
@@ -127,6 +120,15 @@ export default function CarCardFirst({ car }) {
           <motion.div className="relative w-full h-full ">
             <div className="w-full font-bricolage h-full flex flex-col gap-1 items-center justify-start text-white p-4">
               <div className="flex items-center justify-center flex-col">
+                {car?.was_price && (
+                  <BlurRevealText delay={0.2}>
+                    <div className="font-dm-sans">
+                      <span className="bg-brand-primary text-white text-sm font-semibold px-2.5 py-1 rounded-full">
+                        On sale!
+                      </span>
+                    </div>
+                  </BlurRevealText>
+                )}
                 <BlurRevealText delay={0.3}>
                   <h3 className="text-center font-semibold text-[#CA281C] text-xl uppercase">
                     {car?.make}
@@ -165,64 +167,47 @@ export default function CarCardFirst({ car }) {
                     <p className="text-[#A2A2A2] flex">{car?.fuel_type}</p>
                   </BlurRevealText>
                 </div>
-                {/* <div className="flex items-center gap-2">
-              <BlurRevealText delay={0.6}>
-                <p className="text-[#A2A2A2]">34,111 km</p>
-              </BlurRevealText>
-              <BlurRevealText delay={0.7}>
-                <div className="w-1 h-1  bg-[#CA281C] rounded-full"></div>
-              </BlurRevealText>
-              <BlurRevealText delay={0.8}>
-                <p className="text-[#A2A2A2]">Automatic</p>
-              </BlurRevealText>
-              <BlurRevealText delay={0.85}>
-                <div className="w-1 h-1  bg-[#CA281C] rounded-full"></div>
-              </BlurRevealText>
-              <BlurRevealText delay={0.9}>
-                <p className="text-[#A2A2A2]">Petrol</p>
-              </BlurRevealText>
-            </div> */}
               </div>
-
-              <motion.button className="mt-auto cursor-pointer flex items-center bg-brand-primary hover:bg-[#CA281C]/80 transition-all duration-300 p-2 rounded-full justify-between w-full">
-                <BlurRevealText delay={1}>
-                  {/* <p className="text-2xl font-bold ml-2">$42,100</p> */}
-                  {car?.was_price && (
-                    <p className="text-xs text-gray-400 line-through">
-                      {formatPrice(car?.was_price)}
-                    </p>
-                  )}
-                  {car?.availability === "Sold out" ? (
-                    <p className="text-2xl font-bold ml-2">Sold Out</p>
-                  ) : (
-                    <p className="text-2xl font-bold ml-2">
-                      {formatPrice(car?.price)}
-                    </p>
-                  )}
-                </BlurRevealText>
-                <BlurRevealText delay={1.1}>
-                  <motion.div className="flex text-sm group/button items-center  gap-1 rounded-full bg-white p-1 font-semibold text-black">
-                    <p className="ml-2">View More</p>
-                    <span className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="group-hover/button:rotate-45 transition-all duration-300 lucide lucide-arrow-up-right-icon lucide-arrow-up-right"
-                      >
-                        <path d="M7 7h10v10" />
-                        <path d="M7 17 17 7" />
-                      </svg>
-                    </span>
-                  </motion.div>
-                </BlurRevealText>
-              </motion.button>
+              <div className="w-full mt-auto flex justify-start items-start flex-col">
+                <motion.button className="mt-auto cursor-pointer flex items-center bg-brand-primary hover:bg-[#CA281C]/80 transition-all duration-300 p-2 rounded-full justify-between w-full">
+                  <BlurRevealText delay={1}>
+                    {/* <p className="text-2xl font-bold ml-2">$42,100</p> */}
+                    <div className="flex flex-col items-start">
+                      {car?.availability === "Sold out" ? (
+                        <p className="text-2xl font-bold ml-2">Sold Out</p>
+                      ) : (
+                        <div className="flex flex-col items-start">
+                          <span className="text-2xl font-bold  ml-2">
+                            {formatPrice(car?.price)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </BlurRevealText>
+                  <BlurRevealText delay={1.1}>
+                    <motion.div className="flex text-sm group/button items-center  gap-1 rounded-full bg-white p-1 font-semibold text-black">
+                      <p className="ml-2">View More</p>
+                      <span className="">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="group-hover/button:rotate-45 transition-all duration-300 lucide lucide-arrow-up-right-icon lucide-arrow-up-right"
+                        >
+                          <path d="M7 7h10v10" />
+                          <path d="M7 17 17 7" />
+                        </svg>
+                      </span>
+                    </motion.div>
+                  </BlurRevealText>
+                </motion.button>
+              </div>
             </div>
           </motion.div>
         </div>

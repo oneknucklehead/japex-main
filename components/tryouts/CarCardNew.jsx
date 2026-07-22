@@ -59,27 +59,6 @@ export default function CarCardNew({ car }) {
                 <span className="text-5xl">🚗</span>
               </div>
             )}
-
-            {/* Badges — availability takes priority over Sale/Featured */}
-            <div className="absolute top-4 left-4 z-20 flex gap-2">
-              {car?.availability === "Sold out" ? (
-                <span className="bg-gray-800 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-                  Sold
-                </span>
-              ) : car?.availability === "Coming soon" ? (
-                <span className="bg-amber-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-                  Coming Soon
-                </span>
-              ) : car?.was_price ? (
-                <span className="bg-brand-primary text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-                  Sale
-                </span>
-              ) : car?.is_featured ? (
-                <span className="bg-brand-primary text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-                  Featured
-                </span>
-              ) : null}
-            </div>
           </div>
         </div>
 
@@ -113,10 +92,28 @@ export default function CarCardNew({ car }) {
               WebkitBackdropFilter: "blur(61.8px)",
             }}
           >
-            <div className="absolute -top-3 z-20 left-1/2 -translate-x-1/2 bg-brand-primary text-white px-3 py-1 rounded-full text-xs font-semibold">
-              New
+            {/* Badges — availability takes priority over Sale/Featured */}
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20 flex gap-2 font-dm-sans">
+              {car?.availability === "Sold out" ? (
+                <span className="bg-gray-800 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                  Sold
+                </span>
+              ) : car?.availability === "Coming soon" ? (
+                <span className="bg-amber-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                  Coming Soon
+                </span>
+              ) : car?.was_price ? (
+                <div>
+                  <span className="bg-brand-primary text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                    Save ${car.was_price - car.price}
+                  </span>
+                </div>
+              ) : car?.is_featured ? (
+                <span className="bg-brand-primary text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                  Featured
+                </span>
+              ) : null}
             </div>
-
             <motion.div
               className="pointer-events-none absolute -bottom-10 left-0 right-0 h-40"
               variants={{
@@ -165,11 +162,11 @@ export default function CarCardNew({ car }) {
 
               <div className="mt-auto flex items-center justify-between w-full">
                 <BlurRevealText delay={1}>
-                  {car?.was_price && (
+                  {/* {car?.was_price && (
                     <p className="text-xs text-gray-400 line-through">
                       {formatPrice(car?.was_price)}
                     </p>
-                  )}
+                  )} */}
                   {car?.availability === "Sold out" ? (
                     <p className="text-2xl font-bold ml-2">Sold Out</p>
                   ) : (
