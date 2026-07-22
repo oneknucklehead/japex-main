@@ -5,6 +5,9 @@ import { useRef } from "react";
 export default function GlowingTransparentDivTestimonial({
   children,
   border = "full",
+}: {
+  children: React.ReactNode;
+  border?: string;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(50); // percent
