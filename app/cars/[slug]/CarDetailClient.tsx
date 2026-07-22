@@ -18,13 +18,7 @@ import CarImageGallery from "@/components/Cars/CarImageGallery";
 import PopularFeaturesCarousel from "@/components/Cars/PopularFeaturesCarousel";
 import EnquiryModal from "@/components/Cars/EnquiryModal";
 import Container from "@/components/Container";
-import {
-  AssuranceIcon,
-  DeliveryIcon,
-  ExpertIcon,
-  GuaranteeIcon,
-  WarrantyIcon,
-} from "@/components/Icons/Icons";
+import { AssuranceIcon } from "@/components/Icons/Icons";
 import GlowingTransparentdiv from "@/components/GlowingTransparentdiv";
 import googleLogo from "../../../assets/googleLogo2.png";
 import Image from "next/image";

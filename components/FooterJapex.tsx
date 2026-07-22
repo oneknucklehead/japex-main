@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -8,15 +7,6 @@ import footerLogo from "../assets/footerlogo.png";
 import lightshardLeft from "../assets/lightshardleft.png";
 import lightshardRight from "../assets/lightshardright.png";
 import Container from "./Container";
-
-const FOOTER_LINKS = [
-  "Find a Car",
-  "About",
-  "Contact",
-  "Finance",
-  "Service & Parts",
-];
-
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   show: (i: number = 0) => ({

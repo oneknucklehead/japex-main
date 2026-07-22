@@ -1,11 +1,6 @@
 "use client";
 import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
 import { useRef } from "react";
-// import { ArrowUpRight } from "lucide-react";
-import imgsrc from "../../assets/images/tryoutimg.png";
-
-import BlurRevealText from "./BlurRevealText";
-
 export default function GlowingTransparentdiv({
   children,
   border = "full",
