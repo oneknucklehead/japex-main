@@ -41,34 +41,42 @@ const SkeletonCard = () => (
 function CarsPageInner() {
   const searchParams = useSearchParams();
   const body = searchParams.get("body");
+  const brand = searchParams.get("brand"); // ← add
 
   const [filters, setFilters] = useState<CarFilters>({
     sortBy: "newest",
     availability: ["In stock", "Coming soon"],
     ...(body ? { bodyTypes: [body] } : {}),
+    ...(brand ? { make: [brand] } : {}), // ← add
   });
 
-  // const [filters, setFilters] = useState<CarFilters>({
-  //   sortBy: "newest",
-  //   availability: ["In stock", "Coming soon"],
-  // });
   const [page, setPage] = useState(1);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const { cars, loading, total, totalPages } = useCarFilters(filters, page);
 
-  // Reset to page 1 when filters change
   const handleFiltersChange = (f: CarFilters) => {
     setFilters(f);
     setPage(1);
   };
   // Re-apply the body filter whenever the URL param changes
   const [prevBody, setPrevBody] = useState(body);
-  if (body !== prevBody) {
+  const [prevBrand, setPrevBrand] = useState(brand); // ← add
+  if (body !== prevBody || brand !== prevBrand) {
     setPrevBody(body);
-    setFilters((f) => ({ ...f, bodyTypes: body ? [body] : undefined }));
+    setPrevBrand(brand); // ← add
+    setFilters((f) => ({
+      ...f,
+      bodyTypes: body ? [body] : undefined,
+      make: brand ? [brand] : undefined, // ← add
+    }));
     setPage(1);
   }
+  // if (body !== prevBody) {
+  //   setPrevBody(body);
+  //   setFilters((f) => ({ ...f, bodyTypes: body ? [body] : undefined }));
+  //   setPage(1);
+  // }
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page]);

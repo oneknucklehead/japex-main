@@ -75,7 +75,7 @@ export default function Footer() {
       links: [
         { label: "Toyota", href: "/cars?brand=Toyota" },
         { label: "Hyundai", href: "/cars?brand=Hyundai" },
-        { label: "Mitshubishi", href: "/cars?brand=Mitshubishi" },
+        { label: "Mitsubishi", href: "/cars?brand=Mitsubishi" },
         { label: "Mazda", href: "/cars?brand=Mazda" },
         { label: "Kia", href: "/cars?brand=Kia" },
         { label: "Ford", href: "/cars?brand=Ford" },
@@ -89,7 +89,6 @@ export default function Footer() {
         { label: "Sedan", href: "/cars?body=Sedan" },
         { label: "Campervans / Vans", href: "/cars?body=Van" },
         { label: "People Mover / Wagon", href: "/cars?body=Wagon" },
-        { label: "Prestige", href: "/cars?type=Prestige" },
         { label: "Hatchbacks", href: "/cars?body=Hatchback" },
         { label: "All", href: "/cars" },
       ],
@@ -98,11 +97,8 @@ export default function Footer() {
       title: "Explore",
       links: [
         { label: "Service & Parts", href: "/service-and-parts" },
-        { label: "Why Japex", href: "/why-japex" },
-        { label: "Warranty", href: "/warranty" },
+        { label: "Why Japex", href: "/about" },
         { label: "Car Financing", href: "/finance" },
-        { label: "Quality Standards", href: "/quality-standards" },
-        { label: "Blogs", href: "/blogs" },
       ],
     },
     {
@@ -110,9 +106,6 @@ export default function Footer() {
       links: [
         { label: "Contact us", href: "/contact" },
         { label: "About us", href: "/about" },
-        { label: "FAQs", href: "/faqs" },
-        { label: "Partnerships", href: "/partnerships" },
-        { label: "Careers", href: "/careers" },
       ],
     },
   ];

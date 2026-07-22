@@ -27,13 +27,20 @@ export default function ServiceCardTwo({
         boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.25)",
       }}
     >
-      {/* red glow rising from bottom */}
-      <div
+      {/* grey glow rising from bottom */}
+      <motion.div
         className="pointer-events-none absolute inset-0 rounded-[28px]"
-        style={{
-          background:
-            "radial-gradient(120% 70% at 50% 100%, #6b6b6b 0%, #2a2a2a 35%, transparent 70%)",
+        variants={{
+          rest: {
+            background:
+              "radial-gradient(120% 70% at 50% 100%, #6b6b6b 0%, #2a2a2a 35%, transparent 70%)",
+          },
+          hover: {
+            background:
+              "radial-gradient(140% 85% at 50% 100%, #9a9a9a 0%, #454545 40%, transparent 75%)",
+          },
         }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       />
 
       {/* vehicle image — contained, sits in top ~60% */}
@@ -59,7 +66,7 @@ export default function ServiceCardTwo({
         <h3 className="font-montserrat text-xl font-bold leading-snug text-white sm:text-2xl">
           {headline}
         </h3>
-        <p className="mt-3 max-w-[75%] font-bricolage text-sm font-medium leading-snug text-neutral-400">
+        <p className="mt-3 max-w-[75%] font-bricolage text-sm font-medium leading-snug text-white/70">
           {subtext}
         </p>
       </div>

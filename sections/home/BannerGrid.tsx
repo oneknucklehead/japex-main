@@ -17,6 +17,7 @@ const BannerGrid = () => {
             headline={
               "Your Trusted Source for Quality Car Parts & Global Export Services"
             }
+            href="/service-and-parts"
           />
           {/* </div> */}
           <ServiceCardTwo
@@ -24,6 +25,7 @@ const BannerGrid = () => {
             headline={
               "Car Finance Made Simple with Our Expert Team & Financing Options"
             }
+            href="/finance"
           />
         </div>
       </div>

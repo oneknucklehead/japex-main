@@ -9,11 +9,11 @@ import Link from "next/link";
 
 export default function CarCardFirst({ car }) {
   const cardRef = useRef(null);
-  const mouseX = useMotionValue(50); // percent
-  const mouseY = useMotionValue(50); // percent
+  const mouseX = useMotionValue(50);
+  const mouseY = useMotionValue(50);
   const href = `/cars/${car?.slug}`;
   const coverImage = getCoverImage(car);
-  const priority = car?.is_featured; // Prioritize loading if it's a featured car
+  const priority = car?.is_featured;
   const handleMouseMove = (e) => {
     const rect = cardRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -104,7 +104,7 @@ export default function CarCardFirst({ car }) {
               ) : car?.was_price ? (
                 // <div className="flex justify-between bg-amber-200">
                 <span className="bg-brand-primary text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-                  Save ${car.was_price - car.price}!
+                  Save ${car.was_price - car.price}
                 </span>
               ) : // </div>
               car?.is_featured ? (
