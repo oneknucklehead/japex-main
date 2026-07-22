@@ -37,6 +37,7 @@ interface CarFormData {
   is_featured: boolean;
   is_published: boolean;
   availability: "In stock" | "Coming soon" | "Sold out";
+  extended_warranty: boolean; // ← add
 }
 
 interface UploadedImage {
@@ -71,6 +72,7 @@ const DEFAULTS: CarFormData = {
   is_featured: false,
   is_published: true,
   availability: "In stock",
+  extended_warranty: false, // ← add
 };
 
 const SELECT_OPTS = {
