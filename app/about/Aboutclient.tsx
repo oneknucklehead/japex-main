@@ -264,10 +264,10 @@ export default function AboutClient() {
               <motion.div
                 key={s.label}
                 variants={fadeUp}
-                whileHover={{ y: -2 }}
+                // whileHover={{ y: -2 }}
               >
                 <GlowingTransparentDivTestimonial border="2xl">
-                  <div className="reltaive p-4 sm:p-6 text-center">
+                  <div className="relative p-4 sm:p-6 text-center">
                     <p className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-gray font-poppins leading-tight wrap-break-word">
                       {s.value}
                     </p>
@@ -351,7 +351,7 @@ export default function AboutClient() {
                 <motion.div
                   key={step.n}
                   variants={fadeUp}
-                  whileHover={{ y: -2 }}
+                  // whileHover={{ y: -2 }}
                 >
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6 flex gap-4 h-full">
@@ -424,7 +424,7 @@ export default function AboutClient() {
                 <motion.div
                   key={s.title}
                   variants={fadeUp}
-                  whileHover={{ y: -2 }}
+                  // whileHover={{ y: -2 }}
                 >
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6">
@@ -470,7 +470,7 @@ export default function AboutClient() {
                 <motion.div
                   key={v.title}
                   variants={fadeUp}
-                  whileHover={{ y: -2 }}
+                  // whileHover={{ y: -2 }}
                 >
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6">
@@ -513,7 +513,7 @@ export default function AboutClient() {
                 <motion.div
                   key={w.title}
                   variants={fadeUp}
-                  whileHover={{ y: -2 }}
+                  // whileHover={{ y: -2 }}
                 >
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6 h-full">
@@ -556,18 +556,51 @@ export default function AboutClient() {
                     Browse the current range — every vehicle sourced from Japan,
                     finished in-house, and backed end to end.
                   </p>
-                  <motion.div
-                    whileHover={{ y: -1 }}
+                  <motion.button
+                    whileHover={"hover"}
                     whileTap={{ scale: 0.98 }}
                     className="inline-block"
                   >
                     <Link
                       href="/cars"
-                      className="inline-block bg-brand-primary hover:bg-red-700 text-white font-bold px-7 py-3.5 rounded-full transition-colors text-sm"
+                      className="flex items-center gap-2 bg-brand-primary hover:bg-red-700 text-white font-bold pl-4 pr-2 py-2 rounded-full transition-colors duration-300 text-sm"
                     >
                       View our cars
+                      <motion.span
+                        variants={{
+                          rest: { rotate: 0 },
+                          hover: { rotate: 45 },
+                        }}
+                        transition={{
+                          duration: 0.3,
+                          ease: [0.22, 1, 0.36, 1] as const,
+                        }}
+                        className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-white"
+                      >
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M7 7h10v10"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M7 17 17 7"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </motion.span>
                     </Link>
-                  </motion.div>
+                  </motion.button>
                 </div>
               </div>
             </motion.div>

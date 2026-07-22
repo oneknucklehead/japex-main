@@ -440,7 +440,7 @@ export default function FinanceClient() {
                 <motion.div
                   key={w.title}
                   variants={fadeUp}
-                  whileHover={{ y: -2 }}
+                  // whileHover={{ y: -2 }}
                 >
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6 h-full">
@@ -491,7 +491,7 @@ export default function FinanceClient() {
               viewport={{ once: true, margin: "-80px" }}
             >
               {FAQS.map((f) => (
-                <motion.div key={f.q} variants={fadeUp} whileHover={{ y: -2 }}>
+                <motion.div key={f.q} variants={fadeUp}>
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6">
                       <h3 className="font-bold text-brand-white font-poppins mb-2">
@@ -537,7 +537,7 @@ export default function FinanceClient() {
                   >
                     <Link
                       href="/cars"
-                      className="flex items-center gap-2 bg-brand-primary hover:bg-red-700 text-white font-bold px-7 py-3.5 rounded-full transition-colors text-sm"
+                      className="flex items-center gap-2 bg-brand-primary hover:bg-red-700 text-white font-bold pl-4 pr-2 py-2 rounded-full transition-colors duration-300 text-sm"
                     >
                       View our cars
                       <motion.span

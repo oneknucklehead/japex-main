@@ -2,6 +2,8 @@
 
 import Container from "@/components/Container";
 import GetInTouch from "@/components/GetInTouch";
+import GlowingTransparentDivTestimonial from "@/components/GlowingTransparentDivTestimonial";
+import GlowingTransparentNoBackground from "@/components/GlowingTransparentNoBackground";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -152,23 +154,60 @@ const FAQS = [
 
 // ── Small reusable bits ──────────────────────────────────────────────────────
 const Eyebrow = ({ children }: { children: React.ReactNode }) => (
-  <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-primary mb-3 font-montserrat">
+  <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-primary mb-3 font-dm-sans">
     {children}
   </p>
 );
 
-const FeaturePill = ({
-  children,
-  color,
-}: {
-  children: React.ReactNode;
-  color: string;
-}) => (
-  <span
-    className={`inline-flex items-center text-xs font-semibold text-gray-700 bg-${color} border border-gray-200 rounded-lg px-3 py-1.5`}
-  >
-    {children}
+const FeaturePill = ({ children }: { children: React.ReactNode }) => (
+  <span className="bg-linear-to-r from-white to-[#666666] p-px rounded-[9px]">
+    <span className="inline-flex items-center text-xs font-semibold text-brand-gray bg-linear-to-b hover:bg-linear-to-b hover:from-[#313131] hover:to-black transition-colors duration-300 from-black to-[#313131]  rounded-lg px-3 py-1.5">
+      {children}
+    </span>
   </span>
+);
+
+const ArrowButton = ({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) => (
+  <motion.div
+    whileHover="hover"
+    whileTap={{ scale: 0.98 }}
+    className="inline-block"
+  >
+    <Link
+      href={href}
+      className="w-full flex items-center justify-between gap-2 bg-brand-primary hover:bg-red-700 text-white font-bold pl-4 pr-2 py-2 rounded-full duration-300 transition-colors text-sm"
+    >
+      {children}
+      <motion.span
+        variants={{ rest: { rotate: 0 }, hover: { rotate: 45 } }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as const }}
+        className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-white"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M7 7h10v10"
+            stroke="black"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M7 17 17 7"
+            stroke="black"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </motion.span>
+    </Link>
+  </motion.div>
 );
 
 export default function ServiceClient() {
@@ -177,22 +216,21 @@ export default function ServiceClient() {
   const logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${logoPath}`;
 
   return (
-    <div className="min-h-screen bg-[#efeded] font-dm-sans">
+    <div className="min-h-screen overflow-hidden bg-black font-dm-sans">
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-brand-dark text-white">
-        {/* subtle red glow */}
-        <div className="pointer-events-none absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brand-primary/20 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-40 -left-20 w-80 h-80 rounded-full bg-brand-primary/10 blur-3xl" />
+      <section className="relative bg-black text-brand-white">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6 py-20 lg:py-28 relative">
+          <div className="px-6 pt-28 pb-16 lg:pt-36 lg:pb-24 relative">
             <motion.div {...fadeUp}>
               <Eyebrow>Experience Life. Keep Experiencing It.</Eyebrow>
-              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold font-montserrat leading-[1.05] mb-5 max-w-3xl">
+              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-poppins leading-[1.1] mb-5 max-w-3xl">
                 The Same Care That Built It,
                 <br />
                 <span className="text-brand-primary">Keeps It Running.</span>
               </h1>
-              <p className="text-base lg:text-lg text-brand-white-alternate max-w-2xl leading-relaxed">
+              <p className="text-base lg:text-lg text-brand-gray max-w-2xl leading-relaxed font-dm-sans">
                 Your Japex vehicle was hand-selected in Japan, inspected by our
                 own team, and finished in our workshop. That same workshop is
                 here for the life of your car — Central Coast born,
@@ -205,18 +243,20 @@ export default function ServiceClient() {
       </section>
 
       {/* ── Why It Matters ────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="relative py-16 lg:py-24">
+        {/* <div className="pointer-events-none absolute bottom-0 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/15 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-0 -right-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/15 blur-3xl" /> */}
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 px-6">
             <motion.div className="lg:col-span-5" {...fadeUp}>
               <Eyebrow>Why It Matters</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-black font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 A car is never just a car.
               </h2>
             </motion.div>
 
             <motion.div
-              className="lg:col-span-7 space-y-4 text-sm lg:text-base text-gray-500 leading-relaxed"
+              className="lg:col-span-7 space-y-4 text-sm lg:text-base text-brand-gray leading-relaxed"
               {...fadeUp}
             >
               <p>
@@ -234,7 +274,7 @@ export default function ServiceClient() {
               </p>
 
               <blockquote className="border-l-4 border-brand-primary pl-5 py-1 my-6">
-                <p className="text-lg lg:text-xl font-semibold text-gray-900 font-montserrat italic">
+                <p className="text-lg lg:text-xl font-semibold text-brand-white font-poppins italic">
                   &ldquo;We don&apos;t just hand over the keys and wave goodbye.
                   We&apos;re still here — long after the sale, for as long as
                   you own the car.&rdquo;
@@ -246,15 +286,17 @@ export default function ServiceClient() {
       </section>
 
       {/* ── Mechanics Who Know These Cars ─────────────────────────────────── */}
-      <section className="py-16 lg:py-24">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6">
-            <motion.div className="" {...fadeUp}>
+            <motion.div {...fadeUp}>
               <Eyebrow>Mechanics Who Know These Cars</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight mb-3">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight mb-3">
                 We know these vehicles inside out.
               </h2>
-              <div className="space-y-4 text-sm lg:text-base text-gray-600 leading-relaxed">
+              <div className="space-y-4 text-sm lg:text-base text-brand-gray leading-relaxed">
                 <p>
                   Japanese-imported vehicles aren&apos;t the same as the cars
                   most Australian workshops see every day. Different
@@ -291,14 +333,18 @@ export default function ServiceClient() {
                 <motion.div
                   key={s.label}
                   variants={fadeUp}
-                  className="bg-white rounded-2xl p-4 sm:p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-center"
+                  // whileHover={{ y: -2 }}
                 >
-                  <p className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-primary font-montserrat leading-tight wrap-break-word">
-                    {s.value}
-                  </p>
-                  <p className="text-xs lg:text-sm text-gray-500 mt-1">
-                    {s.label}
-                  </p>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="relative p-4 sm:p-6 text-center">
+                      <p className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-gray font-poppins leading-tight wrap-break-word">
+                        {s.value}
+                      </p>
+                      <p className="text-xs lg:text-base font-semibold text-brand-primary mt-1">
+                        {s.label}
+                      </p>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
@@ -307,15 +353,17 @@ export default function ServiceClient() {
       </section>
 
       {/* ── Our Specialty: Delica & Hiace ─────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6">
             <motion.div className="mb-10" {...fadeUp}>
-              <Eyebrow>Our Specialty: Delica & Hiace</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight mb-3">
+              <Eyebrow>Our Specialty: Delica &amp; Hiace</Eyebrow>
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight mb-3">
                 The two platforms that define the Japex build.
               </h2>
-              <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
+              <p className="text-sm lg:text-base text-brand-gray leading-relaxed">
                 The Mitsubishi Delica and Toyota Hiace are some of the most
                 capable, versatile vehicles to ever come out of Japan — and
                 we&apos;ve spent years figuring out exactly how to bring out the
@@ -334,30 +382,32 @@ export default function ServiceClient() {
                 <motion.div
                   key={s.title}
                   variants={fadeUp}
-                  className="bg-brand-white rounded-2xl p-6 lg:p-7 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col"
+                  // whileHover={{ y: -2 }}
                 >
-                  <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-1">
-                    {s.tag}
-                  </p>
-                  <h3 className="text-2xl font-extrabold text-gray-900 font-montserrat mb-3">
-                    {s.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed mb-5">
-                    {s.body}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {s.features.map((f) => (
-                      <FeaturePill color="brand-gray" key={f}>
-                        {f}
-                      </FeaturePill>
-                    ))}
-                  </div>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6 lg:p-7 flex flex-col h-full">
+                      <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-1">
+                        {s.tag}
+                      </p>
+                      <h3 className="text-2xl font-bold text-brand-white font-poppins mb-3">
+                        {s.title}
+                      </h3>
+                      <p className="text-sm text-brand-gray leading-relaxed mb-5">
+                        {s.body}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mt-auto">
+                        {s.features.map((f) => (
+                          <FeaturePill key={f}>{f}</FeaturePill>
+                        ))}
+                      </div>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
 
             <motion.p
-              className="text-sm lg:text-base text-gray-600 leading-relaxed mt-8"
+              className="text-sm lg:text-base text-brand-gray leading-relaxed mt-8"
               {...fadeUp}
             >
               We don&apos;t just service these vehicles — we build them,
@@ -375,29 +425,32 @@ export default function ServiceClient() {
         <Container>
           <div className="px-6">
             <motion.div
-              className="bg-brand-dark text-white rounded-2xl p-8 lg:p-10 relative overflow-hidden"
+              className="mt-2 bg-linear-to-r from-white to-[#CA281C] p-px rounded-2xl"
               {...fadeUp}
             >
-              <div className="pointer-events-none absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-brand-primary/20 blur-3xl" />
-              <div className="relative">
-                <Eyebrow>Built Rugged. Built to Stand Out.</Eyebrow>
-                <div className="space-y-4 text-base lg:text-lg text-gray-200 leading-relaxed">
-                  <p>
-                    There&apos;s a reason people notice a Japex build before
-                    they even know what it is. We don&apos;t do generic. Every
-                    vehicle that goes through our workshop gets a look
-                    that&apos;s deliberate — rugged where it needs to be,
-                    refined where it counts, and finished with a level of detail
-                    that simply isn&apos;t standard anywhere else.
-                  </p>
-                  <p>
-                    This isn&apos;t about bolting on parts for the sake of it.
-                    It&apos;s about taking a platform we know inside out and
-                    building something that looks as good as it performs —
-                    something that&apos;s unmistakably, uniquely Japex. That
-                    uniqueness is the whole point. We take real pride in it, and
-                    it shows in every build that rolls out of our workshop.
-                  </p>
+              <div className="relative overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-8 lg:p-10">
+                <div className="pointer-events-none absolute -bottom-20 -right-20 w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-brand-primary/20 blur-3xl" />
+                <div className="relative">
+                  <Eyebrow>Built Rugged. Built to Stand Out.</Eyebrow>
+                  <div className="space-y-4 text-base lg:text-lg text-brand-gray leading-relaxed">
+                    <p>
+                      There&apos;s a reason people notice a Japex build before
+                      they even know what it is. We don&apos;t do generic. Every
+                      vehicle that goes through our workshop gets a look
+                      that&apos;s deliberate — rugged where it needs to be,
+                      refined where it counts, and finished with a level of
+                      detail that simply isn&apos;t standard anywhere else.
+                    </p>
+                    <p>
+                      This isn&apos;t about bolting on parts for the sake of it.
+                      It&apos;s about taking a platform we know inside out and
+                      building something that looks as good as it performs —
+                      something that&apos;s unmistakably, uniquely Japex. That
+                      uniqueness is the whole point. We take real pride in it,
+                      and it shows in every build that rolls out of our
+                      workshop.
+                    </p>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -406,15 +459,17 @@ export default function ServiceClient() {
       </section>
 
       {/* ── Genuine Parts + Accessory Range ───────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6">
             <motion.div className="mb-10" {...fadeUp}>
               <Eyebrow>Genuine Parts, Sourced the Japex Way</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight mb-3">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight mb-3">
                 The right network gets the right parts.
               </h2>
-              <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
+              <p className="text-sm lg:text-base text-brand-gray leading-relaxed">
                 The same network that gets us the right vehicles also gets us
                 the right parts. Through our direct relationships in Japan, we
                 source genuine and OEM-equivalent components — including models
@@ -433,36 +488,37 @@ export default function ServiceClient() {
                 <motion.div
                   key={p.title}
                   variants={fadeUp}
-                  className="bg-brand-white rounded-2xl p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                  // whileHover={{ y: -2 }}
                 >
-                  <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">
-                    {p.tag}
-                  </p>
-                  <h3 className="text-lg font-bold text-gray-900 font-montserrat mb-2">
-                    {p.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {p.body}
-                  </p>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6">
+                      <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">
+                        {p.tag}
+                      </p>
+                      <h3 className="text-lg font-bold text-brand-white font-poppins mb-2">
+                        {p.title}
+                      </h3>
+                      <p className="text-sm text-brand-gray leading-relaxed">
+                        {p.body}
+                      </p>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
 
             {/* Accessory range */}
-            <motion.div
-              className="mt-5 bg-[#efeded] rounded-2xl p-6 lg:p-8 border border-gray-200"
-              {...fadeUp}
-            >
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-primary mb-4 font-montserrat">
-                The Japex Accessory Range
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {ACCESSORY_RANGE.map((a) => (
-                  <FeaturePill color="brand-white" key={a}>
-                    {a}
-                  </FeaturePill>
-                ))}
-              </div>
+            <motion.div className="mt-5" {...fadeUp}>
+              <GlowingTransparentDivTestimonial border="2xl">
+                <div className="p-6 lg:p-8">
+                  <Eyebrow>The Japex Accessory Range</Eyebrow>
+                  <div className="flex flex-wrap gap-2">
+                    {ACCESSORY_RANGE.map((a) => (
+                      <FeaturePill key={a}>{a}</FeaturePill>
+                    ))}
+                  </div>
+                </div>
+              </GlowingTransparentDivTestimonial>
             </motion.div>
           </div>
         </Container>
@@ -473,39 +529,41 @@ export default function ServiceClient() {
         <Container>
           <div className="px-6">
             <motion.div
-              className="bg-brand-dark text-white rounded-2xl p-8 lg:p-12 text-center relative overflow-hidden"
+              className="bg-linear-to-r from-white to-[#CA281C] p-px rounded-2xl"
               {...fadeUp}
             >
-              <div className="pointer-events-none absolute -top-10  left-1/9 w-96 h-96 rounded-full bg-brand-primary/20 blur-3xl" />
-              {/* <div className="pointer-events-none absolute -right-12 -bottom-64 w-96 h-96 rounded-full bg-brand-primary/20 blur-3xl" /> */}
-              <div className="relative mx-auto grid grid-cols-1 gap-12 md:grid-cols-2">
-                <div className="flex items-center justify-center">
-                  <Image
-                    src={logo}
-                    alt="JAPEX Motors"
-                    width={1920}
-                    height={1080}
-                    className="object-cover max-w-52 h-fit w-fit"
-                    priority
-                  />
-                </div>
-                <div className="text-center md:text-left">
-                  <p className="text-brand-primary font-montserrat font-bold text-sm uppercase tracking-[0.25em] mb-4">
-                    The Japex Badge
-                  </p>
-                  <h2 className="text-2xl lg:text-3xl font-extrabold font-montserrat mb-4">
-                    More than a badge — a mark of the family.
-                  </h2>
-                  <p className="text-gray-300 text-sm lg:text-base leading-relaxed">
-                    Every vehicle that leaves our workshop carries the Japex
-                    badge. It&apos;s not just branding — it&apos;s our signature
-                    on the work, and proof that the vehicle has been through our
-                    process: sourced with care, inspected on the ground in
-                    Japan, finished by hand in Gosford. When you see that badge,
-                    you&apos;re looking at a vehicle that meets the Japex
-                    standard. And when it&apos;s on your car, you&apos;re part
-                    of the Japex family — for as long as you own it.
-                  </p>
+              <div className="relative overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-8 lg:p-12 text-center md:text-left">
+                <div className="pointer-events-none absolute -top-10 left-1/9 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+                <div className="relative mx-auto grid grid-cols-1 gap-10 md:gap-12 md:grid-cols-2 items-center">
+                  <div className="flex items-center justify-center">
+                    <Image
+                      src={logo}
+                      alt="JAPEX Motors"
+                      width={1920}
+                      height={1080}
+                      className="object-cover max-w-40 sm:max-w-52 h-fit w-fit"
+                      priority
+                    />
+                  </div>
+                  <div>
+                    <p className="text-brand-primary font-dm-sans font-bold text-sm uppercase tracking-[0.25em] mb-4">
+                      The Japex Badge
+                    </p>
+                    <h2 className="text-2xl lg:text-3xl font-bold font-poppins mb-4 text-brand-white">
+                      More than a badge — a mark of the family.
+                    </h2>
+                    <p className="text-brand-gray text-sm lg:text-base leading-relaxed">
+                      Every vehicle that leaves our workshop carries the Japex
+                      badge. It&apos;s not just branding — it&apos;s our
+                      signature on the work, and proof that the vehicle has been
+                      through our process: sourced with care, inspected on the
+                      ground in Japan, finished by hand in Gosford. When you see
+                      that badge, you&apos;re looking at a vehicle that meets
+                      the Japex standard. And when it&apos;s on your car,
+                      you&apos;re part of the Japex family — for as long as you
+                      own it.
+                    </p>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -514,12 +572,14 @@ export default function ServiceClient() {
       </section>
 
       {/* ── What We Offer ─────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6">
             <motion.div className="mb-10" {...fadeUp}>
               <Eyebrow>What We Offer</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 Everything your vehicle needs, under one roof.
               </h2>
             </motion.div>
@@ -535,14 +595,18 @@ export default function ServiceClient() {
                 <motion.div
                   key={o.title}
                   variants={fadeUp}
-                  className="bg-brand-white rounded-2xl p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                  // whileHover={{ y: -2 }}
                 >
-                  <h3 className="text-lg font-bold text-gray-900 font-montserrat mb-2">
-                    {o.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {o.body}
-                  </p>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6">
+                      <h3 className="text-lg font-bold text-brand-white font-poppins mb-2">
+                        {o.title}
+                      </h3>
+                      <p className="text-sm text-brand-gray leading-relaxed">
+                        {o.body}
+                      </p>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
@@ -556,7 +620,7 @@ export default function ServiceClient() {
           <div className="px-6">
             <motion.div className="max-w-3xl mb-10" {...fadeUp}>
               <Eyebrow>Why Trust Our Workshop</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 Five reasons to bring it to us.
               </h2>
             </motion.div>
@@ -572,17 +636,21 @@ export default function ServiceClient() {
                 <motion.div
                   key={w.title}
                   variants={fadeUp}
-                  className="bg-white rounded-2xl p-6 border shadow-sm cursor-pointer border-gray-300 hover:border-gray-400 hover:shadow-md transition-all duration-200"
+                  // whileHover={{ y: -2 }}
                 >
-                  <span className="inline-flex items-center justify-center w-fit h-fit p-2 rounded-lg bg-brand-primary text-brand-white font-black font-montserrat text-sm mb-4">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="font-bold text-gray-900 font-montserrat mb-2 leading-snug">
-                    {w.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {w.body}
-                  </p>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6 h-full">
+                      <span className="inline-flex items-center justify-center w-fit h-fit p-2 rounded-lg bg-brand-primary text-brand-white font-black font-poppins text-sm mb-4">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="font-bold text-brand-white font-poppins mb-2 leading-snug">
+                        {w.title}
+                      </h3>
+                      <p className="text-sm text-brand-gray leading-relaxed">
+                        {w.body}
+                      </p>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
@@ -591,12 +659,14 @@ export default function ServiceClient() {
       </section>
 
       {/* ── Common Questions ──────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="relative py-16 lg:py-24">
+        <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6">
             <motion.div className="max-w-3xl mb-10" {...fadeUp}>
               <Eyebrow>Common Questions</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 font-montserrat leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 Straight answers, before you ask.
               </h2>
             </motion.div>
@@ -609,15 +679,17 @@ export default function ServiceClient() {
               viewport={{ once: true, margin: "-80px" }}
             >
               {FAQS.map((f) => (
-                <motion.div
-                  key={f.q}
-                  variants={fadeUp}
-                  className="bg-brand-white rounded-2xl p-6 border border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
-                >
-                  <h3 className="font-bold text-gray-900 font-montserrat mb-2">
-                    {f.q}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{f.a}</p>
+                <motion.div key={f.q} variants={fadeUp}>
+                  <GlowingTransparentDivTestimonial border="2xl">
+                    <div className="p-6">
+                      <h3 className="font-bold text-brand-white font-poppins mb-2">
+                        {f.q}
+                      </h3>
+                      <p className="text-sm text-brand-gray leading-relaxed">
+                        {f.a}
+                      </p>
+                    </div>
+                  </GlowingTransparentDivTestimonial>
                 </motion.div>
               ))}
             </motion.div>
@@ -630,36 +702,35 @@ export default function ServiceClient() {
         <Container>
           <div className="px-6">
             <motion.div
-              className="bg-brand-dark text-white rounded-2xl p-8 lg:p-12 text-center relative overflow-hidden"
+              className="bg-linear-to-r from-white to-[#CA281C] p-px rounded-2xl"
               {...fadeUp}
             >
-              <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-brand-primary/20 blur-3xl" />
-              <div className="relative">
-                <p className="text-brand-primary font-montserrat font-bold text-sm uppercase tracking-[0.25em] mb-4">
-                  Experience Life.
-                </p>
-                <h2 className="text-2xl lg:text-3xl font-extrabold font-montserrat mb-3">
-                  Your car deserves people who get it.
-                </h2>
-                <p className="text-gray-300 text-sm lg:text-base max-w-xl mx-auto mb-7">
-                  Whether it&apos;s a logbook service, a tricky repair, or
-                  building out your Delica or Hiace into something truly unique
-                  — bring it to the people who understand it from the inside
-                  out. Same care, same standards, same family.
-                </p>
-                <Link
-                  href="/cars"
-                  className="inline-block bg-brand-primary hover:bg-red-700 text-white font-bold px-7 py-3.5 rounded-xl transition-colors text-sm"
-                >
-                  View our cars
-                </Link>
+              <div className="relative overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-8 lg:p-12 text-center">
+                <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
+                <div className="relative">
+                  <p className="text-brand-primary font-dm-sans font-bold text-sm uppercase tracking-[0.25em] mb-4">
+                    Experience Life.
+                  </p>
+                  <h2 className="text-2xl lg:text-3xl font-bold font-poppins mb-3 text-brand-white">
+                    Your car deserves people who get it.
+                  </h2>
+                  <p className="text-brand-gray text-sm lg:text-base max-w-xl mx-auto mb-7">
+                    Whether it&apos;s a logbook service, a tricky repair, or
+                    building out your Delica or Hiace into something truly
+                    unique — bring it to the people who understand it from the
+                    inside out. Same care, same standards, same family.
+                  </p>
+                  <div className="flex justify-center">
+                    <ArrowButton href="/cars">
+                      <p>View our cars</p>
+                    </ArrowButton>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
         </Container>
       </section>
-
-      <GetInTouch />
     </div>
   );
 }
