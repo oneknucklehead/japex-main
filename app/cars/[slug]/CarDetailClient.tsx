@@ -98,6 +98,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
   const mouseY = useMotionValue(50); // percent
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
