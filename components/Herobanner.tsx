@@ -60,42 +60,42 @@ export default function HeroBanner() {
           <motion.p className="font-montserrat font-medium text-sm md:text-xl">
             Buy and sell cars with confidence and ease.
           </motion.p>
+          <motion.button className="group flex mx-auto gap-4 w-fit cursor-pointer items-center justify-center bg-brand-primary text-white font-montserrat font-bold text-sm pl-4 pr-2 py-2 mt-4 rounded-full hover:bg-red-700 transition-all duration-300">
+            <motion.p className="text-sm md:text-lg">Get a quote</motion.p>
+            <motion.span className="bg-white text-black rounded-full p-1 flex items-center justify-center group-hover:rotate-45 transition-all duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="hidden md:block lucide lucide-arrow-up-right-icon lucide-arrow-up-right"
+              >
+                <path d="M7 7h10v10" />
+                <path d="M7 17 17 7" />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="block md:hidden w-4 h-4 lucide lucide-arrow-up-right-icon lucide-arrow-up-right"
+              >
+                <path d="M7 7h10v10" />
+                <path d="M7 17 17 7" />
+              </svg>
+            </motion.span>
+          </motion.button>
         </div>
-        <motion.button className="group flex gap-4 w-fit cursor-pointer items-center justify-center bg-brand-primary text-white font-montserrat font-bold text-sm pl-4 pr-2 py-2 rounded-full hover:bg-red-700 transition-all duration-300">
-          <motion.p className="text-sm md:text-lg">Get a quote</motion.p>
-          <motion.span className="bg-white text-black rounded-full p-1 flex items-center justify-center group-hover:rotate-45 transition-all duration-300">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="hidden md:block lucide lucide-arrow-up-right-icon lucide-arrow-up-right"
-            >
-              <path d="M7 7h10v10" />
-              <path d="M7 17 17 7" />
-            </svg>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="block md:hidden w-4 h-4 lucide lucide-arrow-up-right-icon lucide-arrow-up-right"
-            >
-              <path d="M7 7h10v10" />
-              <path d="M7 17 17 7" />
-            </svg>
-          </motion.span>
-        </motion.button>
       </div>
     </section>
   );

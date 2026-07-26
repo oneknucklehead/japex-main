@@ -204,7 +204,7 @@ export default function CarCardFirst({ car }: Props) {
                     </div>
                   </BlurRevealText>
                   <BlurRevealText delay={1.1}>
-                    <motion.div className="flex text-xs sm:text-sm group/button items-center gap-1 rounded-full bg-white p-1 font-semibold text-black shrink-0">
+                    <motion.div className="flex text-xs sm:text-sm group/button items-center md:gap-1 rounded-full bg-white p-1 font-semibold text-black shrink-0">
                       <p className="lg:block ml-1.5 sm:ml-2 whitespace-nowrap block sm:hidden">
                         View More
                       </p>
