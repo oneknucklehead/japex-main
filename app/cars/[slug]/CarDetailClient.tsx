@@ -183,7 +183,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                       className="flex flex-col gap-4 text-brand-white"
                     >
                       {/* Price card */}
-                      <div className="rounded-2xl p-6">
+                      <div className="rounded-2xl p-4 md:p-6">
                         {!!car?.was_price && (
                           <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
@@ -242,7 +242,8 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                           <SpecificationsPill label={car.transmission} />
                           <SpecificationsPill label={car.fuel_type} />
                         </motion.div>
-                        <div className="flex justify-between">
+                        {/* MOBILE PRICE CARD */}
+                        <div className="flex flex-wrap justify-between gap-x-4">
                           <div className="pt-4 mb-4">
                             {/* Main price */}
                             <div className="text-white font-bricolage flex items-start justify-between mb-1">
@@ -303,7 +304,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                             initial={{ opacity: 0, y: 6 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: 0.2 }}
-                            className="pt-4 mb-5 text-right"
+                            className="flex flex-col pt-4 mb-5 text-right"
                           >
                             <p className="text-2xl font-black ">
                               {formatCurrency(weeklyPayment)}{" "}
@@ -637,7 +638,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
               </motion.div>
 
               {/* ── RIGHT: Price panel ── */}
-              <div className="hidden lg:block lg:col-span-5 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
+              <div className="hidden  h-fit lg:block lg:col-span-5 lg:sticky lg:top-24 lg:self-start ">
                 <motion.div
                   ref={cardRef}
                   onMouseMove={handleMouseMove}
@@ -747,6 +748,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                         <SpecificationsPill label={car.transmission} />
                         <SpecificationsPill label={car.fuel_type} />
                       </motion.div>
+                      {/* PRICE CARD DESKTOP */}
                       <div className="flex justify-between">
                         <div className="pt-4 mb-4">
                           {/* Main price */}
@@ -757,13 +759,13 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                                   initial={{ opacity: 0, y: 6 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ duration: 0.4, delay: 0.15 }}
-                                  className="flex gap-2 items-center"
+                                  className="flex gap-2 items-end"
                                 >
                                   <p className="text-4xl font-black ">
                                     {formatPrice(car.price)}*
                                   </p>
                                   {car.was_price && (
-                                    <p className="text-xl text-brand-white/60 line-through mb-0.5">
+                                    <p className="text-base text-brand-white/60 line-through mb-0.5">
                                       {formatPrice(car.was_price)}
                                     </p>
                                   )}
