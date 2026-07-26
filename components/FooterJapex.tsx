@@ -93,10 +93,11 @@ export default function FooterJapex() {
       <Container>
         {/* <div className="h-px w-full bg-gray-800 mt-4"></div> */}
         {/* standard footer content */}
-        <div className="transition-all relative mt-8 z-10 text-white font-koulen mx-auto px-4 flex gap-4 items-center justify-between">
-          <p className="text-neutral-500">
+        <div className="transition-all relative mt-8 z-10 text-white font-koulen mx-auto px-4 flex flex-wrap  gap-x-4 gap-y-2 items-center justify-center md:justify-between">
+          <p className="text-neutral-500 flex items-center justify-center">
             ©{" "}
-            <span className="text-white">
+            <span className="text-white flex items-center justify-center">
+              {" "}
               {new Date().getFullYear()} JAPEX. All rights reserved.
             </span>
           </p>

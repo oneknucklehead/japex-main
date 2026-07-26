@@ -8,10 +8,9 @@ import image2 from "../../assets/finance.png";
 
 const BannerGrid = () => {
   return (
-    <Container>
-      <div className="">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-full items-start">
-          {/* <div className="bg-white"> */}
+    <div className="px-6 sm:px-5 md:px-6">
+      <Container>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12 md:gap-6 lg:gap-8 w-full items-stretch">
           <ServiceCard
             image={image1}
             headline={
@@ -19,7 +18,6 @@ const BannerGrid = () => {
             }
             href="/service-and-parts"
           />
-          {/* </div> */}
           <ServiceCardTwo
             image={image2}
             headline={
@@ -28,8 +26,8 @@ const BannerGrid = () => {
             href="/finance"
           />
         </div>
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
 

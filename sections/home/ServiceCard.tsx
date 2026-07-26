@@ -22,14 +22,14 @@ export default function ServiceCard({
       initial="rest"
       whileHover="hover"
       animate="rest"
-      className="relative group/service flex w-full flex-col h-full rounded-4xl bg-black aspect-4/3"
+      className="relative group/service flex w-full flex-col rounded-3xl sm:rounded-4xl bg-black min-h-85 sm:min-h-0 sm:aspect-4/3 mt-10 sm:mt-12 md:mt-16"
       style={{
         boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.25)",
       }}
     >
       {/* red glow rising from bottom */}
       <motion.div
-        className="pointer-events-none absolute inset-0 rounded-[28px]"
+        className="pointer-events-none absolute inset-0 rounded-3xl sm:rounded-4xl"
         variants={{
           rest: {
             background:
@@ -43,30 +43,30 @@ export default function ServiceCard({
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       />
 
-      {/* vehicle image — contained, sits in top ~60% */}
+      {/* vehicle image — floats above the card's top edge */}
       <motion.div
         variants={{
-          rest: { scale: 1.12, y: 0 },
-          hover: { scale: 1.14, y: -6 },
+          rest: { scale: 1, y: 0 },
+          hover: { scale: 1.04, y: -8 },
         }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="relative rounded-[28px]  z-10 h-[75%] mb-10 w-full pointer-events-none"
+        className="relative z-10 w-full flex-1 min-h-45 sm:min-h-52 -mt-10 sm:-mt-12 md:-mt-16 mb-6 sm:mb-8 md:mb-10 origin-bottom pointer-events-none"
       >
         <Image
           src={image}
           alt=""
           fill
           className="object-contain object-bottom"
-          sizes="(max-width: 640px) 100vw, 400px"
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 640px"
         />
       </motion.div>
 
       {/* text content */}
-      <div className="relative rounded-[28px]  z-10 mt-auto px-6 pb-6">
-        <h3 className="font-montserrat text-xl font-bold leading-snug text-white sm:text-2xl">
+      <div className="relative mr-18 lg:mr-0 z-10 mt-auto shrink-0 px-4 pb-4 sm:px-6 sm:pb-6">
+        <h3 className="font-montserrat text-base font-bold leading-snug text-white sm:text-lg md:text-xl lg:text-2xl">
           {headline}
         </h3>
-        <p className="mt-3 max-w-[75%] font-bricolage text-sm font-medium leading-snug text-white/70">
+        <p className="mt-2 sm:mt-3 max-w-[70%] sm:max-w-[75%] font-bricolage text-xs sm:text-sm font-medium leading-snug text-white/70">
           {subtext}
         </p>
       </div>
@@ -75,9 +75,13 @@ export default function ServiceCard({
       <motion.div
         variants={{ rest: { rotate: 0 }, hover: { rotate: 45 } }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute bottom-6 right-6 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white"
+        className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-10 flex h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 items-center justify-center rounded-full bg-white"
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          className="h-4 w-4 sm:h-4.5 sm:w-4.5"
+        >
           <path
             d="M7 7h10v10"
             stroke="black"

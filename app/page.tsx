@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import BannerGrid from "@/sections/home/BannerGrid";
 import CollectionBudgetwise from "@/sections/home/CollectionBudgetwise";
 import ExploreLatestArrivals from "@/sections/home/ExploreLatestArrivals";
@@ -7,49 +9,57 @@ import HeroBanner from "@/components/Herobanner";
 import callmecard from "../assets/callmecard.png";
 import CallExpertCard from "@/components/Callexpertcard";
 import LightShard from "@/components/LightShard";
+import GlowingTransparentdiv from "@/components/GlowingTransparentdiv";
+import { motion } from "framer-motion";
+import HomeBadges from "@/components/HomeBadges";
+
+export const metadata: Metadata = {
+  title: "Home | Japex Motors",
+  description:
+    "Japex Motors brings the best of Japanese automotive culture to the Central Coast — precision-sourced vehicles, custom-finished in-house, expertly complied, and backed end to end.",
+};
 
 export default function Home() {
   return (
     <main className="relative overflow-hidden">
+      {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative">
         <HeroBanner />
-        {/* <ExploreCollection /> */}
       </section>
-      {/* <section className="relative h-156.25">
-        <MainBanner />
-      </section> */}
-      {/* <section className="relative py-20 md:py-24 bg-black">
-        <CarCardFirst />
-      </section>
-      <section className="relative py-20 md:py-24 bg-black">
-        <CarCardNew />
-      </section> */}
+      <HomeBadges />
 
-      <LightShard className="absolute left-0 w-72 h-72 object-cover object-center -ml-10  -z-10" />
-      <LightShard className="-rotate-90 absolute right-0 w-72 h-72 object-cover object-center -mr-10  -z-10" />
+      {/* Decorative light shards — scale with viewport, hidden on the
+          smallest screens where they crowd the content */}
+      <LightShard className="pointer-events-none absolute left-0 -z-10 hidden w-48 -ml-8 sm:w-56 md:w-64 lg:w-72 xl:w-80 h-auto object-contain object-center" />
+      <LightShard className="pointer-events-none absolute right-0 -z-10 hidden w-48 -mr-8 -rotate-90 sm:block sm:w-56 md:w-64 lg:w-72 xl:w-80 h-auto object-contain object-center" />
 
-      <section className="pt-40 md:pt-32 pb-24">
+      {/* ── Latest arrivals ──────────────────────────────────────────────── */}
+      <section className="pt-20 pb-8 sm:pt-24 sm:pb-20 md:pt-32 md:pb-24">
         <ExploreLatestArrivals />
       </section>
-      <section className="relative py-24">
+
+      {/* ── Budget-wise collection ───────────────────────────────────────── */}
+      <section className="relative py-8 sm:py-20 md:py-24">
         <CollectionBudgetwise />
       </section>
-      <section className="relative py-20 md:py-24">
+
+      {/* ── Banner grid ──────────────────────────────────────────────────── */}
+      <section className="relative py-8 sm:py-20">
         <BannerGrid />
       </section>
-      <section>
+
+      {/* ── Why we stand out ─────────────────────────────────────────────── */}
+      <section className="relative py-8 sm:py-20 md:py-24">
         <WhyWeStandOut />
       </section>
-      <section>
+
+      {/* ── Call an expert ───────────────────────────────────────────────── */}
+      <section className="relative py-8 sm:py-20 md:py-24">
         <CallExpertCard image={callmecard} />
       </section>
-      {/* <section>
-        <StatsGrid />
-      </section> */}
-      {/* <section className="relative">
-        <Testimonials />
-      </section> */}
-      <section>
+
+      {/* ── FAQs ─────────────────────────────────────────────────────────── */}
+      <section className="relative py-8 sm:py-20 md:py-24">
         <Faqs />
       </section>
     </main>

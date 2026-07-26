@@ -11,6 +11,7 @@ import Container from "@/components/Container";
 import { useSearchParams } from "next/navigation";
 import CarCardFirst from "@/components/tryouts/CarCardFirst";
 import LightShard from "@/components/LightShard";
+import type { Metadata } from "next";
 
 const SORT_OPTIONS: { label: string; value: SortOption }[] = [
   { label: "New Arrivals", value: "newest" },
@@ -93,7 +94,7 @@ function CarsPageInner() {
           className="-rotate-90 absolute right-0 w-72 h-72 -mr-10 -z-10"
         />
         <Container>
-          <div className="mt-24 py-8">
+          <div className="mt-24 py-14">
             {/* ── Main layout ──────────────────────────────────────────── */}
             <div className="flex gap-6 items-start">
               {/* Desktop sidebar */}

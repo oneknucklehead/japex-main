@@ -40,7 +40,7 @@ export default function ContactCTA() {
   };
 
   return (
-    <section className="w-full px-4 py-12 sm:px-6 sm:py-16">
+    <section className="w-full px-6 py-8 sm:py-16">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 24 }}

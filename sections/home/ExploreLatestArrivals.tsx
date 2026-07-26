@@ -6,9 +6,6 @@ import { Car } from "@/types/car";
 import { createClient } from "@/utils/supabase/client";
 import React, { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import lightshardleft from "../../assets/lightshardleft.png";
-import lightshardright from "../../assets/lightshardright.png";
 import Tagline from "@/components/Tagline";
 
 const CATEGORIES: { label: string; types: string[] }[] = [
@@ -64,45 +61,35 @@ const ExploreLatestArrivals = () => {
   }, [allCars, active]);
 
   return (
-    <div>
+    <div className="px-6 sm:px-5 md:px-6">
       <Container>
         <div className="relative text-white">
-          {/* <div>
-            <Image
-              src={lightshardleft}
-              alt="glowing background"
-              // fill
-              priority
-              className="absolute w-60 h-60 object-cover object-center -z-10"
-            />
-          </div> */}
           <div className="z-10">
             <div>
               <Tagline text="New Arrivals" />
             </div>
-            <h1 className="font-bold font-poppins text-3xl md:text-5xl text-center px-4 md:px-0">
+            <h1 className="font-bold font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center px-2 sm:px-4 md:px-0">
               Explore our latest arrivals
             </h1>
-            <p className="font-bricolage text-brand-white-alternate font-semibold text-lg text-center mt-2 mb-6">
+            <p className="font-bricolage text-brand-white-alternate font-semibold text-sm sm:text-base md:text-lg text-center mt-2 mb-5 sm:mb-6 px-2 sm:px-4 md:px-0">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed?
             </p>
 
             {/* Category buttons */}
-            <div className="flex flex-wrap justify-center gap-2 mb-8">
+            <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-6 sm:mb-8">
               {CATEGORIES.map((cat) => {
                 const isActive = cat.label === active;
                 return (
                   <motion.button
                     key={cat.label}
-                    className="flex items-center gap-2 p-px bg-linear-to-tr from-white to-[#666666] rounded-lg"
+                    type="button"
+                    onClick={() => setActive(cat.label)}
+                    whileTap={{ scale: 0.96 }}
+                    className="flex items-center gap-2 p-px bg-linear-to-tr from-white to-[#666666] rounded-lg cursor-pointer"
                   >
-                    <motion.div
-                      onClick={() => setActive(cat.label)}
-                      // whileTap={{ scale: 0.95 }}
-                      className={`relative flex font-dm-sans items-center gap-2 px-4 py-2  text-sm md:text-base rounded-md hover:shadow-md  cursor-pointer  font-semibold  transition-all duration-300 ${
-                        isActive
-                          ? " bg-linear-to-b from-black to-[#780707] text-white"
-                          : "hover:from-black hover:to-[#780707] bg-linear-to-b from-black to-[#313131] transition-all duration-300"
+                    <div
+                      className={`relative flex font-dm-sans items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm md:text-base rounded-md font-semibold transition-all duration-300 ${
+                        isActive ? "" : "hover:shadow-md"
                       }`}
                     >
                       <div className="absolute inset-0 bg-linear-to-b from-black to-[#313131] rounded-md" />
@@ -112,8 +99,10 @@ const ExploreLatestArrivals = () => {
                           isActive ? "opacity-100" : "opacity-0"
                         }`}
                       />
-                      <p className="relative z-10 ">{cat.label}</p>
-                    </motion.div>
+                      <p className="relative z-10 whitespace-nowrap">
+                        {cat.label}
+                      </p>
+                    </div>
                   </motion.button>
                 );
               })}
@@ -121,16 +110,16 @@ const ExploreLatestArrivals = () => {
 
             {/* Carousel */}
             {loading ? (
-              <div className="flex gap-4 overflow-hidden">
+              <div className="flex gap-3 sm:gap-4 overflow-hidden">
                 {[...Array(4)].map((_, i) => (
                   <div
                     key={i}
-                    className="flex-none w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-72 bg-gray-200 rounded-2xl animate-pulse"
+                    className="flex-none w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-56 sm:h-64 md:h-72 bg-white/5 border border-white/10 rounded-2xl animate-pulse"
                   />
                 ))}
               </div>
             ) : filteredCars.length === 0 ? (
-              <p className="text-center text-gray-400 py-12">
+              <p className="text-center text-gray-400 py-10 sm:py-12 text-sm sm:text-base">
                 No cars in this category.
               </p>
             ) : (

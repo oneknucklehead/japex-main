@@ -4,6 +4,7 @@ import Image, { StaticImageData } from "next/image";
 import { motion } from "framer-motion";
 import Container from "./Container";
 import GlowingTransparentdiv from "./GlowingTransparentdiv";
+
 interface CallExpertCardProps {
   image: StaticImageData | string;
   title?: React.ReactNode;
@@ -26,62 +27,65 @@ export default function CallExpertCard({
   href = "tel:0297560203",
 }: CallExpertCardProps) {
   return (
-    <div>
+    <div className="px-6 sm:px-5 md:px-6">
       <Container>
-        <div className="p-px rounded-[33px] bg-[#9C9C9C]">
+        <div className="p-px rounded-[25px] sm:rounded-[29px] md:rounded-[33px] bg-[#9C9C9C]">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full overflow-hidden rounded-4xl "
-            //   style={{ boxShadow: "0 8px 30px -8px rgba(0,0,0,0.6)" }}
+            className="relative w-full overflow-hidden rounded-3xl sm:rounded-[28px] md:rounded-4xl "
           >
             {/* background photo */}
             <Image
               src={image}
               alt=""
               fill
-              className="aboslute inset-0 object-cover object-left"
-              sizes="(max-width: 768px) 100vw, 900px"
+              className="object-cover object-left"
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
               priority={false}
             />
 
             {/* dark-to-red gradient, left clear / right covered */}
-            {/* via-[#410E0A] */}
             <div className="absolute inset-0 bg-linear-145 from-black/10 via-[#410E0A] via-60% to-[#CA281C] to-100%" />
-            {/* <div className="absolute inset-0 bg-linear-to-r from-black/60 via-transparent to-transparent sm:hidden" /> */}
+            {/* extra darkening on small screens so text stays legible over the photo */}
+            <div className="absolute inset-0 bg-black/40 sm:hidden" />
 
             {/* content */}
-            <div className="relative z-10 flex h-full w-full flex-col justify-center gap-3 px-6 py-6 sm:max-w-xl sm:ml-auto sm:px-8 lg:w-[48%]">
-              <h3 className="font-montserrat text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-                {title}
-              </h3>
-              <p className="font-dm-sans max-w-md text-sm text-brand-white sm:text-base">
-                {subtext}
-              </p>
-              <GlowingTransparentdiv>
-                <div className="">
+            <div className="relative z-10 flex h-full w-full flex-col justify-between gap-6 sm:gap-8 px-5 py-8 sm:max-w-md sm:ml-auto sm:px-6 sm:py-8 md:max-w-lg md:px-8 md:py-10 lg:max-w-xl lg:py-12">
+              {/* text block — top */}
+              <div className="flex flex-col gap-2.5 sm:gap-3">
+                <h3 className="font-montserrat text-xl font-extrabold leading-tight text-white sm:text-2xl md:text-3xl lg:text-4xl">
+                  {title}
+                </h3>
+                <p className="font-dm-sans max-w-md text-brand-white text-sm md:text-base">
+                  {subtext}
+                </p>
+              </div>
+
+              {/* CTA — bottom */}
+              <div className="w-fit">
+                <GlowingTransparentdiv>
                   <motion.a
                     href={href}
                     whileHover="hover"
                     initial="rest"
                     animate="rest"
-                    className="pl-5 pr-3 py-2 flex items-center justify-between w-full gap-4"
+                    className="pl-4 pr-2 py-1.5 sm:pl-5 sm:pr-3 sm:py-2 flex items-center justify-between w-full gap-3 sm:gap-4"
                   >
-                    <span className="font-poppins font-semibold text-white">
+                    <span className="font-poppins text-sm sm:text-base font-semibold text-white whitespace-nowrap">
                       {ctaLabel}
                     </span>
                     <motion.span
                       variants={{ rest: { rotate: 0 }, hover: { rotate: 45 } }}
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-white"
+                      className="flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full bg-brand-white shrink-0"
                     >
                       <svg
-                        width="14"
-                        height="14"
                         viewBox="0 0 24 24"
                         fill="none"
+                        className="h-3 w-3 sm:h-3.5 sm:w-3.5"
                       >
                         <path
                           d="M7 7h10v10"
@@ -100,8 +104,8 @@ export default function CallExpertCard({
                       </svg>
                     </motion.span>
                   </motion.a>
-                </div>
-              </GlowingTransparentdiv>
+                </GlowingTransparentdiv>
+              </div>
             </div>
           </motion.div>
         </div>
