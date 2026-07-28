@@ -3,10 +3,11 @@
 import Container from "@/components/Container";
 import ServiceCard from "./ServiceCard";
 import ServiceCardTwo from "./ServiceCardTwo";
-import image1 from "../../assets/carparts.png";
-import image2 from "../../assets/finance.png";
+import { getAssetsStorageUrl } from "@/utils/helpers";
 
 const BannerGrid = () => {
+  const image1 = getAssetsStorageUrl("Homepage/carparts.png");
+  const image2 = getAssetsStorageUrl("Homepage/finance.png");
   return (
     <div className="px-6 sm:px-5 md:px-6">
       <Container>
@@ -16,6 +17,7 @@ const BannerGrid = () => {
             headline={
               "Your Trusted Source for Quality Car Parts & Global Export Services"
             }
+            subtext="Genuine Japanese parts and reliable export solutions. We supply quality components and provide worldwide vehicle export services backed by industry experience and trusted logistics partners."
             href="/service-and-parts"
           />
           <ServiceCardTwo
@@ -23,6 +25,7 @@ const BannerGrid = () => {
             headline={
               "Car Finance Made Simple with Our Expert Team & Financing Options"
             }
+            subtext="Get on the road sooner with flexible, low-rate finance packages tailored specifically to your lifestyle or business needs. Fast approvals, zero stress."
             href="/finance"
           />
         </div>

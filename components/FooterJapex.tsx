@@ -2,11 +2,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import footerCar from "../assets/footerCar.png";
-import footerLogo from "../assets/footerlogo.png";
 import lightshardLeft from "../assets/lightshardleft.png";
 import lightshardRight from "../assets/lightshardright.png";
 import Container from "./Container";
+import { getAssetsStorageUrl } from "@/utils/helpers";
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   show: (i: number = 0) => ({
@@ -21,6 +20,8 @@ const fadeUp = {
 };
 
 export default function FooterJapex() {
+  const footerCar = getAssetsStorageUrl("Footer/footerCar.png");
+  const footerLogo = getAssetsStorageUrl("Footer/footerlogo.png");
   return (
     <footer className="relative w-full overflow-hidden">
       {/* visual band */}
@@ -65,6 +66,9 @@ export default function FooterJapex() {
           <Image
             src={footerLogo}
             alt="Japex Motors"
+            width={1920}
+            height={1080}
+            priority={false}
             className="h-auto w-full object-contain"
           />
         </motion.div>
@@ -85,6 +89,8 @@ export default function FooterJapex() {
           <Image
             src={footerCar}
             alt="Japex Motors vehicle"
+            width={1920}
+            height={1080}
             className="h-auto w-full object-contain"
             priority={false}
           />

@@ -431,7 +431,16 @@ export default function FilterSidebar({ filters, onChange, total }: Props) {
               onChange={(v) => set({ make: v.length ? v : undefined })}
             />
           </Section>
-
+          {/* Availability */}
+          <Section title="Availability">
+            <CheckList
+              options={["In stock", "Coming soon", "Sold out"]}
+              selected={filters.availability ?? []}
+              onChange={(v) =>
+                set({ availability: v.length ? (v as any) : undefined })
+              }
+            />
+          </Section>
           {/* Body Type */}
           <Section title="Body Type">
             <CheckList
@@ -519,17 +528,6 @@ export default function FilterSidebar({ filters, onChange, total }: Props) {
               options={CONDITIONS}
               selected={filters.condition ?? []}
               onChange={(v) => set({ condition: v.length ? v : undefined })}
-            />
-          </Section>
-
-          {/* Availability */}
-          <Section title="Availability">
-            <CheckList
-              options={["In stock", "Coming soon", "Sold out"]}
-              selected={filters.availability ?? []}
-              onChange={(v) =>
-                set({ availability: v.length ? (v as any) : undefined })
-              }
             />
           </Section>
         </div>

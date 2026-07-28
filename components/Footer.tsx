@@ -40,27 +40,6 @@ const FooterLink = ({
   </Link>
 );
 
-// ── Social icon component ─────────────────────────────────────────────────────
-const SocialIcon = ({
-  src,
-  alt,
-  href,
-}: {
-  src: string;
-  alt: string;
-  href: string;
-}) => (
-  <Link href={href} target="_blank" rel="noopener noreferrer">
-    <motion.div
-      className={`w-10 h-10 cursor-pointer rounded-xl border border-gray-300 bg-white flex items-center justify-center shadow-sm transition-all duration-200             hover:border-gray-400 hover:shadow-md text-gray-700"
-            `}
-      // className="w-10 h-10 border border-gray-300 rounded-xl flex items-center justify-center hover:bg-gray-100 transition-colors"
-    >
-      <Image src={src} alt={alt} width={20} height={20} />
-    </motion.div>
-  </Link>
-);
-
 // ── Main component ────────────────────────────────────────────────────────────
 export default function Footer() {
   const currentYear = new Date().getFullYear();

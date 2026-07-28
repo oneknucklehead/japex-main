@@ -65,12 +65,16 @@ const CollectionBudgetwise = () => {
           <div>
             <Tagline text="New Arrivals" />
           </div>
-          <h1 className="font-bold font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center px-2 sm:px-4 md:px-0">
-            Tailored to Your Budget, Without Compromise
-          </h1>
-          <p className="font-bricolage text-brand-white-alternate font-semibold text-sm sm:text-base md:text-lg text-center mt-2 mb-5 sm:mb-6 px-2 sm:px-4 md:px-0">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed?
-          </p>
+          <div className="flex flex-col justify-center items-center">
+            <h1 className="font-bold font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center px-2 sm:px-4 md:px-0">
+              Tailored to Your Budget, Without Compromise
+            </h1>
+            <p className="max-w-2xl font-bricolage text-brand-white-alternate font-semibold text-sm sm:text-base md:text-lg text-center mt-2 mb-5 sm:mb-6 px-2 sm:px-4 md:px-0">
+              Whether you&apos;re planning your first road trip or upgrading to
+              a premium camper, we&apos;ll help you find the right vehicle to
+              match your budget and lifestyle.
+            </p>
+          </div>
 
           {/* Price range buttons */}
           <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-6 sm:mb-8">

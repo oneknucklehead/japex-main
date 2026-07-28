@@ -99,7 +99,19 @@ alter table public.cars
 
 create index idx_cars_fts on public.cars using gin(fts);
 
+alter table public.cars
+add column availability_rank smallint
+generated always as (
+  case availability
+    when 'In stock'    then 0
+    when 'Coming soon' then 1
+    when 'Sold out'    then 2
+    else 3
+  end
+) stored;
 
+create index if not exists idx_cars_availability_rank
+  on public.cars using btree (availability_rank);
 -- ─── CAR IMAGES TABLE ────────────────────────────────────────────────────────
 
 create table public.car_images (
