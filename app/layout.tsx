@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
-
 import { Analytics } from "@vercel/analytics/next";
-import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import "./globals.css";
 import { bricolage, dm_sans, koulen, montserrat, poppins } from "@/styles/font";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-
-import ContactCTA from "@/sections/common/ContactCTA";
-import Testimonials from "@/sections/home/Testimonials";
 
 export const metadata: Metadata = {
   title: "Japex Motors",
@@ -17,23 +11,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
       suppressHydrationWarning
       className={`${montserrat.variable} ${bricolage.variable} ${koulen.variable} ${poppins.variable} ${dm_sans.variable} h-full antialiased`}
     >
-      <body className="relative min-h-full flex flex-col bg-black overflow-hidden">
-        <Navbar />
+      <body className="relative min-h-full flex flex-col bg-black">
         {children}
         <SpeedInsights />
         <Analytics />
-        <Testimonials />
-        <ContactCTA />
-        <Footer />
       </body>
     </html>
   );

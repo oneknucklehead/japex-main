@@ -6,11 +6,9 @@ import ExploreLatestArrivals from "@/sections/home/ExploreLatestArrivals";
 import Faqs from "@/sections/home/Faqs";
 import WhyWeStandOut from "@/sections/home/WhyWeStandOut";
 import HeroBanner from "@/components/Herobanner";
-import callmecard from "../assets/callmecard.png";
+import callmecard from "../../assets/callmecard.png";
 import CallExpertCard from "@/components/Callexpertcard";
 import LightShard from "@/components/LightShard";
-import GlowingTransparentdiv from "@/components/GlowingTransparentdiv";
-import { motion } from "framer-motion";
 import HomeBadges from "@/components/HomeBadges";
 
 export const metadata: Metadata = {

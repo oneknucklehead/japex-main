@@ -4,7 +4,6 @@ import CarDetailClient from "./CarDetailClient";
 import LightShard from "@/components/LightShard";
 import FinanceCalculator from "@/components/tryouts/Financecalculator";
 
-// Force dynamic rendering — needed because supabase server client uses cookies()
 export const dynamic = "force-dynamic";
 
 export default async function CarDetailPage({

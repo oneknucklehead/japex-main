@@ -20,7 +20,7 @@ import EnquiryModal from "@/components/Cars/EnquiryModal";
 import Container from "@/components/Container";
 import { AssuranceIcon } from "@/components/Icons/Icons";
 import GlowingTransparentdiv from "@/components/GlowingTransparentdiv";
-import googleLogo from "../../../assets/googleLogo2.png";
+import googleLogo from "../../../../assets/googleLogo2.png";
 import Image from "next/image";
 import GlowingTransparentDivTestimonial from "@/components/GlowingTransparentDivTestimonial";
 interface Props {
@@ -430,9 +430,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                         </p>
                       </div>
                       <div className="flex flex-col text-brand-dark justify-center ">
-                        <h3 className="font-koulen text-3xl">
-                          Japex Imports Gosford
-                        </h3>
+                        <h3 className="font-koulen text-3xl">Japex Motors</h3>
                         <p className="font-bricolage">
                           2 Debenham Rd S, West Gosford NSW 2250, Australia
                         </p>
@@ -934,9 +932,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                       </p>
                     </div>
                     <div className="flex flex-col text-brand-dark justify-center ">
-                      <h3 className="font-koulen text-3xl">
-                        Japex Imports Gosford
-                      </h3>
+                      <h3 className="font-koulen text-3xl">Japex Motors</h3>
                       <p className="font-bricolage">
                         2 Debenham Rd S, West Gosford NSW 2250, Australia
                       </p>
