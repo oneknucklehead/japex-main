@@ -14,8 +14,8 @@ const NAV_LINKS = [
   "Service & Parts",
 ];
 const SCROLL_THRESHOLD = 20;
-const PHONE_NUMBER = "02 9756 0203";
-const PHONE_HREF = "tel:0297560203";
+const PHONE_NUMBER = "02 8041 4967";
+const PHONE_HREF = "tel:0280414967";
 
 const hrefFor = (item: string) =>
   item === "Find a Car"

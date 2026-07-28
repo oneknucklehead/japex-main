@@ -24,7 +24,7 @@ export default function CallExpertCard({
   ),
   subtext = "Let us know what you need, and we'll match you with the right cars.",
   ctaLabel = "Call an Expert",
-  href = "tel:0297560203",
+  href = "tel:0280414967",
 }: CallExpertCardProps) {
   return (
     <div className="px-6 sm:px-5 md:px-6">

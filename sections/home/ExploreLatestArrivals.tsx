@@ -30,7 +30,7 @@ const ExploreLatestArrivals = () => {
       const { data, error } = await supabase
         .from("cars")
         .select("*, car_images(id, url, alt, position)")
-        .eq("is_published", true)
+        .eq("is_featured", true)
         .order("created_at", { ascending: false });
 
       if (error) console.error("Error fetching cars:", error);

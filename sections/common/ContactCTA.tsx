@@ -70,10 +70,10 @@ export default function ContactCTA() {
                   Or you can call us at
                 </p>
                 <a
-                  href="tel:0297560203"
+                  href="tel:0280414967"
                   className="rounded-full border border-white/20 px-4 py-2 font-poppins text-sm font-bold text-white transition-colors duration-300 hover:border-[#CA281C]"
                 >
-                  02 9756 0203
+                  02 8041 4967
                 </a>
               </div>
             </motion.div>
@@ -127,7 +127,7 @@ export default function ContactCTA() {
                   type="submit"
                   //   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
-                  className="absolute bottom-3 right-3 rounded-lg bg-[#CA281C] px-5 py-2 font-poppins text-sm font-bold text-white transition-colors duration-300 hover:bg-[#a8211a] cursor-pointer"
+                  className="absolute bottom-3 right-3 rounded-lg bg-brand-primary px-5 py-2 font-poppins text-sm font-bold text-white transition-colors duration-300 hover:bg-[#a8211a] cursor-pointer"
                 >
                   Send
                 </motion.button>

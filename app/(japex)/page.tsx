@@ -28,7 +28,7 @@ export default function Home() {
 
       {/* Decorative light shards — scale with viewport, hidden on the
           smallest screens where they crowd the content */}
-      <LightShard className="pointer-events-none absolute left-0 -z-10 hidden w-48 -ml-8 sm:w-56 md:w-64 lg:w-72 xl:w-80 h-auto object-contain object-center" />
+      <LightShard className="pointer-events-none absolute left-0 -z-10 hidden w-48 -ml-8 sm:block sm:w-56 md:w-64 lg:w-72 xl:w-80 h-auto object-contain object-center" />
       <LightShard className="pointer-events-none absolute right-0 -z-10 hidden w-48 -mr-8 -rotate-90 sm:block sm:w-56 md:w-64 lg:w-72 xl:w-80 h-auto object-contain object-center" />
 
       {/* ── Latest arrivals ──────────────────────────────────────────────── */}
