@@ -132,10 +132,10 @@ export default function WhyWeStandOut() {
               <p className="text-brand-primary bg-black w-fit font-extrabold text-4xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight font-montserrat">
                 Stand Out?
               </p>
-              <p className="text-brand-white-alternate bg-black w-fit text-sm mt-2 sm:mt-3 max-w-56 sm:max-w-64 md:max-w-68 leading-relaxed ml-auto font-bricolage">
+              {/* <p className="text-brand-white-alternate bg-black w-fit text-sm mt-2 sm:mt-3 max-w-56 sm:max-w-64 md:max-w-68 leading-relaxed ml-auto font-bricolage">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
                 sed porta lacus.
-              </p>
+              </p> */}
             </motion.div>
 
             {/* Car image */}
