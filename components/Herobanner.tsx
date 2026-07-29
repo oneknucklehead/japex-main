@@ -124,7 +124,7 @@ export default function HeroBanner() {
         <div className="pointer-events-none absolute inset-0 bg-black/35 sm:bg-black/30" />
 
         {/* badge strip + bottom fade */}
-        <div className="flex flex-wrap items-end justify-center gap-2 sm:gap-3 md:gap-4 px-4 pb-6 sm:pb-8 absolute h-52 sm:h-56 md:h-60 bottom-0 w-full bg-linear-to-b from-transparent to-black">
+        <div className="flex flex-wrap content-end items-end justify-center gap-2 sm:gap-3 md:gap-4 px-4 pb-6 sm:pb-8 absolute h-52 sm:h-56 md:h-60 bottom-0 w-full bg-linear-to-b from-transparent to-black">
           {BADGES.map((badge, i) => (
             <div
               key={badge}
@@ -133,7 +133,7 @@ export default function HeroBanner() {
             >
               <GlowingTransparentdiv>
                 <div className="px-4 py-1.5 sm:px-5 sm:py-2 md:px-6">
-                  <p className="font-koulen uppercase leading-6 sm:leading-7 md:leading-8 text-xs sm:text-sm md:text-lg lg:text-xl text-white">
+                  <p className="font-koulen uppercase leading-6 sm:leading-7 md:leading-8 text-sm md:text-lg lg:text-xl text-white">
                     {badge}
                   </p>
                 </div>
@@ -144,7 +144,7 @@ export default function HeroBanner() {
       </div>
 
       <div className="absolute px-4 md:px-8 inset-0 flex flex-col items-center justify-center h-fit w-full max-w-3xl text-center mx-auto z-10 pt-28 sm:pt-32 md:pt-40">
-        <div className="hero-rise w-full max-w-[80%] sm:max-w-md md:max-w-2xl lg:max-w-3xl mb-2 md:mb-4">
+        <div className="hero-rise w-full max-w-[95%] sm:max-w-md md:max-w-2xl lg:max-w-3xl mb-2 md:mb-4">
           <Image
             src={herotext}
             alt="Japex Motors"
@@ -155,7 +155,7 @@ export default function HeroBanner() {
             className="w-full h-auto object-contain object-center"
           />
           <p
-            className="hero-rise font-montserrat font-medium text-xs sm:text-sm md:text-xl text-white"
+            className="hero-rise font-montserrat font-medium text-base md:text-xl text-white"
             style={{ animationDelay: "0.12s" }}
           >
             Buy and sell cars with confidence and ease.
