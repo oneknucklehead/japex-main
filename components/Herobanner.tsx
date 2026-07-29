@@ -1,101 +1,189 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
-import herobanner from "../assets/herobanner.png";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import herotext from "../assets/herotext.png";
 import GlowingTransparentdiv from "./GlowingTransparentdiv";
+import { getAssetsStorageUrl } from "@/utils/helpers";
+
+const BADGES = [
+  "5 Years warranty",
+  "Verified by a team of experts",
+  "Japanese imports",
+];
+
+// Hosted alongside the other Supabase assets. Adjust the paths if you drop
+// these in /public instead (then use "/video/hero-desktop.mp4" etc).
+const VIDEO_DESKTOP_MP4 = getAssetsStorageUrl("Homepage/hero-desktop.mp4");
+const VIDEO_DESKTOP_WEBM = getAssetsStorageUrl("Homepage/hero-desktop.webm");
+const VIDEO_MOBILE_MP4 = getAssetsStorageUrl("Homepage/hero-mobile.mp4");
+const VIDEO_POSTER = getAssetsStorageUrl("Homepage/hero-poster.jpg");
+
+/**
+ * Subscribes to a media query via useSyncExternalStore. The value is read
+ * during render rather than pushed in from an effect, so there's no
+ * setState-inside-useEffect and no cascading render.
+ */
+function useMediaQuery(query: string, serverFallback = false) {
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      const mq = window.matchMedia(query);
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    [query],
+  );
+
+  return useSyncExternalStore(
+    subscribe,
+    () => window.matchMedia(query).matches,
+    () => serverFallback,
+  );
+}
+
+/** True when the user is on a metered or slow connection (Chromium only). */
+function useSlowConnection() {
+  const subscribe = useCallback((onChange: () => void) => {
+    const conn = (navigator as any).connection;
+    if (!conn?.addEventListener) return () => {};
+    conn.addEventListener("change", onChange);
+    return () => conn.removeEventListener("change", onChange);
+  }, []);
+
+  return useSyncExternalStore(
+    subscribe,
+    () => {
+      const conn = (navigator as any).connection;
+      if (!conn) return false;
+      return (
+        conn.saveData === true ||
+        ["slow-2g", "2g", "3g"].includes(conn.effectiveType)
+      );
+    },
+    () => false,
+  );
+}
 
 export default function HeroBanner() {
+  const isDesktop = useMediaQuery("(min-width: 768px)", true);
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const slowConnection = useSlowConnection();
+
+  const variant = isDesktop ? "desktop" : "mobile";
+  const showVideo = !reducedMotion && !slowConnection;
+
+  // Crossfade the poster out once real frames are on screen. Driven by the
+  // video's own "playing" event — an external system callback.
+  const [playing, setPlaying] = useState(false);
+  useEffect(() => {
+    setPlaying(false);
+  }, [variant]);
+
   return (
-    <section className="relative w-full h-full min-h-screen overflow-hidden bg-black">
-      {/* background photo + dust */}
+    <section className="relative w-full h-full min-h-svh overflow-hidden bg-black">
+      {/* background media + dust */}
       <div className="absolute inset-0">
+        {/* Poster — paints immediately, stays put if the video never plays */}
         <Image
-          src={herobanner}
-          alt="Hero image"
-          width={1920}
-          height={1080}
-          sizes="(max-width: 768px) 90vw, 50vw"
+          src={VIDEO_POSTER}
+          alt=""
+          fill
           priority
-          className="w-full h-full object-cover object-center opacity-80"
+          sizes="100vw"
+          className={`object-cover object-center transition-opacity duration-700 ${
+            playing ? "opacity-0" : "opacity-100"
+          }`}
         />
-        <div className="flex flex-wrap items-end justify-center gap-4  absolute h-60 bottom-0 w-full bg-linear-to-b from-transparent  to-black">
-          {/* <div className="hidden sm:flex flex-wrap items-end justify-center gap-4 ">
-            <GlowingTransparentdiv>
-              <div className="px-6 py-2">
-                <motion.p className="font-koulen uppercase leading-8 text-sm md:text-xl text-white">
-                  5 Years warranty
-                </motion.p>
-              </div>
-            </GlowingTransparentdiv>
-            <GlowingTransparentdiv>
-              <div className="px-6 py-2">
-                <motion.p className="font-koulen uppercase leading-8 text-sm md:text-xl text-white">
-                  Verified by a team of experts
-                </motion.p>
-              </div>
-            </GlowingTransparentdiv>
-            <GlowingTransparentdiv>
-              <div className="px-6 py-2">
-                <motion.p className="font-koulen uppercase leading-8 text-sm md:text-xl text-white">
-                  Japanese imports
-                </motion.p>
-              </div>
-            </GlowingTransparentdiv>
-          </div> */}
+
+        {showVideo && (
+          <video
+            key={variant}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={VIDEO_POSTER}
+            disablePictureInPicture
+            inert
+            onPlaying={() => setPlaying(true)}
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
+          >
+            {variant === "desktop" ? (
+              <>
+                <source src={VIDEO_DESKTOP_WEBM} type="video/webm" />
+                <source src={VIDEO_DESKTOP_MP4} type="video/mp4" />
+              </>
+            ) : (
+              <source src={VIDEO_MOBILE_MP4} type="video/mp4" />
+            )}
+          </video>
+        )}
+
+        {/* readability scrim over the footage */}
+        <div className="pointer-events-none absolute inset-0 bg-black/35 sm:bg-black/30" />
+
+        {/* badge strip + bottom fade */}
+        <div className="flex flex-wrap items-end justify-center gap-2 sm:gap-3 md:gap-4 px-4 pb-6 sm:pb-8 absolute h-52 sm:h-56 md:h-60 bottom-0 w-full bg-linear-to-b from-transparent to-black">
+          {BADGES.map((badge, i) => (
+            <div
+              key={badge}
+              className="hero-rise"
+              style={{ animationDelay: `${0.36 + i * 0.12}s` }}
+            >
+              <GlowingTransparentdiv>
+                <div className="px-4 py-1.5 sm:px-5 sm:py-2 md:px-6">
+                  <p className="font-koulen uppercase leading-6 sm:leading-7 md:leading-8 text-xs sm:text-sm md:text-lg lg:text-xl text-white">
+                    {badge}
+                  </p>
+                </div>
+              </GlowingTransparentdiv>
+            </div>
+          ))}
         </div>
       </div>
-      <div className="absolute px-6 md:px-8 inset-0 flex flex-col items-center justify-center h-fit w-full max-w-2xl md:max-w-3xl text-center mx-auto z-10 pt-32 md:pt-40">
-        <div className="w-full  max-w-2xl md:max-w-3xl mb-2   md:mb-4">
+
+      <div className="absolute px-4 md:px-8 inset-0 flex flex-col items-center justify-center h-fit w-full max-w-3xl text-center mx-auto z-10 pt-28 sm:pt-32 md:pt-40">
+        <div className="hero-rise w-full max-w-[80%] sm:max-w-md md:max-w-2xl lg:max-w-3xl mb-2 md:mb-4">
           <Image
             src={herotext}
-            alt=""
+            alt="Japex Motors"
             width={1920}
             height={1080}
             sizes="(max-width: 768px) 90vw, 50vw"
             priority
-            className="w-full h-full object-cover object-center"
+            className="w-full h-auto object-contain object-center"
           />
-          <motion.p className="font-montserrat font-medium text-sm md:text-xl">
+          <p
+            className="hero-rise font-montserrat font-medium text-xs sm:text-sm md:text-xl text-white"
+            style={{ animationDelay: "0.12s" }}
+          >
             Buy and sell cars with confidence and ease.
-          </motion.p>
-          <motion.button className="group flex mx-auto gap-4 w-fit cursor-pointer items-center justify-center bg-brand-primary text-white font-montserrat font-bold text-sm pl-4 pr-2 py-2 mt-4 rounded-full hover:bg-red-700 transition-all duration-300">
-            <motion.p className="text-sm md:text-lg">Get a quote</motion.p>
-            <motion.span className="bg-white text-black rounded-full p-1 flex items-center justify-center group-hover:rotate-45 transition-all duration-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="hidden md:block lucide lucide-arrow-up-right-icon lucide-arrow-up-right"
-              >
-                <path d="M7 7h10v10" />
-                <path d="M7 17 17 7" />
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="block md:hidden w-4 h-4 lucide lucide-arrow-up-right-icon lucide-arrow-up-right"
-              >
-                <path d="M7 7h10v10" />
-                <path d="M7 17 17 7" />
-              </svg>
-            </motion.span>
-          </motion.button>
+          </p>
         </div>
+
+        <button
+          type="button"
+          className="hero-rise group flex gap-3 sm:gap-4 w-fit cursor-pointer items-center justify-center bg-brand-primary text-white font-montserrat font-bold text-sm pl-4 pr-2 py-2 rounded-full hover:bg-red-700 active:scale-97 transition-all duration-300"
+          style={{ animationDelay: "0.24s" }}
+        >
+          <span className="text-sm md:text-lg">Get a quote</span>
+          <span className="bg-white text-black rounded-full p-1 flex items-center justify-center group-hover:rotate-45 transition-all duration-300">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-4 h-4 md:w-6 md:h-6"
+            >
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </span>
+        </button>
       </div>
     </section>
   );

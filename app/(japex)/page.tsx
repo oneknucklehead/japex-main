@@ -5,11 +5,10 @@ import CollectionBudgetwise from "@/sections/home/CollectionBudgetwise";
 import ExploreLatestArrivals from "@/sections/home/ExploreLatestArrivals";
 import Faqs from "@/sections/home/Faqs";
 import WhyWeStandOut from "@/sections/home/WhyWeStandOut";
-import HeroBanner from "@/components/Herobanner";
 import callmecard from "../../assets/callmecard.png";
 import CallExpertCard from "@/components/Callexpertcard";
 import LightShard from "@/components/LightShard";
-import HomeBadges from "@/components/HomeBadges";
+import HeroBanner from "@/components/Herobanner";
 
 export const metadata: Metadata = {
   title: "Home | Japex Motors",
@@ -24,7 +23,7 @@ export default function Home() {
       <section className="relative">
         <HeroBanner />
       </section>
-      <HomeBadges />
+      {/* <HomeBadges /> */}
 
       {/* Decorative light shards — scale with viewport, hidden on the
           smallest screens where they crowd the content */}

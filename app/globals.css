@@ -27,3 +27,30 @@
   --color-brand-white-alternate: #dedede;
   --color-brand-gray: #e7e6e8;
 }
+/* ── Hero entrance animations ───────────────────────────────────────────────
+   Pure CSS so above-the-fold content is visible on first paint, without
+   waiting for the JS bundle. Add this to app/globals.css.                   */
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-rise {
+  animation: hero-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Respect the user's motion preference — show content, skip the movement. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
