@@ -72,8 +72,8 @@ const CONTACT_DETAILS = [
   },
   {
     label: "Email",
-    value: "info@japex.motors.com.au",
-    href: "mailto:info@japex.motors.com.au",
+    value: "info@japexmotors.com.au",
+    href: "mailto:info@japexmotors.com.au",
     external: false,
     nowrap: false,
   },
@@ -92,16 +92,7 @@ const Eyebrow = ({ children }: { children: React.ReactNode }) => (
     {children}
   </p>
 );
-const CONTACT = {
-  phone: "02 8041 4967",
-  phoneHref: "tel:0280414967",
-  email: "info@japex.motors.com.au",
-  emailHref: "mailto:info@japex.motors.com.au",
-  address: "2 Debenham Rd S, West Gosford NSW 2250, Australia",
-  addressShort: "2 Debenham Rd S, West Gosford NSW 2250",
-  mapsHref: "https://maps.google.com/?q=2+Debenham+Rd+S,+West+Gosford+NSW+2250",
-  businessName: "Japex Imports Gosford",
-};
+
 export default function ContactClient() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
