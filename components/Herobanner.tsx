@@ -121,7 +121,7 @@ export default function HeroBanner() {
         )}
 
         {/* readability scrim over the footage */}
-        <div className="pointer-events-none absolute inset-0 bg-black/35 sm:bg-black/30" />
+        {/* <div className="pointer-events-none absolute inset-0 bg-black/35 sm:bg-black/30" /> */}
 
         {/* badge strip + bottom fade */}
         <div className="flex flex-wrap content-end items-end justify-center gap-2 sm:gap-3 md:gap-4 px-4 pb-6 sm:pb-8 absolute h-52 sm:h-56 md:h-60 bottom-0 w-full bg-linear-to-b from-transparent to-black">
@@ -154,12 +154,12 @@ export default function HeroBanner() {
             priority
             className="w-full h-auto object-contain object-center"
           />
-          <p
+          {/* <p
             className="hero-rise font-montserrat font-medium text-base md:text-xl text-white"
             style={{ animationDelay: "0.12s" }}
           >
             Buy and sell cars with confidence and ease.
-          </p>
+          </p> */}
         </div>
 
         <button
