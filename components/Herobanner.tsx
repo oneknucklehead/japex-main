@@ -14,6 +14,7 @@ const BADGES = [
 
 // Hosted alongside the other Supabase assets. Adjust the paths if you drop
 // these in /public instead (then use "/video/hero-desktop.mp4" etc).
+const heroBlackJapexLogo = getAssetsStorageUrl("Homepage/japexBlackStrip1.png");
 const VIDEO_DESKTOP_MP4 = getAssetsStorageUrl(
   "Homepage/hero-desktop-latest.mp4",
 );
@@ -135,7 +136,7 @@ export default function HeroBanner() {
         <div className="pointer-events-none absolute inset-0 bg-black/10 sm:bg-black/10" />
 
         {/* badge strip + bottom fade */}
-        <div className="flex flex-wrap items-end justify-center gap-2 sm:gap-3 md:gap-4 px-4 pb-6 sm:pb-8 absolute h-52 sm:h-56 md:h-60 bottom-0 w-full bg-linear-to-b from-transparent to-black">
+        <div className="flex flex-wrap content-end items-end justify-center gap-2 sm:gap-3 md:gap-4 px-4 pb-6 sm:pb-8 absolute h-52 sm:h-56 md:h-60 bottom-0 w-full bg-linear-to-b from-transparent to-black">
           {BADGES.map((badge, i) => (
             <div
               key={badge}
@@ -157,7 +158,7 @@ export default function HeroBanner() {
       <div className="absolute px-4 md:px-8 inset-0 flex flex-col items-center justify-center h-fit w-full max-w-3xl text-center mx-auto z-10 pt-28 sm:pt-32 md:pt-40">
         <div className="hero-rise w-full max-w-[80%] sm:max-w-md md:max-w-2xl lg:max-w-3xl mb-2 md:mb-4">
           <Image
-            src={herotext}
+            src={heroBlackJapexLogo}
             alt="Japex Motors"
             width={1920}
             height={1080}
@@ -175,7 +176,7 @@ export default function HeroBanner() {
 
         <button
           type="button"
-          className="hero-rise group flex gap-3 sm:gap-4 w-fit cursor-pointer items-center justify-center bg-brand-primary text-white font-montserrat font-bold text-sm pl-4 pr-2 py-2 rounded-full hover:bg-red-700 active:scale-97 transition-all duration-300"
+          className="hero-rise group flex gap-3 sm:gap-4 w-fit cursor-pointer items-center justify-center bg-brand-primary text-white font-montserrat font-bold text-sm pl-4 pr-2 py-2 rounded-full hover:bg-red-700 active:scale-97 transition-all duration-300 mt-4"
           style={{ animationDelay: "0.24s" }}
         >
           <span className="text-sm md:text-lg">Get a quote</span>

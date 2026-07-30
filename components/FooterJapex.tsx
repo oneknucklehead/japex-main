@@ -21,7 +21,7 @@ const fadeUp = {
 
 export default function FooterJapex() {
   const footerCar = getAssetsStorageUrl("Footer/footerCar.png");
-  const footerLogo = getAssetsStorageUrl("Footer/footerlogo.png");
+  const footerLogo = getAssetsStorageUrl("Footer/japexWhiteStrip.png");
   return (
     <footer className="relative w-full overflow-hidden">
       {/* visual band */}

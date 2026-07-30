@@ -4,9 +4,11 @@ import Container from "@/components/Container";
 import GetInTouch from "@/components/GetInTouch";
 import GlowingTransparentDivTestimonial from "@/components/GlowingTransparentDivTestimonial";
 import GlowingTransparentNoBackground from "@/components/GlowingTransparentNoBackground";
+import { getAssetsStorageUrl } from "@/utils/helpers";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 // ── Shared motion presets ──────────────────────────────────────────────────
 const fadeUp = {
@@ -20,6 +22,10 @@ const stagger = {
   whileInView: { transition: { staggerChildren: 0.08 } },
   viewport: { once: true, margin: "-80px" },
 };
+
+// ── Images ──────────────────────────────────────────────────────────────────
+const HERO_IMAGE = getAssetsStorageUrl("ServiceAndParts/serviceBanner.png");
+const MATTERS_IMAGE = getAssetsStorageUrl("ServiceAndParts/serviceBanner2.png");
 
 // ── Data ────────────────────────────────────────────────────────────────────
 const STATS = [
@@ -167,6 +173,56 @@ const FeaturePill = ({ children }: { children: React.ReactNode }) => (
   </span>
 );
 
+/**
+ * Image with a shimmer skeleton underneath that fades out once the image has
+ * decoded. Pass `priority` for above-the-fold instances (it becomes the LCP
+ * candidate, so deferring the request would only delay first paint); leave it
+ * off below the fold and it falls through to native lazy loading.
+ *
+ * `className` controls sizing — an aspect ratio for standalone use, or
+ * `h-full` to fill a flex/grid parent whose height comes from a sibling.
+ */
+const SkeletonImage = ({
+  src,
+  alt,
+  priority = false,
+  className = "aspect-4/3 lg:aspect-4/5",
+}: {
+  src: string;
+  alt: string;
+  priority?: boolean;
+  className?: string;
+}) => {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div className={`relative w-full overflow-hidden rounded-2xl ${className}`}>
+      {/* skeleton — sits underneath, fades out on load */}
+      <div
+        aria-hidden="true"
+        className={`absolute inset-0 bg-white/5 transition-opacity duration-500 ${
+          loaded ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/10 to-transparent" />
+      </div>
+
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        loading={priority ? undefined : "lazy"}
+        sizes="(max-width: 1024px) 100vw, 45vw"
+        onLoad={() => setLoaded(true)}
+        className={`object-cover object-center transition-opacity duration-700 ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
+      />
+    </div>
+  );
+};
+
 const ArrowButton = ({
   href,
   children,
@@ -223,21 +279,43 @@ export default function ServiceClient() {
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-6 pt-28 pb-16 lg:pt-36 lg:pb-24 relative">
-            <motion.div {...fadeUp}>
-              <Eyebrow>Experience Life. Keep Experiencing It.</Eyebrow>
-              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-poppins leading-[1.1] mb-5 max-w-3xl">
-                The Same Care That Built It,
-                <br />
-                <span className="text-brand-primary">Keeps It Running.</span>
-              </h1>
-              <p className="text-base lg:text-lg text-brand-gray max-w-2xl leading-relaxed font-dm-sans">
-                Your Japex vehicle was hand-selected in Japan, inspected by our
-                own team, and finished in our workshop. That same workshop is
-                here for the life of your car — Central Coast born,
-                Japanese-trained, and run by mechanics who know these vehicles
-                better than anyone.
-              </p>
-            </motion.div>
+            <div className="grid grid-cols-1 items-center gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-12">
+              {/* copy */}
+              <motion.div className="lg:col-span-7" {...fadeUp}>
+                <Eyebrow>Experience Life. Keep Experiencing It.</Eyebrow>
+                <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-poppins leading-[1.1] mb-5 max-w-3xl">
+                  The Same Care That Built It,
+                  <br />
+                  <span className="text-brand-primary">Keeps It Running.</span>
+                </h1>
+                <p className="text-base lg:text-lg text-brand-gray max-w-2xl leading-relaxed font-dm-sans">
+                  Your Japex vehicle was hand-selected in Japan, inspected by
+                  our own team, and finished in our workshop. That same workshop
+                  is here for the life of your car — Central Coast born,
+                  Japanese-trained, and run by mechanics who know these vehicles
+                  better than anyone.
+                </p>
+              </motion.div>
+
+              {/* image */}
+              <motion.div
+                className="lg:col-span-5"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.15,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <SkeletonImage
+                  src={HERO_IMAGE}
+                  alt="Japex Motors workshop technicians at work"
+                  priority
+                />
+              </motion.div>
+            </div>
           </div>
         </Container>
       </section>
@@ -247,14 +325,39 @@ export default function ServiceClient() {
         {/* <div className="pointer-events-none absolute bottom-0 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/15 blur-3xl" />
         <div className="pointer-events-none absolute bottom-0 -right-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/15 blur-3xl" /> */}
         <Container>
+          {/* No items-start here — the columns stretch to the row height so the
+              image can grow with the prose beside it. */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 px-6">
-            <motion.div className="lg:col-span-5" {...fadeUp}>
-              <Eyebrow>Why It Matters</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
-                A car is never just a car.
-              </h2>
-            </motion.div>
+            {/* heading + image (desktop) */}
+            <div className="lg:col-span-5 flex flex-col gap-6 sm:gap-8 h-full">
+              <motion.div {...fadeUp} className="shrink-0">
+                <Eyebrow>Why It Matters</Eyebrow>
+                <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
+                  A car is never just a car.
+                </h2>
+              </motion.div>
 
+              {/* fills whatever height is left after the heading */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.15,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="hidden lg:flex flex-1 min-h-0"
+              >
+                <SkeletonImage
+                  src={MATTERS_IMAGE}
+                  alt="A Japex-built vehicle on the Central Coast"
+                  className="h-full"
+                />
+              </motion.div>
+            </div>
+
+            {/* prose */}
             <motion.div
               className="lg:col-span-7 space-y-4 text-sm lg:text-base text-brand-gray leading-relaxed"
               {...fadeUp}
@@ -280,6 +383,21 @@ export default function ServiceClient() {
                   you own the car.&rdquo;
                 </p>
               </blockquote>
+            </motion.div>
+
+            {/* image — mobile position, after the prose */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:hidden"
+            >
+              <SkeletonImage
+                src={MATTERS_IMAGE}
+                alt="A Japex-built vehicle on the Central Coast"
+                className="aspect-4/3"
+              />
             </motion.div>
           </div>
         </Container>

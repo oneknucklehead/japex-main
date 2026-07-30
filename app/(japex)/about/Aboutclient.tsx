@@ -3,9 +3,11 @@
 import Container from "@/components/Container";
 import GlowingTransparentDivTestimonial from "@/components/GlowingTransparentDivTestimonial";
 import GlowingTransparentNoBackground from "@/components/GlowingTransparentNoBackground";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { getAssetsStorageUrl } from "@/utils/helpers";
+import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useState } from "react";
 
 // ── Shared motion presets ──────────────────────────────────────────────────
 const fadeUp = {
@@ -19,6 +21,10 @@ const stagger = {
   whileInView: { transition: { staggerChildren: 0.08 } },
   viewport: { once: true, margin: "-80px" },
 };
+
+// ── Images ──────────────────────────────────────────────────────────────────
+const HERO_IMAGE = getAssetsStorageUrl("About/aboutBanner.png");
+const STORY_IMAGE = getAssetsStorageUrl("About/aboutBanner2.png");
 
 // ── Data ────────────────────────────────────────────────────────────────────
 const STATS = [
@@ -154,6 +160,56 @@ const CheckIcon = () => (
   </svg>
 );
 
+/**
+ * Image with a shimmer skeleton underneath that fades out once the image has
+ * decoded. Pass `priority` for above-the-fold instances (it becomes the LCP
+ * candidate, so deferring the request would only delay first paint); leave it
+ * off below the fold and it falls through to native lazy loading.
+ *
+ * `className` controls sizing — an aspect ratio for standalone use, or
+ * `h-full` to fill a flex/grid parent whose height comes from a sibling.
+ */
+const SkeletonImage = ({
+  src,
+  alt,
+  priority = false,
+  className = "aspect-4/3 lg:aspect-4/5",
+}: {
+  src: string;
+  alt: string;
+  priority?: boolean;
+  className?: string;
+}) => {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div className={`relative w-full overflow-hidden rounded-2xl ${className}`}>
+      {/* skeleton — sits underneath, fades out on load */}
+      <div
+        aria-hidden="true"
+        className={`absolute inset-0 bg-white/5 transition-opacity duration-500 ${
+          loaded ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/10 to-transparent" />
+      </div>
+
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        loading={priority ? undefined : "lazy"}
+        sizes="(max-width: 1024px) 100vw, 45vw"
+        onLoad={() => setLoaded(true)}
+        className={`object-cover object-center transition-opacity duration-700 ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
+      />
+    </div>
+  );
+};
+
 export default function AboutClient() {
   return (
     <div className="min-h-screen font-dm-sans overflow-hidden">
@@ -163,24 +219,46 @@ export default function AboutClient() {
         <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6 pt-28 pb-16 lg:pt-36 lg:pb-24 relative">
-            <motion.div {...fadeUp}>
-              <Eyebrow>Experience Life.</Eyebrow>
+          <div className="relative px-4 sm:px-5 md:px-6 pt-24 sm:pt-28 pb-12 sm:pb-16 lg:pt-36 lg:pb-24">
+            <div className="grid grid-cols-1 items-center gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-12">
+              {/* copy */}
+              <motion.div className="lg:col-span-7" {...fadeUp}>
+                <Eyebrow>Experience Life.</Eyebrow>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-poppins leading-[1.1] mb-5 max-w-3xl">
-                Japanese Excellence.
-                <br />
-                <span className="text-brand-primary">
-                  Delivered to Your Driveway.
-                </span>
-              </h1>
-              <p className="text-base lg:text-lg text-brand-gray max-w-2xl leading-relaxed font-dm-sans">
-                Japex Motors brings the best of Japan's automotive culture to
-                the Central Coast — precision-sourced vehicles, custom-finished
-                to our own standard, expertly complied, and backed by a team
-                that lives and breathes Japanese cars.
-              </p>
-            </motion.div>
+                <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-poppins leading-[1.1] mb-4 sm:mb-5 max-w-3xl">
+                  Japanese Excellence.
+                  <br />
+                  <span className="text-brand-primary">
+                    Delivered to Your Driveway.
+                  </span>
+                </h1>
+                <p className="text-sm sm:text-base lg:text-lg text-brand-gray max-w-2xl leading-relaxed font-dm-sans">
+                  Japex Motors brings the best of Japan&apos;s automotive
+                  culture to the Central Coast — precision-sourced vehicles,
+                  custom-finished to our own standard, expertly complied, and
+                  backed by a team that lives and breathes Japanese cars.
+                </p>
+              </motion.div>
+
+              {/* image */}
+              <motion.div
+                className="lg:col-span-5"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.15,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <SkeletonImage
+                  src={HERO_IMAGE}
+                  alt="A Japex Motors vehicle on the Central Coast"
+                  priority
+                />
+              </motion.div>
+            </div>
           </div>
         </Container>
       </section>
@@ -190,14 +268,39 @@ export default function AboutClient() {
         <div className="pointer-events-none absolute bottom-0 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/15 blur-3xl" />
         <div className="pointer-events-none absolute bottom-0 -right-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/15 blur-3xl" />
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 px-6">
-            <motion.div className="lg:col-span-5" {...fadeUp}>
-              <Eyebrow>Our Story</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
-                Australians deserve the best Japan has to offer.
-              </h2>
-            </motion.div>
+          {/* No items-start here — the columns stretch to the row height so the
+              image can grow with the prose beside it. */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 px-4 sm:px-5 md:px-6">
+            {/* heading + image (desktop) */}
+            <div className="lg:col-span-5 flex flex-col gap-6 sm:gap-8 h-full">
+              <motion.div {...fadeUp} className="shrink-0">
+                <Eyebrow>Our Story</Eyebrow>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
+                  Australians deserve the best Japan has to offer.
+                </h2>
+              </motion.div>
 
+              {/* fills whatever height is left after the heading */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.15,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="hidden lg:flex flex-1 min-h-0"
+              >
+                <SkeletonImage
+                  src={STORY_IMAGE}
+                  alt="Japex Motors workshop in Gosford"
+                  className="h-full"
+                />
+              </motion.div>
+            </div>
+
+            {/* prose */}
             <motion.div
               className="lg:col-span-7 space-y-4 text-sm lg:text-base text-brand-gray leading-relaxed"
               {...fadeUp}
@@ -211,7 +314,7 @@ export default function AboutClient() {
                 Our founder spent his career inside the Japanese automotive
                 industry, building direct relationships with auction houses,
                 specialist dealers, and suppliers across Japan. Those years gave
-                Japex something most dealerships don't have: on-the-ground
+                Japex something most dealerships don&apos;t have: on-the-ground
                 expertise, trusted partnerships, and the knowledge to manage the
                 full import and compliance process without handing it off to
                 anyone else.
@@ -230,42 +333,53 @@ export default function AboutClient() {
                 source our own accessories — bullbars, roof racks, side steps,
                 lighting rigs, interior fittings — and apply them in-house to
                 create vehicles with a look and feel that is entirely our own.
-                Every build is deliberate. Every detail considered. Whether it's
-                a kitted-out 4WD ready for the trails or a refined daily driver
-                with subtle Japanese character, you won't find it anywhere else.
-                That's the Japex style.
+                Every build is deliberate. Every detail considered. Whether
+                it&apos;s a kitted-out 4WD ready for the trails or a refined
+                daily driver with subtle Japanese character, you won&apos;t find
+                it anywhere else. That&apos;s the Japex style.
               </p>
 
               <blockquote className="border-l-4 border-brand-primary pl-5 py-1 my-6">
                 <p className="text-lg lg:text-xl font-semibold text-brand-white font-poppins italic">
-                  &ldquo;We don't just sell Japanese cars. We finish them — so
-                  when you pull up, people notice.&rdquo;
+                  &ldquo;We don&apos;t just sell Japanese cars. We finish them —
+                  so when you pull up, people notice.&rdquo;
                 </p>
               </blockquote>
 
               <p>
-                We've since grown into a full-service dealership — finance,
-                servicing, genuine parts — because the experience shouldn't stop
-                at the sale. Over 10,000 vehicles sold. Over 5,000 customers who
-                keep coming back. That's the Japex standard.
+                We&apos;ve since grown into a full-service dealership — finance,
+                servicing, genuine parts — because the experience shouldn&apos;t
+                stop at the sale. Over 10,000 vehicles sold. Over 5,000
+                customers who keep coming back. That&apos;s the Japex standard.
               </p>
+            </motion.div>
+
+            {/* image — mobile position, after the prose */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:hidden"
+            >
+              <SkeletonImage
+                src={STORY_IMAGE}
+                alt="Japex Motors workshop in Gosford"
+                className="aspect-4/3"
+              />
             </motion.div>
           </div>
 
           {/* Stats */}
           <motion.div
-            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-14 px-6"
+            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-12 sm:mt-14 px-4 sm:px-5 md:px-6"
             variants={stagger}
             initial="initial"
             whileInView="whileInView"
             viewport={{ once: true, margin: "-80px" }}
           >
             {STATS.map((s) => (
-              <motion.div
-                key={s.label}
-                variants={fadeUp}
-                // whileHover={{ y: -2 }}
-              >
+              <motion.div key={s.label} variants={fadeUp}>
                 <GlowingTransparentDivTestimonial border="2xl">
                   <div className="relative p-4 sm:p-6 text-center">
                     <p className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-gray font-poppins leading-tight wrap-break-word">
@@ -287,9 +401,9 @@ export default function AboutClient() {
         <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <motion.div className="px-6" {...fadeUp}>
+          <motion.div className="px-4 sm:px-5 md:px-6" {...fadeUp}>
             <Eyebrow>How We Source Our Vehicles</Eyebrow>
-            <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight mb-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight mb-3">
               We go further back in the chain — all the way to Japan.
             </h2>
             <p className="text-sm lg:text-base text-brand-gray leading-relaxed">
@@ -297,7 +411,7 @@ export default function AboutClient() {
               further back in the chain — all the way to Japan.
             </p>
           </motion.div>
-          <div className="px-6">
+          <div className="px-4 sm:px-5 md:px-6">
             {/* Inspection checklist */}
             <motion.div className="mt-10 relative group/card" {...fadeUp}>
               <GlowingTransparentNoBackground border="2xl">
@@ -312,7 +426,7 @@ export default function AboutClient() {
                       Every car personally inspected before it leaves Japan
                     </p>
                     <p className="text-sm text-brand-gray mb-5 leading-relaxed">
-                      We don't rely on auction listings, online photos, or
+                      We don&apos;t rely on auction listings, online photos, or
                       third-party reports. Our dedicated team of inspectors
                       travels throughout Japan to physically assess every
                       vehicle we consider — before a single bid is placed. They
@@ -331,8 +445,8 @@ export default function AboutClient() {
                       ))}
                     </div>
                     <p className="text-sm text-brand-gray italic mt-6 pt-5 border-t border-white/10">
-                      If it doesn't meet our standard on the ground in Japan, it
-                      doesn't come to Australia. Simple as that.
+                      If it doesn&apos;t meet our standard on the ground in
+                      Japan, it doesn&apos;t come to Australia. Simple as that.
                     </p>
                   </div>
                 </div>
@@ -348,11 +462,7 @@ export default function AboutClient() {
               viewport={{ once: true, margin: "-80px" }}
             >
               {SOURCING_STEPS.map((step) => (
-                <motion.div
-                  key={step.n}
-                  variants={fadeUp}
-                  // whileHover={{ y: -2 }}
-                >
+                <motion.div key={step.n} variants={fadeUp}>
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6 flex gap-4 h-full">
                       <span className="shrink-0 w-fit h-fit py-2 px-4 rounded-xl bg-brand-primary text-white font-black font-poppins flex items-center justify-center">
@@ -377,18 +487,19 @@ export default function AboutClient() {
               className="mt-12 bg-linear-to-r from-white to-[#CA281C] p-px rounded-2xl"
               {...fadeUp}
             >
-              <div className="relative overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-8 lg:p-10">
+              <div className="relative overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-6 sm:p-8 lg:p-10">
                 <div className="pointer-events-none absolute -bottom-20 -right-20 w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-brand-primary/20 blur-3xl" />
                 <div className="relative">
                   <Eyebrow>Why Japan?</Eyebrow>
-                  <p className="text-base lg:text-lg text-brand-gray leading-relaxed">
-                    Japan's domestic car market is uniquely well-suited to
+                  <p className="text-sm sm:text-base lg:text-lg text-brand-gray leading-relaxed">
+                    Japan&apos;s domestic car market is uniquely well-suited to
                     Australia. Vehicles are maintained to an exceptional
                     standard, mileage is low relative to age, service records
                     are detailed and reliable, and the auction grading system is
                     among the most transparent in the world. For buyers who care
-                    about what's under the bonnet — not just what's on the
-                    sticker — the Japanese experience is in a different class.
+                    about what&apos;s under the bonnet — not just what&apos;s on
+                    the sticker — the Japanese experience is in a different
+                    class.
                   </p>
                 </div>
               </div>
@@ -402,10 +513,10 @@ export default function AboutClient() {
         <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6">
+          <div className="px-4 sm:px-5 md:px-6">
             <motion.div className="mb-10" {...fadeUp}>
               <Eyebrow>What We Stock</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 From everyday commuters to weekend warriors.
               </h2>
               <p className="text-sm lg:text-base text-brand-gray mt-3">
@@ -421,11 +532,7 @@ export default function AboutClient() {
               viewport={{ once: true, margin: "-80px" }}
             >
               {STOCK.map((s) => (
-                <motion.div
-                  key={s.title}
-                  variants={fadeUp}
-                  // whileHover={{ y: -2 }}
-                >
+                <motion.div key={s.title} variants={fadeUp}>
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6">
                       <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">
@@ -451,10 +558,10 @@ export default function AboutClient() {
         <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6 ">
+          <div className="px-4 sm:px-5 md:px-6">
             <motion.div className="mb-10" {...fadeUp}>
               <Eyebrow>What We Stand For</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 The Japex standard isn&apos;t a slogan.
               </h2>
             </motion.div>
@@ -467,11 +574,7 @@ export default function AboutClient() {
               viewport={{ once: true, margin: "-80px" }}
             >
               {VALUES.map((v) => (
-                <motion.div
-                  key={v.title}
-                  variants={fadeUp}
-                  // whileHover={{ y: -2 }}
-                >
+                <motion.div key={v.title} variants={fadeUp}>
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6">
                       <h3 className="text-lg font-bold text-brand-white font-poppins mb-2">
@@ -494,10 +597,10 @@ export default function AboutClient() {
         <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6">
+          <div className="px-4 sm:px-5 md:px-6">
             <motion.div className="mb-10" {...fadeUp}>
               <Eyebrow>Why Japex Motors</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 Seven reasons buyers keep coming back.
               </h2>
             </motion.div>
@@ -510,11 +613,7 @@ export default function AboutClient() {
               viewport={{ once: true, margin: "-80px" }}
             >
               {WHY.map((w, i) => (
-                <motion.div
-                  key={w.title}
-                  variants={fadeUp}
-                  // whileHover={{ y: -2 }}
-                >
+                <motion.div key={w.title} variants={fadeUp}>
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6 h-full">
                       <span className="inline-flex items-center justify-center w-fit h-fit p-2 rounded-lg bg-brand-primary text-brand-white font-black font-poppins text-sm mb-4">
@@ -538,26 +637,28 @@ export default function AboutClient() {
       {/* ── CTA ───────────────────────────────────────────────────────────── */}
       <section className="pb-20">
         <Container>
-          <div className="px-6">
+          <div className="px-4 sm:px-5 md:px-6">
             <motion.div
               {...fadeUp}
-              className=" bg-linear-to-r from-white to-[#CA281C] p-px rounded-2xl"
+              className="bg-linear-to-r from-white to-[#CA281C] p-px rounded-2xl"
             >
-              <div className="relative  overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-8 lg:p-12 text-center">
+              <div className="relative overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-6 sm:p-8 lg:p-12 text-center">
                 <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
                 <div className="relative">
                   <p className="text-brand-primary font-dm-sans font-bold text-sm uppercase tracking-[0.25em] mb-4">
                     Experience Life.
                   </p>
-                  <h2 className="text-2xl lg:text-3xl font-bold font-poppins mb-3 text-brand-white">
-                    Japex Motors — Gosford's Japanese automotive experts.
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold font-poppins mb-3 text-brand-white">
+                    Japex Motors — Gosford&apos;s Japanese automotive experts.
                   </h2>
                   <p className="text-brand-gray text-sm lg:text-base max-w-xl mx-auto mb-7">
                     Browse the current range — every vehicle sourced from Japan,
                     finished in-house, and backed end to end.
                   </p>
-                  <motion.button
-                    whileHover={"hover"}
+                  <motion.div
+                    whileHover="hover"
+                    initial="rest"
+                    animate="rest"
                     whileTap={{ scale: 0.98 }}
                     className="inline-block"
                   >
@@ -600,7 +701,7 @@ export default function AboutClient() {
                         </svg>
                       </motion.span>
                     </Link>
-                  </motion.button>
+                  </motion.div>
                 </div>
               </div>
             </motion.div>

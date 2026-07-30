@@ -46,8 +46,8 @@ export default function ServiceCardTwo({
       {/* vehicle image — floats above the card's top edge */}
       <motion.div
         variants={{
-          rest: { scale: 1, y: 0 },
-          hover: { scale: 1.04, y: -8 },
+          rest: { scale: 1.12, y: 0 },
+          hover: { scale: 1.16, y: -8 },
         }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-10 w-full flex-1 basis-40 min-h-35 sm:min-h-40 -mt-10 sm:-mt-12 md:-mt-16 mb-4 sm:mb-6 md:mb-8 origin-bottom pointer-events-none"

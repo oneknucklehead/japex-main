@@ -57,6 +57,9 @@ const staggerContainer = {
   visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
 };
 
+// ── Images ──────────────────────────────────────────────────────────────────
+const HERO_IMAGE = getAssetsStorageUrl("Contact/contactBanner.png");
+
 // ── Shared styles ───────────────────────────────────────────────────────────
 const inputClasses =
   "w-full rounded-xl border border-white/15 bg-transparent px-4 py-3 font-dm-sans text-sm text-white placeholder:text-neutral-500 outline-none transition-colors duration-300 focus:border-brand-primary";
@@ -93,6 +96,56 @@ const Eyebrow = ({ children }: { children: React.ReactNode }) => (
   </p>
 );
 
+/**
+ * Image with a shimmer skeleton underneath that fades out once the image has
+ * decoded. Pass `priority` for above-the-fold instances (it becomes the LCP
+ * candidate, so deferring the request would only delay first paint); leave it
+ * off below the fold and it falls through to native lazy loading.
+ *
+ * `className` controls sizing — an aspect ratio for standalone use, or
+ * `h-full` to fill a flex/grid parent whose height comes from a sibling.
+ */
+const SkeletonImage = ({
+  src,
+  alt,
+  priority = false,
+  className = "aspect-4/3 lg:aspect-4/5",
+}: {
+  src: string;
+  alt: string;
+  priority?: boolean;
+  className?: string;
+}) => {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div className={`relative w-full overflow-hidden rounded-2xl ${className}`}>
+      {/* skeleton — sits underneath, fades out on load */}
+      <div
+        aria-hidden="true"
+        className={`absolute inset-0 bg-white/5 transition-opacity duration-500 ${
+          loaded ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/10 to-transparent" />
+      </div>
+
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        loading={priority ? undefined : "lazy"}
+        sizes="(max-width: 1024px) 100vw, 45vw"
+        onLoad={() => setLoaded(true)}
+        className={`object-cover object-center transition-opacity duration-700 ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
+      />
+    </div>
+  );
+};
+
 export default function ContactClient() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
@@ -127,24 +180,47 @@ export default function ContactClient() {
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="relative px-4 sm:px-5 md:px-6 pt-24 sm:pt-28 pb-10 lg:pt-36 lg:pb-14">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-80px" }}
-              variants={fadeUp}
-            >
-              <Eyebrow>Get In Touch</Eyebrow>
-              <h1 className="mb-4 sm:mb-5 max-w-3xl font-poppins text-3xl font-bold leading-[1.1] sm:text-4xl lg:text-6xl">
-                Let&apos;s talk about
-                <br />
-                <span className="text-brand-primary">your next drive.</span>
-              </h1>
-              <p className="max-w-2xl font-dm-sans text-sm sm:text-base leading-relaxed text-brand-gray lg:text-lg">
-                Whether you&apos;re after a specific import, want to talk
-                finance, or need our workshop — drop us a line and one of the
-                team will get back to you, usually the same business day.
-              </p>
-            </motion.div>
+            <div className="grid grid-cols-1 items-center gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-12">
+              {/* copy */}
+              <motion.div
+                className="lg:col-span-7"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-80px" }}
+                variants={fadeUp}
+              >
+                <Eyebrow>Get In Touch</Eyebrow>
+                <h1 className="mb-4 sm:mb-5 max-w-3xl font-poppins text-3xl font-bold leading-[1.1] sm:text-4xl lg:text-6xl">
+                  Let&apos;s talk about
+                  <br />
+                  <span className="text-brand-primary">your next drive.</span>
+                </h1>
+                <p className="max-w-2xl font-dm-sans text-sm sm:text-base leading-relaxed text-brand-gray lg:text-lg">
+                  Whether you&apos;re after a specific import, want to talk
+                  finance, or need our workshop — drop us a line and one of the
+                  team will get back to you, usually the same business day.
+                </p>
+              </motion.div>
+
+              {/* image */}
+              <motion.div
+                className="lg:col-span-5"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.15,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <SkeletonImage
+                  src={HERO_IMAGE}
+                  alt="The Japex Motors team at the Gosford yard"
+                  priority
+                />
+              </motion.div>
+            </div>
           </div>
         </Container>
       </section>

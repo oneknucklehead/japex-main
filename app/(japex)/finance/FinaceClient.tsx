@@ -4,8 +4,11 @@ import Container from "@/components/Container";
 import GetInTouch from "@/components/GetInTouch";
 import GlowingTransparentDivTestimonial from "@/components/GlowingTransparentDivTestimonial";
 import GlowingTransparentNoBackground from "@/components/GlowingTransparentNoBackground";
+import { getAssetsStorageUrl } from "@/utils/helpers";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 // ── Shared motion presets ──────────────────────────────────────────────────
 const fadeUp = {
@@ -19,6 +22,9 @@ const stagger = {
   whileInView: { transition: { staggerChildren: 0.08 } },
   viewport: { once: true, margin: "-80px" },
 };
+
+// ── Images ──────────────────────────────────────────────────────────────────
+const HERO_IMAGE = getAssetsStorageUrl("Finance/financeBanner.jpg");
 
 // ── Data ────────────────────────────────────────────────────────────────────
 const FINANCE_STEPS = [
@@ -168,6 +174,53 @@ const CheckIcon = () => (
   </svg>
 );
 
+/**
+ * Image with a shimmer skeleton underneath that fades out once the image has
+ * decoded. Pass `priority` for above-the-fold instances (it becomes the LCP
+ * candidate, so deferring the request would only delay first paint); leave it
+ * off below the fold and it falls through to native lazy loading.
+ */
+const SkeletonImage = ({
+  src,
+  alt,
+  priority = false,
+  className = "aspect-4/3 lg:aspect-4/5",
+}: {
+  src: string;
+  alt: string;
+  priority?: boolean;
+  className?: string;
+}) => {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div className={`relative w-full overflow-hidden rounded-2xl ${className}`}>
+      {/* skeleton — sits underneath, fades out on load */}
+      <div
+        aria-hidden="true"
+        className={`absolute inset-0 bg-white/5 transition-opacity duration-500 ${
+          loaded ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/10 to-transparent" />
+      </div>
+
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        loading={priority ? undefined : "lazy"}
+        sizes="(max-width: 1024px) 100vw, 45vw"
+        onLoad={() => setLoaded(true)}
+        className={`object-cover object-center transition-opacity duration-700 ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
+      />
+    </div>
+  );
+};
+
 export default function FinanceClient() {
   return (
     <div className="min-h-screen overflow-hidden bg-black font-dm-sans">
@@ -176,20 +229,42 @@ export default function FinanceClient() {
         <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6 pt-28 pb-16 lg:pt-36 lg:pb-24 relative">
-            <motion.div {...fadeUp}>
-              <Eyebrow>Experience Life. Drive It Your Way.</Eyebrow>
-              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-poppins leading-[1.1] mb-5 max-w-3xl">
-                Finance Without
-                <br />
-                <span className="text-brand-primary">the Headache.</span>
-              </h1>
-              <p className="text-base lg:text-lg text-brand-gray max-w-2xl leading-relaxed font-dm-sans">
-                Multiple lenders, one team, zero runaround. We find the right
-                structure for your life — and because compliance is handled
-                in-house, the price you see is the price you pay.
-              </p>
-            </motion.div>
+          <div className="relative px-4 sm:px-5 md:px-6 pt-24 sm:pt-28 pb-12 sm:pb-16 lg:pt-36 lg:pb-24">
+            <div className="grid grid-cols-1 items-center gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-12">
+              {/* copy */}
+              <motion.div className="lg:col-span-7" {...fadeUp}>
+                <Eyebrow>Experience Life. Drive It Your Way.</Eyebrow>
+                <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-poppins leading-[1.1] mb-4 sm:mb-5 max-w-3xl">
+                  Finance Without
+                  <br />
+                  <span className="text-brand-primary">the Headache.</span>
+                </h1>
+                <p className="text-sm sm:text-base lg:text-lg text-brand-gray max-w-2xl leading-relaxed font-dm-sans">
+                  Multiple lenders, one team, zero runaround. We find the right
+                  structure for your life — and because compliance is handled
+                  in-house, the price you see is the price you pay.
+                </p>
+              </motion.div>
+
+              {/* image */}
+              <motion.div
+                className="lg:col-span-5"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.15,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <SkeletonImage
+                  src={HERO_IMAGE}
+                  alt="Japex Motors finance — driving away in a Japanese import"
+                  priority
+                />
+              </motion.div>
+            </div>
           </div>
         </Container>
       </section>
@@ -197,10 +272,10 @@ export default function FinanceClient() {
       {/* ── Our Team On The Ground In Japan ───────────────────────────────── */}
       <section className="py-16 lg:py-24">
         <Container>
-          <div className="px-6">
+          <div className="px-4 sm:px-5 md:px-6">
             <motion.div {...fadeUp}>
               <Eyebrow>Our Team On The Ground In Japan</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight mb-3">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight mb-3">
                 Every car personally inspected before it leaves Japan.
               </h2>
               <p className="text-sm lg:text-base text-brand-gray leading-relaxed">
@@ -247,10 +322,10 @@ export default function FinanceClient() {
         <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6">
+          <div className="px-4 sm:px-5 md:px-6">
             <motion.div {...fadeUp}>
               <Eyebrow>Warranty Protection</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight mb-3">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight mb-3">
                 5-Year Warranty — Standard on Every Vehicle
               </h2>
               <p className="text-sm lg:text-base text-brand-gray leading-relaxed">
@@ -261,8 +336,9 @@ export default function FinanceClient() {
                 Every vehicle that leaves the Japex lot comes with a 5-year
                 warranty plan as standard — provided through our trusted
                 warranty partner, so you get proper cover backed by a dedicated
-                provider. Whether you're driving daily in Gosford or heading up
-                to Port Macquarie for the weekend, you're covered.
+                provider. Whether you&apos;re driving daily in Gosford or
+                heading up to Port Macquarie for the weekend, you&apos;re
+                covered.
               </p>
             </motion.div>
 
@@ -275,11 +351,7 @@ export default function FinanceClient() {
               viewport={{ once: true, margin: "-80px" }}
             >
               {WARRANTY_TIERS.map((t) => (
-                <motion.div
-                  key={t.title}
-                  variants={fadeUp}
-                  // whileHover={{ y: -2 }}
-                >
+                <motion.div key={t.title} variants={fadeUp}>
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6">
                       <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">
@@ -327,10 +399,10 @@ export default function FinanceClient() {
         <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6">
+          <div className="px-4 sm:px-5 md:px-6">
             <motion.div className="max-w-3xl mb-10" {...fadeUp}>
               <Eyebrow>How Finance Works</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 Four steps from conversation to keys.
               </h2>
             </motion.div>
@@ -343,11 +415,7 @@ export default function FinanceClient() {
               viewport={{ once: true, margin: "-80px" }}
             >
               {FINANCE_STEPS.map((step) => (
-                <motion.div
-                  key={step.n}
-                  variants={fadeUp}
-                  // whileHover={{ y: -2 }}
-                >
+                <motion.div key={step.n} variants={fadeUp}>
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6 flex gap-4 h-full">
                       <span className="shrink-0 w-fit h-fit py-2 px-4 rounded-xl bg-brand-primary text-white font-black font-poppins flex items-center justify-center">
@@ -375,10 +443,10 @@ export default function FinanceClient() {
         <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6">
+          <div className="px-4 sm:px-5 md:px-6">
             <motion.div className="max-w-3xl mb-10" {...fadeUp}>
               <Eyebrow>Finance Options</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 A structure for every situation.
               </h2>
             </motion.div>
@@ -391,11 +459,7 @@ export default function FinanceClient() {
               viewport={{ once: true, margin: "-80px" }}
             >
               {FINANCE_OPTIONS.map((o) => (
-                <motion.div
-                  key={o.title}
-                  variants={fadeUp}
-                  // whileHover={{ y: -2 }}
-                >
+                <motion.div key={o.title} variants={fadeUp}>
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6">
                       <p className="text-xs font-bold uppercase tracking-wider text-brand-primary mb-2">
@@ -421,10 +485,10 @@ export default function FinanceClient() {
         <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6">
+          <div className="px-4 sm:px-5 md:px-6">
             <motion.div className="max-w-3xl mb-10" {...fadeUp}>
               <Eyebrow>Why Our Finance Is Different</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 Built around you, not the lender.
               </h2>
             </motion.div>
@@ -437,11 +501,7 @@ export default function FinanceClient() {
               viewport={{ once: true, margin: "-80px" }}
             >
               {WHY_DIFFERENT.map((w, i) => (
-                <motion.div
-                  key={w.title}
-                  variants={fadeUp}
-                  // whileHover={{ y: -2 }}
-                >
+                <motion.div key={w.title} variants={fadeUp}>
                   <GlowingTransparentDivTestimonial border="2xl">
                     <div className="p-6 h-full">
                       <span className="inline-flex items-center justify-center w-fit h-fit p-2 rounded-lg bg-brand-primary text-brand-white font-black font-poppins text-sm mb-4">
@@ -475,10 +535,10 @@ export default function FinanceClient() {
         <div className="pointer-events-none absolute -bottom-44 -right-32 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
-          <div className="px-6">
+          <div className="px-4 sm:px-5 md:px-6">
             <motion.div className="max-w-3xl mb-10" {...fadeUp}>
               <Eyebrow>Common Questions</Eyebrow>
-              <h2 className="text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-white font-poppins leading-tight">
                 Straight answers, before you ask.
               </h2>
             </motion.div>
@@ -512,26 +572,28 @@ export default function FinanceClient() {
       {/* ── CTA ───────────────────────────────────────────────────────────── */}
       <section className="pb-20">
         <Container>
-          <div className="px-6 ">
+          <div className="px-4 sm:px-5 md:px-6">
             <motion.div
               {...fadeUp}
-              className=" bg-linear-to-r from-white to-[#CA281C] p-px rounded-2xl"
+              className="bg-linear-to-r from-white to-[#CA281C] p-px rounded-2xl"
             >
-              <div className="relative overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-8 lg:p-12 text-center">
+              <div className="relative overflow-hidden rounded-2xl bg-linear-to-b from-[#150606] to-black border border-white/10 p-6 sm:p-8 lg:p-12 text-center">
                 <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brand-primary/20 blur-3xl" />
                 <div className="relative">
                   <p className="text-brand-primary font-dm-sans font-bold text-sm uppercase tracking-[0.25em] mb-4">
                     Experience Life.
                   </p>
-                  <h2 className="text-2xl lg:text-3xl font-bold font-poppins mb-3 text-brand-white">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold font-poppins mb-3 text-brand-white">
                     Ready to experience life?
                   </h2>
                   <p className="text-brand-gray text-sm lg:text-base max-w-xl mx-auto mb-7">
                     No jargon. No pressure. Just the best options we can find
                     you.
                   </p>
-                  <motion.button
-                    whileHover={"hover"}
+                  <motion.div
+                    whileHover="hover"
+                    initial="rest"
+                    animate="rest"
                     whileTap={{ scale: 0.98 }}
                     className="inline-block"
                   >
@@ -545,7 +607,10 @@ export default function FinanceClient() {
                           rest: { rotate: 0 },
                           hover: { rotate: 45 },
                         }}
-                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{
+                          duration: 0.3,
+                          ease: [0.22, 1, 0.36, 1] as const,
+                        }}
                         className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-white"
                       >
                         <svg
@@ -571,7 +636,7 @@ export default function FinanceClient() {
                         </svg>
                       </motion.span>
                     </Link>
-                  </motion.button>
+                  </motion.div>
                 </div>
               </div>
             </motion.div>
