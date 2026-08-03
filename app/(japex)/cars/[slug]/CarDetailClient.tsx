@@ -224,6 +224,17 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                         >
                           {carName}
                         </motion.h1>
+                        {car.vin && (
+                          <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.4, delay: 0.08 }}
+                            className="mb-2 text-xs tracking-wider text-white/70 wrap-break-word"
+                          >
+                            <span className="font-semibold">VIN: </span>
+                            {car.vin}
+                          </motion.p>
+                        )}
                         <motion.p
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
@@ -734,10 +745,11 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                         <motion.p
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          transition={{ duration: 0.4, delay: 0.1 }}
-                          className="mb-3 text-xs text-white/70"
+                          transition={{ duration: 0.4, delay: 0.08 }}
+                          className="mb-2 text-xs tracking-wider text-white/70 wrap-break-word"
                         >
-                          VIN: {car.vin}
+                          <span className="font-semibold">VIN: </span>
+                          {car.vin}
                         </motion.p>
                       )}
                       <motion.p
