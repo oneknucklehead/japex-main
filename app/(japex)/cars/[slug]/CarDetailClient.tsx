@@ -12,7 +12,11 @@ import {
   formatCurrency,
 } from "@/lib/financeCalculations";
 import Link from "next/link";
-import { formatOdometer, formatPrice } from "@/utils/helpers";
+import {
+  formatOdometer,
+  formatPrice,
+  getAssetsStorageUrl,
+} from "@/utils/helpers";
 import type { Car } from "@/types/car";
 import CarImageGallery from "@/components/Cars/CarImageGallery";
 import PopularFeaturesCarousel from "@/components/Cars/PopularFeaturesCarousel";
@@ -20,7 +24,6 @@ import EnquiryModal from "@/components/Cars/EnquiryModal";
 import Container from "@/components/Container";
 import { AssuranceIcon } from "@/components/Icons/Icons";
 import GlowingTransparentdiv from "@/components/GlowingTransparentdiv";
-import googleLogo from "../../../../assets/googleLogo2.png";
 import Image from "next/image";
 import GlowingTransparentDivTestimonial from "@/components/GlowingTransparentDivTestimonial";
 interface Props {
@@ -91,6 +94,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
     mouseX.set(x);
     mouseY.set(y);
   };
+  const googleLogo = getAssetsStorageUrl("Logo/googleLogo2.png");
   return (
     <>
       <div className="min-h-screen font-dm-sans px-6">
@@ -439,6 +443,8 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                     <div className="flex items-center gap-4">
                       <Image
                         src={googleLogo}
+                        width={1920}
+                        height={1080}
                         alt="Google logo"
                         className="w-16"
                       />
@@ -941,6 +947,8 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                   <div className="flex items-center gap-4">
                     <Image
                       src={googleLogo}
+                      width={1920}
+                      height={1080}
                       alt="Google logo"
                       className="w-16"
                     />

@@ -126,7 +126,9 @@ export default function PopularFeaturesCarousel({
                   <Image
                     src={f.image_url}
                     alt={f.name}
-                    fill
+                    width={1920}
+                    height={1080}
+                    priority={false}
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 )}
