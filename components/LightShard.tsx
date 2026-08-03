@@ -3,16 +3,18 @@
 import Image, { StaticImageData } from "next/image";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import lightshardleft from "../assets/lightshardleft.png";
+import { getAssetsStorageUrl } from "@/utils/helpers";
 
 export default function LightShard({
   src,
   className,
 }: {
-  src?: StaticImageData;
+  src?: string | StaticImageData;
   className: string;
 }) {
   const sectionRef = useRef(null);
+  const lightshardleft = getAssetsStorageUrl("Homepage/lightshardleft.png");
+
   const inView = useInView(sectionRef, { once: true, margin: "-100px" });
   return (
     <motion.div
@@ -26,6 +28,8 @@ export default function LightShard({
       <Image
         src={src ? src : lightshardleft}
         alt="glowing background"
+        width={1920}
+        height={1080}
         priority
         className="w-full h-full object-cover object-center"
       />

@@ -41,10 +41,6 @@ const FooterLink = ({
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-  const facebookIcon = getAssetsStorageUrl("Logo/Facebook.png");
-  const linkedinIcon = getAssetsStorageUrl("Logo/LinkedIn.png");
-  const xIcon = getAssetsStorageUrl("Logo/X.png");
   const logo = getAssetsStorageUrl("Logo/footer.png");
   // Define footer sections and links
   const sections = [

@@ -11,6 +11,7 @@ import Container from "@/components/Container";
 import { useSearchParams } from "next/navigation";
 import CarCardFirst from "@/components/tryouts/CarCardFirst";
 import LightShard from "@/components/LightShard";
+import { getAssetsStorageUrl } from "@/utils/helpers";
 
 const SORT_OPTIONS: { label: string; value: SortOption }[] = [
   { label: "New Arrivals", value: "newest" },
@@ -36,6 +37,8 @@ const SkeletonCard = () => (
 );
 
 function CarsPageInner() {
+  const lightshardright = getAssetsStorageUrl("Homepage/lightshardright.png");
+
   const searchParams = useSearchParams();
   const body = searchParams.get("body");
   const brand = searchParams.get("brand");
@@ -87,7 +90,10 @@ function CarsPageInner() {
     <div className="relative overflow-hidden">
       <div>
         <LightShard className="pointer-events-none absolute left-0 -z-10 hidden w-48 -ml-8 sm:block sm:w-56 md:w-64 lg:w-72 h-auto" />
-        <LightShard className="pointer-events-none absolute right-0 -z-10 hidden w-48 -mr-8 -rotate-90 sm:block sm:w-56 md:w-64 lg:w-72 h-auto" />
+        <LightShard
+          src={lightshardright}
+          className="pointer-events-none absolute right-0 -z-10 hidden w-48 -mr-8 sm:block sm:w-56 md:w-64 lg:w-72 h-auto"
+        />
         <Container>
           <div className="mt-20 sm:mt-24 py-8 sm:py-10 md:py-14 px-4 sm:px-5 md:px-6">
             {/* ── Main layout ──────────────────────────────────────────── */}

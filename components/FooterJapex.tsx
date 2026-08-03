@@ -2,8 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import lightshardLeft from "../assets/lightshardleft.png";
-import lightshardRight from "../assets/lightshardright.png";
 import Container from "./Container";
 import { getAssetsStorageUrl } from "@/utils/helpers";
 const fadeUp = {
@@ -22,6 +20,8 @@ const fadeUp = {
 export default function FooterJapex() {
   const footerCar = getAssetsStorageUrl("Footer/footerCar.png");
   const footerLogo = getAssetsStorageUrl("Footer/japexWhiteStrip.png");
+  const lightshardLeft = getAssetsStorageUrl("Homepage/lightshardleft.png");
+  const lightshardRight = getAssetsStorageUrl("Homepage/lightshardright.png");
   return (
     <footer className="relative w-full overflow-hidden">
       {/* visual band */}
@@ -37,6 +37,8 @@ export default function FooterJapex() {
           <Image
             src={lightshardLeft}
             alt=""
+            width={1920}
+            height={1080}
             className="h-auto w-full object-contain"
           />
         </motion.div>
@@ -50,6 +52,8 @@ export default function FooterJapex() {
           <Image
             src={lightshardRight}
             alt=""
+            width={1920}
+            height={1080}
             className="h-auto w-full object-contain"
           />
         </motion.div>
@@ -100,8 +104,8 @@ export default function FooterJapex() {
         {/* <div className="h-px w-full bg-gray-800 mt-4"></div> */}
         {/* standard footer content */}
         <div className="transition-all relative mt-8 z-10 text-white font-koulen mx-auto px-4 flex flex-wrap  gap-x-4 gap-y-2 items-center justify-center md:justify-between">
-          <p className="text-neutral-500 flex items-center justify-center">
-            ©{" "}
+          <p className="text-neutral-500 flex items-center gap-1 justify-center">
+            ©
             <span className="text-white flex items-center justify-center">
               {" "}
               {new Date().getFullYear()} JAPEX. All rights reserved.
