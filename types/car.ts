@@ -7,7 +7,7 @@ export interface Car {
   model: string;
   variant: string;
   year: number;
-
+  vin: string;
   // Specs
   body_type: string;
   fuel_type: string;
