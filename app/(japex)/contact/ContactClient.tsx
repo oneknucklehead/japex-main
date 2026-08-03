@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { getAssetsStorageUrl } from "@/utils/helpers";
 import Container from "@/components/Container";
-
+import { submitContactForm } from "@/lib/submitContactForm";
 // ── Motion presets ──────────────────────────────────────────────────────────
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -59,11 +59,11 @@ const staggerContainer = {
 
 // ── Images ──────────────────────────────────────────────────────────────────
 const HERO_IMAGE = getAssetsStorageUrl("Contact/contactBanner.png");
-
+const EMPTY_FORM = { name: "", number: "", email: "", message: "" };
 // ── Shared styles ───────────────────────────────────────────────────────────
-const inputClasses =
-  "w-full rounded-xl border border-white/15 bg-transparent px-4 py-3 font-dm-sans text-sm text-white placeholder:text-neutral-500 outline-none transition-colors duration-300 focus:border-brand-primary";
 
+const inputClasses =
+  "w-full rounded-xl border border-white/15 bg-transparent px-4 py-3 font-dm-sans text-sm text-white placeholder:text-neutral-500 outline-none transition-colors duration-300 focus:border-brand-primary disabled:opacity-60";
 // ── Contact details ─────────────────────────────────────────────────────────
 const CONTACT_DETAILS = [
   {
@@ -152,13 +152,10 @@ export default function ContactClient() {
 
   const heroCar = getAssetsStorageUrl("Homepage/whyStandOut.png");
 
-  const [form, setForm] = useState({
-    name: "",
-    number: "",
-    email: "",
-    message: "",
-  });
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -166,9 +163,20 @@ export default function ContactClient() {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // wire up submit handler here
+    setSending(true);
+    setError("");
+
+    const result = await submitContactForm(form, "contact_page");
+
+    setSending(false);
+    if (!result.ok) {
+      setError(result.error ?? "Something went wrong. Please try again.");
+      return;
+    }
+
+    setForm(EMPTY_FORM);
     setSent(true);
   };
 
@@ -310,6 +318,7 @@ export default function ContactClient() {
                           onChange={handleChange}
                           placeholder="Your name"
                           required
+                          disabled={sending}
                           className={inputClasses}
                         />
                         <input
@@ -317,6 +326,7 @@ export default function ContactClient() {
                           value={form.number}
                           onChange={handleChange}
                           placeholder="Your number"
+                          disabled={sending}
                           className={inputClasses}
                         />
                       </div>
@@ -328,6 +338,7 @@ export default function ContactClient() {
                         onChange={handleChange}
                         placeholder="Your email"
                         required
+                        disabled={sending}
                         className={inputClasses}
                       />
 
@@ -339,18 +350,24 @@ export default function ContactClient() {
                           placeholder="Message"
                           rows={5}
                           required
+                          disabled={sending}
                           className={`${inputClasses} resize-none pb-16`}
                         />
                         <motion.button
                           type="submit"
+                          disabled={sending}
                           whileTap={{ scale: 0.96 }}
-                          className="absolute bottom-3 right-3 cursor-pointer rounded-lg bg-brand-primary px-4 py-2 sm:px-5 font-poppins text-xs sm:text-sm font-bold text-white transition-colors duration-300 hover:bg-red-700"
+                          className="absolute bottom-3 right-3 cursor-pointer rounded-lg bg-brand-primary px-4 py-2 sm:px-5 font-poppins text-xs sm:text-sm font-bold text-white transition-colors duration-300 hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed"
                         >
-                          Send
+                          {sending ? "Sending…" : "Send"}
                         </motion.button>
                       </div>
-
-                      {sent && (
+                      {error && (
+                        <p className="font-dm-sans text-xs sm:text-sm text-brand-primary">
+                          {error}
+                        </p>
+                      )}
+                      {sent && !error && (
                         <motion.p
                           initial={{ opacity: 0, y: -6 }}
                           animate={{ opacity: 1, y: 0 }}

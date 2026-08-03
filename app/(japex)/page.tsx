@@ -5,7 +5,6 @@ import CollectionBudgetwise from "@/sections/home/CollectionBudgetwise";
 import ExploreLatestArrivals from "@/sections/home/ExploreLatestArrivals";
 import Faqs from "@/sections/home/Faqs";
 import WhyWeStandOut from "@/sections/home/WhyWeStandOut";
-import callmecard from "../../assets/callmecard.png";
 import CallExpertCard from "@/components/Callexpertcard";
 import LightShard from "@/components/LightShard";
 import HeroBanner from "@/components/Herobanner";
@@ -52,7 +51,7 @@ export default function Home() {
 
       {/* ── Call an expert ───────────────────────────────────────────────── */}
       <section className="relative py-8 sm:py-20 md:py-24">
-        <CallExpertCard image={callmecard} />
+        <CallExpertCard />
       </section>
 
       {/* ── FAQs ─────────────────────────────────────────────────────────── */}

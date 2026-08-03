@@ -7,7 +7,7 @@ export default async function AdminCarsPage() {
   const { data: cars } = await supabase
     .from("cars")
     .select(
-      "id, slug, make, model, year, price, is_published, is_featured, availability",
+      "id, slug, make, model, year, price, is_published, is_featured, availability,vin",
     )
     .order("created_at", { ascending: false });
 
@@ -30,21 +30,27 @@ export default async function AdminCarsPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100 bg-gray-50">
-                {["Year", "Brand / Model", "Price", "Status", "Actions"].map(
-                  (h) => (
-                    <th
-                      key={h}
-                      className="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider"
-                    >
-                      {h}
-                    </th>
-                  ),
-                )}
+                {[
+                  "VIN",
+                  "Year",
+                  "Brand / Model",
+                  "Price",
+                  "Status",
+                  "Actions",
+                ].map((h) => (
+                  <th
+                    key={h}
+                    className="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider"
+                  >
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {(cars ?? []).map((car) => (
                 <tr key={car.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-4 py-3 text-gray-500">{car.vin}</td>
                   <td className="px-4 py-3 text-gray-500">{car.year}</td>
                   <td className="px-4 py-3 font-semibold text-gray-900">
                     {car.make} {car.model}

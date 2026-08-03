@@ -18,7 +18,7 @@ export default async function EditCarPage({
        odometer_km, color_exterior, color_interior, seats, doors,
        power_steering, price, was_price,
        description, features, condition, custom_specs,
-       is_featured, availability, is_published,popular_feature_ids,
+       is_featured, availability,vin, is_published,popular_feature_ids,
        car_images(id, url, alt, position)`,
     )
     .eq("id", id)

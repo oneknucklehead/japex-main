@@ -13,6 +13,7 @@ interface CustomSpec {
 }
 interface CarFormData {
   slug: string;
+  vin: string;
   make: string;
   model: string;
   variant: string;
@@ -48,6 +49,7 @@ interface UploadedImage {
 
 const DEFAULTS: CarFormData = {
   slug: "",
+  vin: "",
   make: "",
   model: "",
   variant: "",
@@ -255,21 +257,12 @@ export default function CarForm({ initialData, mode }: Props) {
     } = form as any;
     const payload = {
       ...formCols,
+      vin: form.vin.trim(),
       features: featuresArray,
       custom_specs: cleanedSpecs,
       was_price: form.was_price || null,
       id: mode === "create" ? tempId : initialData?.id,
     };
-
-    // const payload = {
-    //   ...form,
-    //   features: featuresArray,
-    //   custom_specs: cleanedSpecs,
-
-    //   was_price: form.was_price || null,
-    //   rego_expiry: form.rego_expiry || null,
-    //   id: mode === "create" ? tempId : initialData?.id,
-    // };
 
     let carId = initialData?.id ?? tempId;
 
@@ -280,7 +273,11 @@ export default function CarForm({ initialData, mode }: Props) {
         .select("id")
         .single();
       if (err) {
-        setError(err.message);
+        setError(
+          err.code === "23505" && err.message.includes("vin")
+            ? "A car with this VIN already exists."
+            : err.message,
+        );
         setSaving(false);
         return;
       }
@@ -338,6 +335,23 @@ export default function CarForm({ initialData, mode }: Props) {
           Identification
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Field label="VIN" required>
+            <input
+              className={`${inputCls} font-mono uppercase tracking-wider`}
+              value={form.vin}
+              onChange={(e) => set("vin", e.target.value.toUpperCase())}
+              placeholder="JTEBU5JR8K5123456"
+              // maxLength={17}
+              // minLength={17}
+              // pattern="[A-HJ-NPR-Z0-9]{17}"
+              // title="17 characters — letters and numbers, excluding I, O and Q"
+              required
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              17 characters. Letters and numbers only.
+            </p>
+          </Field>
+
           <Field label="Brand" required>
             <input
               className={inputCls}

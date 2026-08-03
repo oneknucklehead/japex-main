@@ -4,8 +4,8 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import quotes from "../assets/quotes.png";
 import GlowingTransparentDivTestimonial from "./GlowingTransparentDivTestimonial";
+import { getAssetsStorageUrl } from "@/utils/helpers";
 
 interface Testimonial {
   id: string;
@@ -68,6 +68,7 @@ const TestimonialCard = ({
 
     return () => observer.disconnect();
   }, [testimonial.review]);
+  const quotes = getAssetsStorageUrl("Logo/quotes.png");
 
   return (
     <div className="h-full">
@@ -96,6 +97,9 @@ const TestimonialCard = ({
               <Image
                 src={quotes}
                 alt=""
+                width={1920}
+                height={1080}
+                priority={false}
                 className="w-full h-full object-contain"
               />
             </div>

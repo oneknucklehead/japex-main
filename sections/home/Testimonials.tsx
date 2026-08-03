@@ -3,9 +3,9 @@ import Tagline from "@/components/Tagline";
 import TestimonialsCarousel from "@/components/TestimonialCarousel";
 import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
-import googleLogo from "../../assets/googleLogo.webp";
 import Container from "@/components/Container";
 import LightShard from "@/components/LightShard";
+import { getAssetsStorageUrl } from "@/utils/helpers";
 
 async function getTestimonials() {
   const supabase = await createClient();
@@ -30,6 +30,7 @@ const StarIcon = () => (
 
 const Testimonials = async () => {
   const testimonials = await getTestimonials();
+  const googleLogo = getAssetsStorageUrl("Logo/googleLogo.webp");
 
   return (
     <div className="relative overflow-hidden">
@@ -55,6 +56,10 @@ const Testimonials = async () => {
                   <Image
                     src={googleLogo}
                     alt="Google logo"
+                    width={1920}
+                    height={1080}
+                    // sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
+                    priority={false}
                     className="w-full h-full object-contain"
                   />
                 </div>

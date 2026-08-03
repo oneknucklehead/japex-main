@@ -1,12 +1,12 @@
 "use client";
 
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import Container from "./Container";
 import GlowingTransparentdiv from "./GlowingTransparentdiv";
+import { getAssetsStorageUrl } from "@/utils/helpers";
 
 interface CallExpertCardProps {
-  image: StaticImageData | string;
   title?: React.ReactNode;
   subtext?: string;
   ctaLabel?: string;
@@ -14,7 +14,6 @@ interface CallExpertCardProps {
 }
 
 export default function CallExpertCard({
-  image,
   title = (
     <>
       Not sure what you&apos;re
@@ -26,6 +25,8 @@ export default function CallExpertCard({
   ctaLabel = "Call an Expert",
   href = "tel:0280414967",
 }: CallExpertCardProps) {
+  const bannerImage = getAssetsStorageUrl("Homepage/CTABanner1.jpeg");
+
   return (
     <div className="px-6 sm:px-5 md:px-6">
       <Container>
@@ -39,8 +40,8 @@ export default function CallExpertCard({
           >
             {/* background photo */}
             <Image
-              src={image}
-              alt=""
+              src={bannerImage}
+              alt="CTA Banner"
               fill
               className="object-cover object-left"
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"

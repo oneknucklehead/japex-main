@@ -3,6 +3,7 @@
 import Container from "@/components/Container";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { submitContactForm } from "@/lib/submitContactForm";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -18,15 +19,15 @@ const fadeUp = {
 };
 
 const inputClasses =
-  "w-full rounded-xl border border-white/15 bg-transparent px-4 py-3 font-dm-sans text-sm text-white placeholder:text-neutral-500 outline-none transition-colors duration-300 focus:border-[#CA281C]";
+  "w-full rounded-xl border border-white/15 bg-transparent px-4 py-3 font-dm-sans text-sm text-white placeholder:text-neutral-500 outline-none transition-colors duration-300 focus:border-[#CA281C] disabled:opacity-60";
+
+const EMPTY_FORM = { name: "", number: "", email: "", message: "" };
 
 export default function ContactCTA() {
-  const [form, setForm] = useState({
-    name: "",
-    number: "",
-    email: "",
-    message: "",
-  });
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -34,9 +35,21 @@ export default function ContactCTA() {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // wire up submit handler here
+    setSending(true);
+    setError("");
+
+    const result = await submitContactForm(form, "cta");
+
+    setSending(false);
+    if (!result.ok) {
+      setError(result.error ?? "Something went wrong. Please try again.");
+      return;
+    }
+
+    setForm(EMPTY_FORM);
+    setSent(true);
   };
 
   return (
@@ -94,6 +107,8 @@ export default function ContactCTA() {
                   value={form.name}
                   onChange={handleChange}
                   placeholder="Your name"
+                  required
+                  disabled={sending}
                   className={inputClasses}
                 />
                 <input
@@ -101,6 +116,7 @@ export default function ContactCTA() {
                   value={form.number}
                   onChange={handleChange}
                   placeholder="Your number"
+                  disabled={sending}
                   className={inputClasses}
                 />
               </div>
@@ -111,6 +127,8 @@ export default function ContactCTA() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="Your email"
+                required
+                disabled={sending}
                 className={inputClasses}
               />
 
@@ -121,17 +139,35 @@ export default function ContactCTA() {
                   onChange={handleChange}
                   placeholder="Message"
                   rows={4}
+                  required
+                  disabled={sending}
                   className={`${inputClasses} resize-none pb-14`}
                 />
                 <motion.button
                   type="submit"
-                  //   whileHover={{ scale: 1.04 }}
+                  disabled={sending}
                   whileTap={{ scale: 0.96 }}
-                  className="absolute bottom-3 right-3 rounded-lg bg-brand-primary px-5 py-2 font-poppins text-sm font-bold text-white transition-colors duration-300 hover:bg-[#a8211a] cursor-pointer"
+                  className="absolute bottom-3 right-3 rounded-lg bg-brand-primary px-5 py-2 font-poppins text-sm font-bold text-white transition-colors duration-300 hover:bg-[#a8211a] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Send
+                  {sending ? "Sending…" : "Send"}
                 </motion.button>
               </div>
+
+              {error && (
+                <p className="font-dm-sans text-sm text-[#CA281C]">{error}</p>
+              )}
+
+              {sent && !error && (
+                <motion.p
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="font-dm-sans text-sm text-neutral-300"
+                >
+                  Thanks — we&apos;ve got your message and will be in touch
+                  shortly.
+                </motion.p>
+              )}
             </motion.form>
           </div>
         </motion.div>
