@@ -25,7 +25,7 @@ export default function CallExpertCard({
   ctaLabel = "Call an Expert",
   href = "tel:0280414967",
 }: CallExpertCardProps) {
-  const bannerImage = getAssetsStorageUrl("Homepage/CTABanner1.jpeg");
+  const bannerImage = getAssetsStorageUrl("Homepage/CTABanner2.jpeg");
 
   return (
     <div className="px-6 sm:px-5 md:px-6">
@@ -43,7 +43,7 @@ export default function CallExpertCard({
               src={bannerImage}
               alt="CTA Banner"
               fill
-              className="object-cover object-left"
+              className="object-cover object-center"
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
               priority={false}
             />
