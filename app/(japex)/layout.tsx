@@ -1,7 +1,9 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import TestimonialsSkeleton from "@/components/TestimonialsSkeleton";
 import ContactCTA from "@/sections/common/ContactCTA";
 import Testimonials from "@/sections/home/Testimonials";
+import { Suspense } from "react";
 
 export default function SiteLayout({
   children,
@@ -10,7 +12,9 @@ export default function SiteLayout({
     <>
       <Navbar />
       {children}
-      <Testimonials />
+      <Suspense fallback={<TestimonialsSkeleton />}>
+        <Testimonials />
+      </Suspense>
       <ContactCTA />
       <Footer />
     </>
