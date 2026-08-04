@@ -881,7 +881,6 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                         ) : car.availability === "Coming soon" ? (
                           <>
                             <motion.button
-                              whileHover={{ y: -1 }}
                               whileTap={{ scale: 0.98 }}
                               onClick={() => setEnquiryOpen(true)}
                               className="cursor-pointer w-full bg-brand-primary hover:bg-red-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm"
@@ -899,7 +898,6 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                         ) : (
                           <>
                             <motion.button
-                              whileHover={{ y: -1 }}
                               whileTap={{ scale: 0.98 }}
                               className="cursor-pointer w-full bg-brand-primary hover:bg-red-700 text-white font-bold py-3.5 rounded-full transition-colors duration-300"
                             >
@@ -916,7 +914,6 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                         )}
 
                         <motion.div
-                          whileHover={{ y: -1 }}
                           whileTap={{ scale: 0.98 }}
                           className="p-px
                       bg-linear-to-tr from-white to-[#666666] rounded-full
@@ -938,7 +935,6 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.25 }}
-                  whileHover={{ y: -2 }}
                   className="bg-white mt-4 space-y-3 rounded-2xl p-5 border border-gray-200 transition-shadow duration-300 hover:shadow-lg"
                 >
                   <div className="flex gap-4">

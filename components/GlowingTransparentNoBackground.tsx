@@ -45,8 +45,6 @@ export default function GlowingTransparentNoBackground({
           0 2px 10.1px -2px rgba(255,0,0,0.2),
           0 4px 6px -1px rgba(0,0,0,0.1)
         `,
-        backdropFilter: "blur(61.8px)",
-        WebkitBackdropFilter: "blur(61.8px)",
       }}
     >
       {/* Cursor-tracking glow, hugs border only, all sides */}
