@@ -215,6 +215,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                             </span>
                           </motion.div>
                         )}
+
                         {/* Title */}
                         <motion.h1
                           initial={{ opacity: 0, y: 8 }}
@@ -299,19 +300,6 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                               {/* //     Sold */}
                               {/* //   </span> */}
                               {/* // )} */}
-
-                              {car.availability !== "Sold out" &&
-                                car.condition === "Excellent" && (
-                                  <motion.span
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.35, delay: 0.2 }}
-                                    className="bg-brand-primary text-white text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shrink-0"
-                                  >
-                                    <AssuranceIcon />
-                                    Assured
-                                  </motion.span>
-                                )}
                             </div>
                           </div>
 
@@ -319,8 +307,20 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                             initial={{ opacity: 0, y: 6 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: 0.2 }}
-                            className="flex flex-col pt-4 mb-5 text-right"
+                            className="flex flex-col justify-end items-end pt-4 mb-5 text-right gap-0.5"
                           >
+                            {car.availability !== "Sold out" &&
+                              car.condition === "Excellent" && (
+                                <motion.span
+                                  initial={{ opacity: 0, scale: 0.9 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ duration: 0.35, delay: 0.2 }}
+                                  className="w-fit bg-brand-primary text-white text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shrink-0 mb-2"
+                                >
+                                  <AssuranceIcon />
+                                  Assured
+                                </motion.span>
+                              )}
                             <p className="text-2xl font-black ">
                               {formatCurrency(weeklyPayment)}{" "}
                               <span className="text-sm font-medium">
@@ -814,19 +814,6 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                             {/* //     Sold */}
                             {/* //   </span> */}
                             {/* // )} */}
-
-                            {car.availability !== "Sold out" &&
-                              car.condition === "Excellent" && (
-                                <motion.span
-                                  initial={{ opacity: 0, scale: 0.9 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  transition={{ duration: 0.35, delay: 0.2 }}
-                                  className="bg-brand-primary text-white text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shrink-0"
-                                >
-                                  <AssuranceIcon />
-                                  Assured
-                                </motion.span>
-                              )}
                           </div>
                         </div>
 
@@ -834,8 +821,20 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                           initial={{ opacity: 0, y: 6 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.4, delay: 0.2 }}
-                          className="pt-4 mb-5 text-right"
+                          className="flex flex-col gap-0.5 justify-end items-end pt-4 mb-5 text-right"
                         >
+                          {car.availability !== "Sold out" &&
+                            car.condition === "Excellent" && (
+                              <motion.span
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.35, delay: 0.2 }}
+                                className="w-fit bg-brand-primary text-white text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shrink-0 mb-2"
+                              >
+                                <AssuranceIcon />
+                                Assured
+                              </motion.span>
+                            )}
                           <p className="text-2xl font-black ">
                             {formatCurrency(weeklyPayment)}{" "}
                             <span className="text-sm font-medium">
