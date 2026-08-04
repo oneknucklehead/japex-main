@@ -190,12 +190,12 @@ export default function ContactClient() {
           <div className="relative px-4 sm:px-5 md:px-6 pt-24 sm:pt-28 pb-10 lg:pt-36 lg:pb-14">
             <div className="grid grid-cols-1 items-center gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-12">
               {/* copy */}
-              <motion.div
-                className="lg:col-span-7"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-80px" }}
-                variants={fadeUp}
+              <div
+                className="lg:col-span-7 hero-rise"
+                // initial="hidden"
+                // whileInView="visible"
+                // viewport={{ once: true, margin: "-80px" }}
+                // variants={fadeUp}
               >
                 <Eyebrow>Get In Touch</Eyebrow>
                 <h1 className="mb-4 sm:mb-5 max-w-3xl font-poppins text-3xl font-bold leading-[1.1] sm:text-4xl lg:text-6xl">
@@ -208,10 +208,10 @@ export default function ContactClient() {
                   finance, or need our workshop — drop us a line and one of the
                   team will get back to you, usually the same business day.
                 </p>
-              </motion.div>
+              </div>
 
               {/* image */}
-              <motion.div
+              {/* <motion.div
                 className="lg:col-span-5"
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -221,13 +221,18 @@ export default function ContactClient() {
                   delay: 0.15,
                   ease: [0.22, 1, 0.36, 1],
                 }}
+              > */}
+              <div
+                className="lg:col-span-5 hero-rise"
+                style={{ animationDelay: "0.15s" }}
               >
                 <SkeletonImage
                   src={HERO_IMAGE}
                   alt="The Japex Motors team at the Gosford yard"
                   priority
                 />
-              </motion.div>
+              </div>
+              {/* </motion.div> */}
             </div>
           </div>
         </Container>
@@ -283,7 +288,6 @@ export default function ContactClient() {
                     height={1080}
                     sizes="(max-width: 640px) 90vw, (max-width: 1024px) 60vw, 512px"
                     className="h-auto w-full object-contain drop-shadow-2xl"
-                    priority
                   />
                 </motion.div>
               </div>

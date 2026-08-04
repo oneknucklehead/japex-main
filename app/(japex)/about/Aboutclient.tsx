@@ -222,7 +222,7 @@ export default function AboutClient() {
           <div className="relative px-4 sm:px-5 md:px-6 pt-24 sm:pt-28 pb-12 sm:pb-16 lg:pt-36 lg:pb-24">
             <div className="grid grid-cols-1 items-center gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-12">
               {/* copy */}
-              <motion.div className="lg:col-span-7" {...fadeUp}>
+              <div className="lg:col-span-7 hero-rise">
                 <Eyebrow>Experience Life.</Eyebrow>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-poppins leading-[1.1] mb-4 sm:mb-5 max-w-3xl">
@@ -238,10 +238,10 @@ export default function AboutClient() {
                   custom-finished to our own standard, expertly complied, and
                   backed by a team that lives and breathes Japanese cars.
                 </p>
-              </motion.div>
+              </div>
 
               {/* image */}
-              <motion.div
+              {/* <motion.div
                 className="lg:col-span-5"
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -251,13 +251,18 @@ export default function AboutClient() {
                   delay: 0.15,
                   ease: [0.22, 1, 0.36, 1],
                 }}
+              > */}
+              <div
+                className="lg:col-span-5 hero-rise"
+                style={{ animationDelay: "0.15s" }}
               >
                 <SkeletonImage
                   src={HERO_IMAGE}
                   alt="A Japex Motors vehicle on the Central Coast"
                   priority
                 />
-              </motion.div>
+              </div>
+              {/* </motion.div> */}
             </div>
           </div>
         </Container>

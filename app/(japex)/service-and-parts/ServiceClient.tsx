@@ -281,7 +281,7 @@ export default function ServiceClient() {
           <div className="px-6 pt-28 pb-16 lg:pt-36 lg:pb-24 relative">
             <div className="grid grid-cols-1 items-center gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-12">
               {/* copy */}
-              <motion.div className="lg:col-span-7" {...fadeUp}>
+              <div className="lg:col-span-7 hero-rise">
                 <Eyebrow>Experience Life. Keep Experiencing It.</Eyebrow>
                 <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-poppins leading-[1.1] mb-5 max-w-3xl">
                   The Same Care That Built It,
@@ -295,10 +295,10 @@ export default function ServiceClient() {
                   Japanese-trained, and run by mechanics who know these vehicles
                   better than anyone.
                 </p>
-              </motion.div>
+              </div>
 
               {/* image */}
-              <motion.div
+              {/* <motion.div
                 className="lg:col-span-5"
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -308,13 +308,18 @@ export default function ServiceClient() {
                   delay: 0.15,
                   ease: [0.22, 1, 0.36, 1],
                 }}
+              > */}
+              <div
+                className="lg:col-span-5 hero-rise"
+                style={{ animationDelay: "0.15s" }}
               >
                 <SkeletonImage
                   src={HERO_IMAGE}
                   alt="Japex Motors workshop technicians at work"
                   priority
                 />
-              </motion.div>
+              </div>
+              {/* </motion.div> */}
             </div>
           </div>
         </Container>

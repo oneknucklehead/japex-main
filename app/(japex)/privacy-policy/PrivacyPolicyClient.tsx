@@ -78,7 +78,7 @@ export default function PrivacyPolicyClient() {
         <div className="pointer-events-none absolute -bottom-48 -left-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-brand-primary/10 blur-3xl" />
         <Container>
           <div className="px-4 sm:px-5 md:px-6 pt-24 sm:pt-28 pb-12 sm:pb-16 lg:pt-36 lg:pb-24 relative">
-            <motion.div {...fadeUp}>
+            <div className="hero-rise">
               <Eyebrow>Legal</Eyebrow>
 
               <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-poppins leading-[1.1] mb-4 sm:mb-5 max-w-3xl">
@@ -92,7 +92,7 @@ export default function PrivacyPolicyClient() {
               <p className="text-xs sm:text-sm text-brand-gray/70 mt-4">
                 Last updated: {LAST_UPDATED}
               </p>
-            </motion.div>
+            </div>
           </div>
         </Container>
       </section>
