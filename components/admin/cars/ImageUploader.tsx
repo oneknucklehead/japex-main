@@ -190,6 +190,7 @@ export default function ImageUploader({
                       src={img.url}
                       alt={img.alt || "Car image"}
                       fill
+                      unoptimized
                       className="object-cover"
                       sizes="200px"
                       onError={() =>
