@@ -1,29 +1,33 @@
 import type { NextConfig } from "next";
 
+// Post-cutover: Supabase pattern removed. Only re-add it if
+// pre-cutover-check.mjs reports documents still referencing supabase.co.
+const appwriteHost = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT?.replace(
+  /^https?:\/\//,
+  "",
+).replace(/\/v1\/?$/, ""); // endpoint includes /v1; hostname must not
+
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
+      // Appwrite storage. Note the path shape differs from Supabase's:
+      //   Appwrite: /v1/storage/buckets/<bucket>/files/<fileId>/view
+      ...(appwriteHost
+        ? [
+            {
+              protocol: "https" as const,
+              hostname: appwriteHost,
+              pathname: "/v1/storage/buckets/**",
+            },
+          ]
+        : []),
       {
-        protocol: "https",
-        hostname: `${process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/^https?:\/\//, "")}`,
-        // hostname: "*.supabase.co",
-        pathname: "/storage/v1/object/public/**",
-      },
-      {
-        protocol: "https",
+        protocol: "https" as const,
         hostname: "images.unsplash.com",
         port: "",
         pathname: "/**",
       },
     ],
-    // next/image refuses to serve remote SVGs unless this is set — an SVG can
-    // contain scripts, so Next treats it as untrusted by default. Our SVGs come
-    // from our own Appwrite bucket, and the CSP below sandboxes them: scripts
-    // disabled, so a compromised SVG can't execute anything.
-    dangerouslyAllowSVG: true,
-    contentDispositionType: "attachment",
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
