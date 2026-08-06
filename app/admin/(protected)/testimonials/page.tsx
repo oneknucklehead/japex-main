@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { createClient } from "@/utils/supabase/client";
+import { Query } from "appwrite";
+import { createClient, DB_ID } from "@/lib/appwrite/client";
 
 interface Testimonial {
   id?: string;
@@ -25,69 +26,22 @@ const BLANK = {
   position: 0,
 };
 
-export default function AdminTestimonialsPage() {
-  const [items, setItems] = useState<Testimonial[]>([]);
-  const [saving, setSaving] = useState<string | null>(null);
-  const [newItem, setNewItem] = useState<Omit<Testimonial, "id">>({ ...BLANK });
-  const [adding, setAdding] = useState(false);
-
-  useEffect(() => {
-    const supabase = createClient();
-    supabase
-      .from("testimonials")
-      .select("*")
-      .order("position")
-      .then(({ data }) => setItems(data ?? []));
-  }, []);
-
-  const save = async (item: Testimonial) => {
-    setSaving(item.id ?? "new");
-    const supabase = createClient();
-    await supabase
-      .from("testimonials")
-      .update({
-        name: item.name,
-        role: item.role,
-        review: item.review,
-        rating: item.rating,
-        is_published: item.is_published,
-      })
-      .eq("id", item.id!);
-    setSaving(null);
-  };
-
-  const remove = async (id: string) => {
-    const supabase = createClient();
-    await supabase.from("testimonials").delete().eq("id", id);
-    setItems((f) => f.filter((i) => i.id !== id));
-  };
-
-  const add = async () => {
-    if (!newItem.name || !newItem.review) return;
-    setAdding(true);
-    const supabase = createClient();
-    const { data } = await supabase
-      .from("testimonials")
-      .insert({ ...newItem, position: items.length })
-      .select()
-      .single();
-    if (data) {
-      setItems((f) => [...f, data]);
-      setNewItem({ ...BLANK });
-    }
-    setAdding(false);
-  };
-
-  const update = (id: string, key: keyof Testimonial, val: any) =>
-    setItems((f) => f.map((i) => (i.id === id ? { ...i, [key]: val } : i)));
-
-  const TestimonialFields = ({
-    item,
-    onChange,
-  }: {
-    item: Partial<Testimonial>;
-    onChange: (k: string, v: any) => void;
-  }) => (
+/**
+ * Defined at module scope, NOT inside AdminTestimonialsPage.
+ *
+ * When a component is declared inside another component's body, every render
+ * creates a new function identity. React treats that as a different component
+ * type, unmounts the old subtree and mounts a fresh one — so the input loses
+ * focus after each keystroke. Hoisting it keeps the identity stable.
+ */
+function TestimonialFields({
+  item,
+  onChange,
+}: {
+  item: Partial<Testimonial>;
+  onChange: (k: string, v: any) => void;
+}) {
+  return (
     <div className="space-y-2">
       <div className="grid grid-cols-2 gap-2">
         <input
@@ -125,6 +79,116 @@ export default function AdminTestimonialsPage() {
       </div>
     </div>
   );
+}
+
+export default function AdminTestimonialsPage() {
+  const [items, setItems] = useState<Testimonial[]>([]);
+  const [saving, setSaving] = useState<string | null>(null);
+  const [newItem, setNewItem] = useState<Omit<Testimonial, "id">>({ ...BLANK });
+  const [adding, setAdding] = useState(false);
+
+  useEffect(() => {
+    const { databases } = createClient();
+    databases
+      .listDocuments(DB_ID, "testimonials", [
+        Query.orderAsc("position"),
+        Query.limit(200),
+      ])
+      .then((res: any) =>
+        setItems(
+          (res.documents as any[]).map((d) => ({
+            id: d.$id,
+            name: d.name,
+            role: d.role,
+            review: d.review,
+            rating: d.rating,
+            is_published: d.is_published,
+            position: d.position,
+          })),
+        ),
+      )
+      .catch((e: any) => console.error("Could not load testimonials:", e));
+  }, []);
+
+  // Reads are direct (public read); writes go through /api/admin/content.
+  const save = async (item: Testimonial) => {
+    if (!item.id) return;
+    setSaving(item.id);
+    try {
+      await fetch("/api/admin/content", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          collection: "testimonials",
+          id: item.id,
+          data: {
+            name: item.name,
+            role: item.role,
+            review: item.review,
+            rating: item.rating,
+            is_published: item.is_published,
+          },
+        }),
+      });
+    } catch (e) {
+      console.error("Could not save testimonial:", e);
+    } finally {
+      setSaving(null);
+    }
+  };
+
+  const remove = async (id: string) => {
+    try {
+      const res = await fetch("/api/admin/content", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ collection: "testimonials", id }),
+      });
+      if (!res.ok) return;
+      setItems((f) => f.filter((i) => i.id !== id));
+    } catch (e) {
+      console.error("Could not delete testimonial:", e);
+    }
+  };
+
+  const add = async () => {
+    if (!newItem.name || !newItem.review) return;
+    setAdding(true);
+    try {
+      const res = await fetch("/api/admin/content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          collection: "testimonials",
+          data: { ...newItem, position: items.length },
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.document) {
+        const d = data.document;
+        setItems((f) => [
+          ...f,
+          {
+            id: d.$id,
+            name: d.name,
+            role: d.role,
+            review: d.review,
+            rating: d.rating,
+            is_published: d.is_published,
+            position: d.position,
+          },
+        ]);
+        setNewItem({ ...BLANK });
+      }
+    } catch (e) {
+      console.error("Could not add testimonial:", e);
+    } finally {
+      setAdding(false);
+    }
+  };
+
+  const update = (id: string, key: keyof Testimonial, val: any) =>
+    setItems((f) => f.map((i) => (i.id === id ? { ...i, [key]: val } : i)));
 
   return (
     <div className="pt-16 lg:pt-0 max-w-3xl">

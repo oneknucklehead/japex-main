@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { createClient } from "@/utils/supabase/client";
+import { Query } from "appwrite";
+import { createClient, DB_ID } from "@/lib/appwrite/client";
 
 interface Faq {
   id?: string;
@@ -21,46 +22,91 @@ export default function AdminFaqsPage() {
   const [adding, setAdding] = useState(false);
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase
-      .from("faqs")
-      .select("*")
-      .order("position")
-      .then(({ data }) => setFaqs(data ?? []));
+    const { databases } = createClient();
+    databases
+      .listDocuments(DB_ID, "faqs", [
+        Query.orderAsc("position"),
+        Query.limit(200),
+      ])
+      .then((res: any) =>
+        setFaqs(
+          (res.documents as any[]).map((d) => ({
+            id: d.$id,
+            question: d.question,
+            answer: d.answer,
+            position: d.position,
+          })),
+        ),
+      )
+      .catch((e: any) => console.error("Could not load FAQs:", e));
   }, []);
 
+  // Reads come straight from Appwrite (public read), but writes go through
+  // /api/admin/content — the collections grant no public write.
   const saveFaq = async (faq: Faq) => {
-    setSaving(faq.id ?? "new");
-    const supabase = createClient();
-    if (faq.id) {
-      await supabase
-        .from("faqs")
-        .update({ question: faq.question, answer: faq.answer })
-        .eq("id", faq.id);
+    if (!faq.id) return;
+    setSaving(faq.id);
+    try {
+      await fetch("/api/admin/content", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          collection: "faqs",
+          id: faq.id,
+          data: { question: faq.question, answer: faq.answer },
+        }),
+      });
+    } catch (e) {
+      console.error("Could not save FAQ:", e);
+    } finally {
+      setSaving(null);
     }
-    setSaving(null);
   };
 
   const deleteFaq = async (id: string) => {
-    const supabase = createClient();
-    await supabase.from("faqs").delete().eq("id", id);
-    setFaqs((f) => f.filter((faq) => faq.id !== id));
+    try {
+      const res = await fetch("/api/admin/content", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ collection: "faqs", id }),
+      });
+      if (!res.ok) return;
+      setFaqs((f) => f.filter((faq) => faq.id !== id));
+    } catch (e) {
+      console.error("Could not delete FAQ:", e);
+    }
   };
 
   const addFaq = async () => {
     if (!newFaq.question || !newFaq.answer) return;
     setAdding(true);
-    const supabase = createClient();
-    const { data } = await supabase
-      .from("faqs")
-      .insert({ ...newFaq, position: faqs.length })
-      .select()
-      .single();
-    if (data) {
-      setFaqs((f) => [...f, data]);
-      setNewFaq({ question: "", answer: "" });
+    try {
+      const res = await fetch("/api/admin/content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          collection: "faqs",
+          data: { ...newFaq, position: faqs.length },
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.document) {
+        setFaqs((f) => [
+          ...f,
+          {
+            id: data.document.$id,
+            question: data.document.question,
+            answer: data.document.answer,
+            position: data.document.position,
+          },
+        ]);
+        setNewFaq({ question: "", answer: "" });
+      }
+    } catch (e) {
+      console.error("Could not add FAQ:", e);
+    } finally {
+      setAdding(false);
     }
-    setAdding(false);
   };
 
   return (

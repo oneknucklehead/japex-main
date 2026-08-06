@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from "react";
 import Image from "next/image";
-import { createClient } from "@/utils/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface UploadedImage {
@@ -31,45 +30,46 @@ export default function ImageUploader({
   const uploadFiles = async (files: FileList) => {
     setUploading(true);
     setUploadError("");
-    const supabase = createClient();
-    const newImages: UploadedImage[] = [];
-    const failed: string[] = [];
 
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const ext = file.name.split(".").pop();
-      const path = `${carId}/${Date.now()}-${i}.${ext}`;
+    // Uploads go through /api/admin/storage so the Appwrite API key stays
+    // server-side. The route returns Appwrite view URLs ready to store.
+    const body = new FormData();
+    Array.from(files).forEach((f) => body.append("files", f));
 
-      const { error } = await supabase.storage
-        .from("car-images")
-        .upload(path, file, { upsert: true });
+    try {
+      const res = await fetch("/api/admin/storage", { method: "POST", body });
+      const data = await res.json();
 
-      if (error) {
-        failed.push(file.name);
-        continue; // never push a URL for a file that didn't land
+      if (!res.ok) {
+        setUploadError(data.error ?? "Upload failed. Try again.");
+        setUploading(false);
+        return;
       }
 
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("car-images").getPublicUrl(path);
-
-      newImages.push({
-        url: publicUrl,
-        alt: "",
-        position: images.length + newImages.length,
-      });
-    }
-
-    const updated = [...images, ...newImages];
-    setImages(updated);
-    onImagesChange?.(updated);
-
-    if (failed.length) {
-      setUploadError(
-        `${failed.length} file${failed.length > 1 ? "s" : ""} failed to upload: ${failed.join(", ")}. Try again.`,
+      const newImages: UploadedImage[] = (data.uploaded ?? []).map(
+        (u: { url: string }, i: number) => ({
+          url: u.url,
+          alt: "",
+          position: images.length + i,
+        }),
       );
+
+      const updated = [...images, ...newImages];
+      setImages(updated);
+      onImagesChange?.(updated);
+
+      const failed: { name: string; reason: string }[] = data.failed ?? [];
+      if (failed.length) {
+        setUploadError(
+          `${failed.length} file${failed.length > 1 ? "s" : ""} failed: ` +
+            failed.map((f) => `${f.name} (${f.reason})`).join(", "),
+        );
+      }
+    } catch (e: any) {
+      setUploadError(e?.message ?? "Upload failed. Check your connection.");
+    } finally {
+      setUploading(false);
     }
-    setUploading(false);
   };
 
   const handleDrop = useCallback(
@@ -86,22 +86,28 @@ export default function ImageUploader({
   };
 
   const removeImage = async (index: number) => {
-    const supabase = createClient();
     const img = images[index];
-    const path = img.url.split("/car-images/")[1];
 
-    // 1. Remove the file from storage
-    if (path) await supabase.storage.from("car-images").remove([path]);
-
-    // 2. Remove the DB row. No-op in create mode (row doesn't exist yet);
-    //    in edit mode this stops an orphaned row pointing at a deleted file.
-    await supabase.from("car_images").delete().eq("url", img.url);
-
+    // Optimistically drop it from the UI, then clean up server-side. The route
+    // deletes the storage file AND any car_images row pointing at it, so a
+    // removed image can't leave an orphaned file behind.
     const updated = images
       .filter((_, i) => i !== index)
-      .map((img, i) => ({ ...img, position: i }));
+      .map((im, i) => ({ ...im, position: i }));
     setImages(updated);
     onImagesChange?.(updated);
+
+    try {
+      await fetch("/api/admin/storage", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: img.url }),
+      });
+    } catch {
+      // Non-fatal: the image is already gone from the form. Worst case a file
+      // lingers in the bucket, which the next save won't reference.
+      setUploadError("Image removed, but cleaning up the stored file failed.");
+    }
   };
 
   const updateAlt = (index: number, alt: string) => {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
@@ -17,20 +16,36 @@ export default function AdminLogin() {
     setLoading(true);
     setError("");
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    // Auth happens server-side so the Appwrite session secret lands in an
+    // httpOnly cookie, unreachable from JavaScript.
+    try {
+      const res = await fetch("/api/admin/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (error) {
-      setError("Invalid credentials. Access denied.");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? "Invalid credentials. Access denied.");
+        setLoading(false);
+        return;
+      }
+    } catch {
+      setError("Could not reach the server. Please try again.");
       setLoading(false);
       return;
     }
 
-    router.push("/admin");
+    // refresh() first so the server components re-render with the new session
+    // cookie already in place; push() then navigates to an authorised page.
     router.refresh();
+    router.push("/admin");
+
+    // Deliberately NOT clearing `loading` here. If the navigation succeeds this
+    // component unmounts, and setting state on an unmounted component is a
+    // no-op warning. The button stays disabled during the transition, which is
+    // what we want — it prevents a double submit.
   };
 
   return (

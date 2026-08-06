@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { createClient } from "@/utils/supabase/client";
+import { saveCar, DuplicateVinError } from "@/lib/appwrite/cars";
 import ImageUploader from "./ImageUploader";
 import PopularFeaturesSelector from "./PopularFeaturesSelector";
 interface CustomSpec {
@@ -204,14 +204,22 @@ export default function CarForm({ initialData, mode }: Props) {
   //     return true;
   //   }
   // };
+  // Belt-and-braces check that each image really is in storage.
+  //
+  // The previous version sent `Range: bytes=0-0` to fetch a single byte. That
+  // works against Supabase's public object URLs, but Appwrite's /view endpoint
+  // rejects partial-content requests (4xx), so every valid Appwrite image was
+  // being reported as missing and saves were blocked.
+  //
+  // Only a definitive 404 means the file is gone. Anything else — 200, 206,
+  // 401, 416, a CORS failure, a network blip — is treated as present, because
+  // /api/admin/storage already verifies each upload server-side with getFile()
+  // before handing back a URL. This guard exists to catch the rare case where
+  // a file is deleted between upload and save, not to re-validate every URL.
   const imageExists = async (url: string): Promise<boolean> => {
     try {
-      const res = await fetch(url, {
-        method: "GET",
-        headers: { Range: "bytes=0-0" },
-        cache: "no-store",
-      });
-      return res.ok || res.status === 206 || res.status >= 500;
+      const res = await fetch(url, { method: "GET", cache: "no-store" });
+      return res.status !== 404;
     } catch {
       return true;
     }
@@ -235,7 +243,6 @@ export default function CarForm({ initialData, mode }: Props) {
         return;
       }
     }
-    const supabase = createClient();
     const featuresArray = form.features
       .split(",")
       .map((f) => f.trim())
@@ -244,75 +251,48 @@ export default function CarForm({ initialData, mode }: Props) {
       .filter((s) => s.heading.trim())
       .map(({ heading, value }) => ({ heading, value })); // strip local id
 
-    // form may carry relational keys (car_images, custom_specs, etc.) that
-    // hydrated from the joined edit-mode row. Those aren't columns on `cars`,
-    // so strip anything that isn't a real column before writing.
+    // `form` may carry relational/system keys hydrated from the edit-mode row
+    // (car_images, custom_specs, fts, timestamps). Those aren't writable
+    // attributes, so strip them before saving. saveCar() strips Appwrite
+    // system fields ($id, $createdAt, ...) as a second line of defence.
     const {
       car_images,
       custom_specs,
       fts,
       created_at,
       updated_at,
+      id: _id,
       ...formCols
     } = form as any;
-    const payload = {
-      ...formCols,
-      vin: form.vin.trim(),
-      features: featuresArray,
-      custom_specs: cleanedSpecs,
-      was_price: form.was_price || null,
-      id: mode === "create" ? tempId : initialData?.id,
-    };
 
-    let carId = initialData?.id ?? tempId;
-
-    if (mode === "create") {
-      const { data, error: err } = await supabase
-        .from("cars")
-        .insert(payload)
-        .select("id")
-        .single();
-      if (err) {
-        setError(
-          err.code === "23505" && err.message.includes("vin")
-            ? "A car with this VIN already exists."
-            : err.message,
-        );
-        setSaving(false);
-        return;
-      }
-      carId = data.id;
-    } else {
-      const { error: err } = await supabase
-        .from("cars")
-        .update(payload)
-        .eq("id", carId);
-      if (err) {
-        setError(err.message);
-        setSaving(false);
-        return;
-      }
-    }
-
-    // Save car_images
-    if (mode === "edit") {
-      await supabase.from("car_images").delete().eq("car_id", carId);
-    }
-    // if (images.length > 0) {
-    //   await supabase
-    //     .from("car_images")
-    //     .insert(images.map((img) => ({ ...img, car_id: carId })));
-    // }
-    if (images.length > 0) {
-      await supabase.from("car_images").insert(
-        images.map((img, i) => ({
-          url: img.url,
-          alt: img.alt,
-          position: i,
-          car_id: carId,
-        })),
+    let carId: string;
+    try {
+      // saveCar() also writes the two fields Postgres used to generate:
+      //   search_blob      (replaces the fts tsvector)
+      //   availability_rank (replaces the generated column)
+      // and trims text fields so filter facets don't split on stray whitespace.
+      carId = await saveCar(
+        {
+          ...formCols,
+          features: featuresArray,
+          custom_specs: cleanedSpecs,
+        },
+        {
+          mode,
+          carId: initialData?.id,
+          images: images.map((img) => ({ url: img.url, alt: img.alt })),
+        },
       );
+    } catch (err: any) {
+      setError(
+        err instanceof DuplicateVinError
+          ? err.message
+          : (err?.message ?? "Could not save this car."),
+      );
+      setSaving(false);
+      return;
     }
+
     router.push("/admin/cars");
     router.refresh();
   };

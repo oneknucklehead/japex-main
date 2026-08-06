@@ -1,16 +1,12 @@
 import FaqAccordion from "@/components/FaqAccordion";
-import { createClient } from "@/utils/supabase/client";
-
-async function getFaqs() {
-  const supabase = createClient();
-  const { data } = await supabase
-    .from("faqs")
-    .select("*")
-    .order("position", { ascending: true });
-  return data ?? [];
-}
+import { fetchFaqs } from "@/lib/appwrite/queries";
 
 export default async function Faqs() {
-  const faqs = await getFaqs();
+  let faqs: any[] = [];
+  try {
+    faqs = await fetchFaqs();
+  } catch (error) {
+    console.error("Error fetching faqs:", error);
+  }
   return <FaqAccordion faqs={faqs} />;
 }

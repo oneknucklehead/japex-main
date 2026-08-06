@@ -1,4 +1,5 @@
-import { createClient } from "@/utils/supabase/server";
+import { Query } from "node-appwrite";
+import { createAdminClient, DB_ID } from "@/lib/appwrite/server";
 import Link from "next/link";
 import { Suspense } from "react";
 import DeleteCarButton from "@/components/admin/cars/DeleteCarButton";
@@ -6,16 +7,6 @@ import AdminPagination from "@/components/admin/AdminPagination";
 import CarSearch from "@/components/admin/cars/CarSearch";
 
 const PAGE_SIZE = 20;
-
-/**
- * `%` and `_` are wildcards in LIKE/ILIKE and `\` escapes them, so an admin
- * typing any of those would otherwise get surprising matches. Commas are
- * stripped separately because PostgREST's `.or()` uses them as its delimiter.
- */
-function likePattern(term: string) {
-  const safe = term.replace(/[\\%_]/g, (c) => `\\${c}`).replace(/,/g, "");
-  return `%${safe}%`;
-}
 
 export default async function AdminCarsPage({
   searchParams,
@@ -28,41 +19,45 @@ export default async function AdminCarsPage({
   // Clamp to a sane integer — a hand-edited URL shouldn't break the query.
   const requestedPage = Math.max(1, Number(pageParam) || 1);
 
-  const supabase = await createClient();
+  const { databases } = createAdminClient();
 
-  // The same filter has to be applied to both the count and the rows, or the
-  // pagination would be calculated against the unfiltered total.
-  const applySearch = <T,>(query: T): T => {
-    if (!term) return query;
-    const pattern = likePattern(term);
-    return (query as any).or(
-      `vin.ilike.${pattern},make.ilike.${pattern},model.ilike.${pattern}`,
-    );
-  };
+  // Admin search covers VIN, make and model. Postgres did this with a single
+  // ILIKE `.or()`; Appwrite has no OR across attributes in one query and its
+  // fulltext index is per-attribute. With a small inventory the simplest
+  // correct approach is to pull the (admin-only) list and filter in memory —
+  // which also gives real substring matching on VIN, something Query.search
+  // would not do since it tokenises rather than substring-matches.
+  const all = await databases.listDocuments(DB_ID, "cars", [
+    Query.orderDesc("$createdAt"),
+    Query.limit(5000),
+  ]);
 
-  // Count first so the page can be clamped before ranging. Asking for a range
-  // beyond the end returns an empty array, which would show a blank table
-  // instead of the last page.
-  const { count } = await applySearch(
-    supabase.from("cars").select("id", { count: "exact", head: true }),
-  );
+  const needle = term.toLowerCase();
+  const filtered = term
+    ? (all.documents as any[]).filter((c) =>
+        [c.vin, c.make, c.model]
+          .filter(Boolean)
+          .some((v: string) => String(v).toLowerCase().includes(needle)),
+      )
+    : (all.documents as any[]);
 
-  const total = count ?? 0;
+  const total = filtered.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const page = Math.min(requestedPage, totalPages);
 
   const from = (page - 1) * PAGE_SIZE;
-  const to = from + PAGE_SIZE - 1;
-
-  const { data: cars } = await applySearch(
-    supabase
-      .from("cars")
-      .select(
-        "id, slug, make, model, year, price, is_published, is_featured, availability, vin",
-      ),
-  )
-    .order("created_at", { ascending: false })
-    .range(from, to);
+  const cars = filtered.slice(from, from + PAGE_SIZE).map((c) => ({
+    id: c.$id,
+    slug: c.slug,
+    make: c.make,
+    model: c.model,
+    year: c.year,
+    price: c.price,
+    is_published: c.is_published,
+    is_featured: c.is_featured,
+    availability: c.availability,
+    vin: c.vin,
+  }));
 
   return (
     <div className="pt-16 lg:pt-0">
@@ -138,7 +133,7 @@ export default async function AdminCarsPage({
                       {car.make} {car.model}
                     </td>
                     <td className="px-4 py-3 text-gray-700">
-                      ${car.price.toLocaleString("en-US")}
+                      ${(car.price ?? 0).toLocaleString("en-US")}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex gap-1.5 flex-wrap">

@@ -1,8 +1,9 @@
-import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
+import { Query } from "node-appwrite";
 import CarDetailClient from "./CarDetailClient";
 import LightShard from "@/components/LightShard";
 import FinanceCalculator from "@/components/tryouts/Financecalculator";
+import { createAdminClient, DB_ID } from "@/lib/appwrite/server";
 
 export const dynamic = "force-dynamic";
 
@@ -12,33 +13,65 @@ export default async function CarDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = await createClient();
+  const { databases } = createAdminClient();
 
-  const { data: car } = await supabase
-    .from("cars")
-    .select("*, car_images(id, url, alt, position)")
-    .eq("slug", slug)
-    .eq("is_published", true)
-    .single();
+  // Appwrite has no .single() — query by slug and take the first match.
+  // is_published is filtered here rather than by permission: Appwrite
+  // permissions are role-based, not conditional on document state.
+  const found = await databases.listDocuments(DB_ID, "cars", [
+    Query.equal("slug", slug),
+    Query.equal("is_published", true),
+    Query.limit(1),
+  ]);
 
-  if (!car) notFound();
+  const doc: any = found.documents[0];
+  if (!doc) notFound();
 
-  car.car_images = (car.car_images ?? []).sort(
-    (a: any, b: any) => a.position - b.position,
-  );
+  // No joins — fetch image rows separately, already ordered by position.
+  const imgRes = await databases.listDocuments(DB_ID, "car_images", [
+    Query.equal("car_id", doc.$id),
+    Query.orderAsc("position"),
+    Query.limit(1000),
+  ]);
 
-  // Resolve popular feature IDs → catalog rows (name + image)
-  const ids: string[] = car.popular_feature_ids ?? [];
+  const car = {
+    ...doc,
+    id: doc.$id,
+    created_at: doc.$createdAt,
+    updated_at: doc.$updatedAt,
+    // custom_specs is stored as a JSON string (Appwrite has no JSON type)
+    custom_specs: (() => {
+      try {
+        const v = JSON.parse(doc.custom_specs_json || "[]");
+        return Array.isArray(v) ? v : [];
+      } catch {
+        return [];
+      }
+    })(),
+    features: doc.features ?? [],
+    car_images: (imgRes.documents as any[]).map((d) => ({
+      id: d.$id,
+      url: d.url,
+      alt: d.alt,
+      position: d.position,
+    })),
+  };
+
+  // Resolve popular feature ids → catalog rows (name + image)
+  const ids: string[] = doc.popular_feature_ids ?? [];
   let popularFeatures: { id: string; name: string; image_url: string }[] = [];
+
   if (ids.length) {
-    const { data: pf } = await supabase
-      .from("popular_features")
-      .select("id, name, image_url")
-      .in("id", ids);
-    // .in() returns arbitrary order — restore the admin-defined sequence
-    popularFeatures = (pf ?? []).sort(
-      (a, b) => ids.indexOf(a.id) - ids.indexOf(b.id),
-    );
+    const pfRes = await databases.listDocuments(DB_ID, "popular_features", [
+      Query.equal("$id", ids),
+      Query.limit(100),
+    ]);
+    popularFeatures = (pfRes.documents as any[])
+      .map((d) => ({ id: d.$id, name: d.name, image_url: d.image_url }))
+      // Query results come back in arbitrary order — restore the sequence the
+      // admin chose. Ids that no longer resolve are simply absent, same as the
+      // old .in() behaviour.
+      .sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
   }
 
   return (

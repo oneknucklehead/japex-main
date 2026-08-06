@@ -1,17 +1,44 @@
-import { createClient } from "@/utils/supabase/server";
+import { Query } from "node-appwrite";
+import { createAdminClient, DB_ID } from "@/lib/appwrite/server";
 
 export default async function AdminEnquiriesPage() {
-  const supabase = await createClient();
-  const { data: enquiries } = await supabase
-    .from("enquiries")
-    .select("*, cars(make, model, year)")
-    .order("created_at", { ascending: false });
+  const { databases } = createAdminClient();
 
-  // Mark all as read
-  await supabase
-    .from("enquiries")
-    .update({ is_read: true })
-    .eq("is_read", false);
+  const res = await databases.listDocuments(DB_ID, "enquiries", [
+    Query.orderDesc("$createdAt"),
+    Query.limit(1000),
+  ]);
+
+  // No joins — resolve the referenced cars in one extra query and attach.
+  const carIds = [
+    ...new Set((res.documents as any[]).map((e) => e.car_id).filter(Boolean)),
+  ];
+  const carsById: Record<string, any> = {};
+  if (carIds.length) {
+    const carRes = await databases.listDocuments(DB_ID, "cars", [
+      Query.equal("$id", carIds),
+      Query.limit(1000),
+    ]);
+    for (const c of carRes.documents as any[]) {
+      carsById[c.$id] = { make: c.make, model: c.model, year: c.year };
+    }
+  }
+
+  const enquiries = (res.documents as any[]).map((e) => ({
+    ...e,
+    id: e.$id,
+    created_at: e.$createdAt,
+    cars: e.car_id ? (carsById[e.car_id] ?? null) : null,
+  }));
+
+  // Mark all as read. Appwrite has no bulk update, so this patches each unread
+  // document; the route does it server-side with the API key.
+  const unread = enquiries.filter((e) => !e.is_read);
+  await Promise.all(
+    unread.map((e) =>
+      databases.updateDocument(DB_ID, "enquiries", e.id, { is_read: true }),
+    ),
+  );
 
   return (
     <div className="pt-16 lg:pt-0">

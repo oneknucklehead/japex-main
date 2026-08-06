@@ -1,49 +1,54 @@
-import { createClient } from "@/utils/supabase/server";
+import { Query } from "node-appwrite";
+import { createAdminClient, DB_ID } from "@/lib/appwrite/server";
 import Link from "next/link";
 
 export default async function AdminDashboard() {
-  const supabase = await createClient();
+  const { databases } = createAdminClient();
 
-  const [
-    { count: carCount },
-    { count: faqCount },
-    { count: testimonialCount },
-    { count: enquiryCount },
-  ] = await Promise.all([
-    supabase
-      .from("cars")
-      .select("*", { count: "exact", head: true })
-      .eq("is_published", true),
-    supabase.from("faqs").select("*", { count: "exact", head: true }),
-    supabase.from("testimonials").select("*", { count: "exact", head: true }),
-    supabase
-      .from("enquiries")
-      .select("*", { count: "exact", head: true })
-      .eq("is_read", false),
-  ]);
+  // Appwrite has no `head: true` count-only request — listDocuments returns a
+  // `total` for the query, so ask for a single document and read that.
+  const countOf = async (collection: string, queries: string[] = []) => {
+    try {
+      const res = await databases.listDocuments(DB_ID, collection, [
+        ...queries,
+        Query.limit(1),
+      ]);
+      return res.total;
+    } catch {
+      return 0;
+    }
+  };
+
+  const [carCount, faqCount, testimonialCount, enquiryCount] =
+    await Promise.all([
+      countOf("cars", [Query.equal("is_published", true)]),
+      countOf("faqs"),
+      countOf("testimonials"),
+      countOf("enquiries", [Query.equal("is_read", false)]),
+    ]);
 
   const stats = [
     {
       label: "Published Cars",
-      value: carCount ?? 0,
+      value: carCount,
       href: "/admin/cars",
       color: "bg-blue-50 text-blue-700",
     },
     {
       label: "FAQs",
-      value: faqCount ?? 0,
+      value: faqCount,
       href: "/admin/faqs",
       color: "bg-green-50 text-green-700",
     },
     {
       label: "Testimonials",
-      value: testimonialCount ?? 0,
+      value: testimonialCount,
       href: "/admin/testimonials",
       color: "bg-purple-50 text-purple-700",
     },
     {
       label: "Unread Enquiries",
-      value: enquiryCount ?? 0,
+      value: enquiryCount,
       href: "/admin/enquiries",
       color: "bg-red-50 text-red-700",
     },

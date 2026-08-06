@@ -1,4 +1,5 @@
-import { createClient } from "@/utils/supabase/client";
+import { ID } from "appwrite";
+import { createClient, DB_ID } from "@/lib/appwrite/client";
 
 export type ContactSource = "contact_page" | "cta";
 
@@ -38,22 +39,24 @@ export async function submitContactForm(
     return { ok: false, error: "That email address doesn't look right." };
   }
 
-  const supabase = createClient();
-  const { error } = await supabase.from("contact_submissions").insert({
-    name,
-    phone,
-    email,
-    message,
-    source,
-  });
-
-  if (error) {
+  // contact_submissions grants create to anyone (public form) but no read,
+  // so this writes straight from the browser without exposing submissions.
+  try {
+    const { databases } = createClient();
+    await databases.createDocument(DB_ID, "contact_submissions", ID.unique(), {
+      name,
+      phone,
+      email,
+      message,
+      source,
+      is_read: false,
+    });
+    return { ok: true };
+  } catch (error) {
     console.error("Contact form submission failed:", error);
     return {
       ok: false,
       error: "Something went wrong sending your message. Please try again.",
     };
   }
-
-  return { ok: true };
 }

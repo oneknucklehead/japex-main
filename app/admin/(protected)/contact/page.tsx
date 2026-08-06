@@ -1,4 +1,5 @@
-import { createClient } from "@/utils/supabase/server";
+import { Query } from "node-appwrite";
+import { createAdminClient, DB_ID } from "@/lib/appwrite/server";
 
 const SOURCE_LABEL: Record<string, string> = {
   contact_page: "Contact page",
@@ -6,17 +7,29 @@ const SOURCE_LABEL: Record<string, string> = {
 };
 
 export default async function AdminContactPage() {
-  const supabase = await createClient();
-  const { data: submissions } = await supabase
-    .from("contact_submissions")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const { databases } = createAdminClient();
 
-  // Mark all as read
-  await supabase
-    .from("contact_submissions")
-    .update({ is_read: true })
-    .eq("is_read", false);
+  const res = await databases.listDocuments(DB_ID, "contact_submissions", [
+    Query.orderDesc("$createdAt"),
+    Query.limit(1000),
+  ]);
+
+  const submissions = (res.documents as any[]).map((d) => ({
+    ...d,
+    id: d.$id,
+    created_at: d.$createdAt,
+  }));
+
+  // Mark all as read — no bulk update in Appwrite, so patch each unread one.
+  await Promise.all(
+    submissions
+      .filter((s) => !s.is_read)
+      .map((s) =>
+        databases.updateDocument(DB_ID, "contact_submissions", s.id, {
+          is_read: true,
+        }),
+      ),
+  );
 
   return (
     <div className="pt-16 lg:pt-0">

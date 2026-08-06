@@ -1,17 +1,28 @@
 import type { NextConfig } from "next";
 
+// Post-cutover: Supabase pattern removed. Only re-add it if
+// pre-cutover-check.mjs reports documents still referencing supabase.co.
+const appwriteHost = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT?.replace(
+  /^https?:\/\//,
+  "",
+).replace(/\/v1\/?$/, ""); // endpoint includes /v1; hostname must not
+
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
+      // Appwrite storage. Note the path shape differs from Supabase's:
+      //   Appwrite: /v1/storage/buckets/<bucket>/files/<fileId>/view
+      ...(appwriteHost
+        ? [
+            {
+              protocol: "https" as const,
+              hostname: appwriteHost,
+              pathname: "/v1/storage/buckets/**",
+            },
+          ]
+        : []),
       {
-        protocol: "https",
-        hostname: `${process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/^https?:\/\//, "")}`,
-        // hostname: "*.supabase.co",
-        pathname: "/storage/v1/object/public/**",
-      },
-      {
-        protocol: "https",
+        protocol: "https" as const,
         hostname: "images.unsplash.com",
         port: "",
         pathname: "/**",

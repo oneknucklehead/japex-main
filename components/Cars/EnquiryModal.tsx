@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { createClient } from "@/utils/supabase/client";
+import { ID } from "appwrite";
+import { createClient, DB_ID } from "@/lib/appwrite/client";
 
 interface Props {
   carId: string;
@@ -26,18 +27,27 @@ export default function EnquiryModal({ carId, carName, onClose }: Props) {
     setLoading(true);
     setError("");
 
-    const supabase = createClient();
-    const { error: err } = await supabase.from("enquiries").insert({
-      car_id: carId,
-      name: form.name,
-      email: form.email,
-      phone: form.phone,
-      message: form.message || `I am interested in the ${carName}.`,
-    });
-
-    setLoading(false);
-    if (err) setError("Something went wrong. Please try again.");
-    else setSuccess(true);
+    // The enquiries collection grants create to anyone (it's a public form),
+    // so this writes directly from the browser — no server route needed.
+    // It deliberately grants no read permission, so submissions aren't
+    // publicly listable.
+    try {
+      const { databases } = createClient();
+      await databases.createDocument(DB_ID, "enquiries", ID.unique(), {
+        car_id: carId,
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        message: form.message.trim() || `I am interested in the ${carName}.`,
+        is_read: false,
+      });
+      setSuccess(true);
+    } catch (err) {
+      console.error("Enquiry submission failed:", err);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

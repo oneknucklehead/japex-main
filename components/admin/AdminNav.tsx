@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { createClient } from "@/utils/supabase/client";
 
 const NAV_ITEMS = [
   {
@@ -135,8 +134,14 @@ export default function AdminNav({ userEmail }: { userEmail: string }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    // The route deletes the Appwrite session and clears the httpOnly cookie —
+    // the cookie can't be cleared from client JS by design.
+    try {
+      await fetch("/api/admin/auth/logout", { method: "POST" });
+    } catch {
+      // Navigate away regardless; the layout will bounce to login if the
+      // session somehow survived.
+    }
     router.push("/admin/login");
     router.refresh();
   };

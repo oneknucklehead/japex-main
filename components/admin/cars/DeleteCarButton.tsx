@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
+import { deleteCarCompletely } from "@/lib/appwrite/cars";
 
 export default function DeleteCarButton({ carId }: { carId: string }) {
   const router = useRouter();
@@ -17,27 +17,25 @@ export default function DeleteCarButton({ carId }: { carId: string }) {
       return;
 
     setDeleting(true);
-    const supabase = createClient();
 
-    // 1. Fetch image rows FIRST — the cascade will wipe them, so grab URLs now.
-    const { data: imgs } = await supabase
-      .from("car_images")
-      .select("url")
-      .eq("car_id", carId);
-
-    // 2. Remove the files from the storage bucket.
-    if (imgs?.length) {
-      const paths = imgs
-        .map((i) => i.url.split("/car-images/")[1])
-        .filter(Boolean);
-      if (paths.length) await supabase.storage.from("car-images").remove(paths);
-    }
-
-    // 3. Delete the car row — `on delete cascade` clears car_images rows.
-    const { error } = await supabase.from("cars").delete().eq("id", carId);
-
-    if (error) {
-      alert(`Delete failed: ${error.message}`);
+    // Deletion happens server-side in /api/admin/cars, in this order:
+    //   1. storage files  2. car_images rows  3. the car document
+    //
+    // Appwrite has no `on delete cascade`, so the image rows must be removed
+    // explicitly — a cascade used to handle that. Files go first so a partial
+    // failure leaves a visible broken row rather than an invisible orphaned
+    // file, and unlike the previous version the result is actually checked
+    // instead of ignored.
+    try {
+      const result = await deleteCarCompletely(carId);
+      if (result.rowsDeleted > 0 && result.filesDeleted < result.rowsDeleted) {
+        alert(
+          `Car deleted, but ${result.rowsDeleted - result.filesDeleted} image file(s) ` +
+            `could not be removed from storage. They're no longer referenced.`,
+        );
+      }
+    } catch (err: any) {
+      alert(`Delete failed: ${err?.message ?? "unknown error"}`);
       setDeleting(false);
       return;
     }

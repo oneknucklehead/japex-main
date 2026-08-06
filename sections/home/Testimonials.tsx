@@ -1,20 +1,19 @@
 import GlowingTransparentdiv from "@/components/GlowingTransparentdiv";
 import Tagline from "@/components/Tagline";
 import TestimonialsCarousel from "@/components/TestimonialCarousel";
-import { createClient } from "@/utils/supabase/server";
+import { fetchTestimonials } from "@/lib/appwrite/queries";
 import Image from "next/image";
 import Container from "@/components/Container";
 import LightShard from "@/components/LightShard";
 import { getAssetsStorageUrl } from "@/utils/helpers";
 
 async function getTestimonials() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("testimonials")
-    .select("*")
-    .eq("is_published", true)
-    .order("position", { ascending: true });
-  return data ?? [];
+  try {
+    return await fetchTestimonials();
+  } catch (error) {
+    console.error("Error fetching testimonials:", error);
+    return [];
+  }
 }
 
 const StarIcon = () => (

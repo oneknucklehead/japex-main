@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { getLoggedInUser } from "@/lib/appwrite/server";
 import { redirect } from "next/navigation";
 import AdminNav from "@/components/admin/AdminNav";
 
@@ -13,12 +13,10 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  // Not logged in → redirect to login
+  // Real auth check. The middleware only sees whether a cookie exists; this
+  // verifies the session is actually valid with Appwrite, so a forged or
+  // expired cookie can't reach the admin UI.
+  const user = await getLoggedInUser();
   if (!user) redirect("/admin/login");
 
   return (

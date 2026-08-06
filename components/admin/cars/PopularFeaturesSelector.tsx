@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { Query } from "appwrite";
+import { createClient, DB_ID } from "@/lib/appwrite/client";
 
 interface PopularFeature {
   id: string;
@@ -15,8 +16,7 @@ interface Props {
   onChange: (ids: string[]) => void;
 }
 
-const BUCKET = "car-images";
-const FOLDER = "popular-features";
+const COLLECTION = "popular_features";
 
 export default function PopularFeaturesSelector({ value, onChange }: Props) {
   const [catalog, setCatalog] = useState<PopularFeature[]>([]);
@@ -30,13 +30,25 @@ export default function PopularFeaturesSelector({ value, onChange }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase
-      .from("popular_features")
-      .select("*")
-      .order("position")
-      .then(({ data }) => {
-        setCatalog(data ?? []);
+    const { databases } = createClient();
+    databases
+      .listDocuments(DB_ID, COLLECTION, [
+        Query.orderAsc("position"),
+        Query.limit(100),
+      ])
+      .then((res: any) => {
+        setCatalog(
+          (res.documents as any[]).map((d) => ({
+            id: d.$id,
+            name: d.name,
+            image_url: d.image_url,
+            position: d.position,
+          })),
+        );
+        setLoading(false);
+      })
+      .catch((e: any) => {
+        setError(e?.message ?? "Could not load features.");
         setLoading(false);
       });
   }, []);
@@ -47,27 +59,29 @@ export default function PopularFeaturesSelector({ value, onChange }: Props) {
     );
   const deleteFeature = async (f: PopularFeature) => {
     setDeletingId(f.id);
-    const supabase = createClient();
+    setError(null);
 
-    // Delete the catalog row first — if this fails, leave storage untouched
-    const { error: delErr } = await supabase
-      .from("popular_features")
-      .delete()
-      .eq("id", f.id);
-    if (delErr) {
-      setError(delErr.message);
+    // The route scrubs this id from every car BEFORE deleting the catalog row.
+    // The Supabase version skipped that step, which is how 19 of 25 cars ended
+    // up referencing features that no longer existed.
+    try {
+      const res = await fetch("/api/admin/popular-features", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: f.id }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Could not remove feature.");
+        setDeletingId(null);
+        setConfirmId(null);
+        return;
+      }
+    } catch (e: any) {
+      setError(e?.message ?? "Could not remove feature.");
       setDeletingId(null);
       setConfirmId(null);
       return;
-    }
-
-    // Best-effort storage cleanup (an orphaned file is harmless if this fails)
-    const marker = `/${BUCKET}/`;
-    const idx = f.image_url.indexOf(marker);
-    if (idx !== -1) {
-      await supabase.storage
-        .from(BUCKET)
-        .remove([f.image_url.slice(idx + marker.length)]);
     }
 
     setCatalog((c) => c.filter((x) => x.id !== f.id));
@@ -75,6 +89,7 @@ export default function PopularFeaturesSelector({ value, onChange }: Props) {
     setDeletingId(null);
     setConfirmId(null);
   };
+
   const saveNewFeature = async () => {
     if (!newName.trim() || !file) {
       setError("A name and an image are both required.");
@@ -82,47 +97,37 @@ export default function PopularFeaturesSelector({ value, onChange }: Props) {
     }
     setUploading(true);
     setError(null);
-    const supabase = createClient();
 
-    // 1. upload image
-    const ext = file.name.split(".").pop();
-    const path = `${FOLDER}/${crypto.randomUUID()}.${ext}`;
-    const { error: upErr } = await supabase.storage
-      .from(BUCKET)
-      .upload(path, file, { cacheControl: "3600", upsert: false });
-    if (upErr) {
-      setError(upErr.message);
+    // Upload + row creation happen server-side in one call, so a failed row
+    // write rolls back the uploaded file instead of orphaning it.
+    const body = new FormData();
+    body.append("name", newName.trim());
+    body.append("file", file);
+    body.append("position", String(catalog.length));
+
+    try {
+      const res = await fetch("/api/admin/popular-features", {
+        method: "POST",
+        body,
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.feature) {
+        setError(data.error ?? "Could not save feature.");
+        setUploading(false);
+        return;
+      }
+
+      setCatalog((c) => [...c, data.feature]);
+      onChange([...value, data.feature.id]); // auto-select for this car
+      setNewName("");
+      setFile(null);
+      setAdding(false);
+    } catch (e: any) {
+      setError(e?.message ?? "Could not save feature.");
+    } finally {
       setUploading(false);
-      return;
     }
-
-    const { data: pub } = supabase.storage.from(BUCKET).getPublicUrl(path);
-
-    // 2. insert catalog row
-    const { data: inserted, error: insErr } = await supabase
-      .from("popular_features")
-      .insert({
-        name: newName.trim(),
-        image_url: pub.publicUrl,
-        position: catalog.length,
-      })
-      .select()
-      .single();
-
-    // 3. on failure, clean up the orphaned upload (matches your ImageUploader pattern)
-    if (insErr || !inserted) {
-      await supabase.storage.from(BUCKET).remove([path]);
-      setError(insErr?.message ?? "Could not save feature.");
-      setUploading(false);
-      return;
-    }
-
-    setCatalog((c) => [...c, inserted]);
-    onChange([...value, inserted.id]); // auto-select for this car
-    setNewName("");
-    setFile(null);
-    setAdding(false);
-    setUploading(false);
   };
 
   return (
