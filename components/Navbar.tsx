@@ -5,6 +5,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { getAssetsStorageUrl } from "@/utils/helpers";
 
 const NAV_LINKS = [
   "Find a Car",
@@ -28,9 +29,10 @@ const Navbar = () => {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
-  const bucketName = "assets";
-  const logoPath = "Logo/logo-vertical.png";
-  const logoUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${logoPath}`;
+  // Built via the helper rather than inline, so it resolves through ASSET_MAP
+  // like every other asset. The inline version was the reason this logo kept
+  // pointing at Supabase after the migration.
+  const logoUrl = getAssetsStorageUrl("Logo/logo-vertical.png");
 
   // Prevent scrolling when menu is open
   useEffect(() => {

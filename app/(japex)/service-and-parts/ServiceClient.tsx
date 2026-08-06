@@ -267,9 +267,7 @@ const ArrowButton = ({
 );
 
 export default function ServiceClient() {
-  const bucketName = "assets";
-  const logoPath = "Logo/logo.svg";
-  const logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${logoPath}`;
+  const logo = getAssetsStorageUrl("Logo/logo.svg");
 
   return (
     <div className="min-h-screen overflow-hidden bg-black font-dm-sans">
