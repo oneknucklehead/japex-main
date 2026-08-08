@@ -9,6 +9,18 @@ import CallExpertCard from "@/components/Callexpertcard";
 import LightShard from "@/components/LightShard";
 import HeroBanner from "@/components/Herobanner";
 
+// Revalidate every 60s.
+//
+// Without this, Next.js renders this page once at build time and serves that
+// HTML indefinitely — deleted cars keep appearing because the page was never
+// re-rendered, not because the data is stale in Appwrite.
+//
+// 60s is a floor, not a ceiling: the admin API routes call revalidatePath()
+// after every car mutation, so edits appear immediately rather than waiting
+// out this window. This exists to catch changes made outside the app (directly
+// in the Appwrite console, say).
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Home | Japex Motors",
   description:

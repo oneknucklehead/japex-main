@@ -267,7 +267,7 @@ const ArrowButton = ({
 );
 
 export default function ServiceClient() {
-  const logo = getAssetsStorageUrl("Logo/logo.svg");
+  const logo = getAssetsStorageUrl("Logo/logo-sandp.png");
 
   return (
     <div className="min-h-screen overflow-hidden bg-black font-dm-sans">

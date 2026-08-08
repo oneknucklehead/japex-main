@@ -39,6 +39,7 @@ export const ASSET_MAP: Record<string, string> = {
   "Logo/logo-horizontal.png": "6a750f4b002eed801a87",
   "Logo/logo-vertical.png": "6a750f4d000287c845ac",
   "Logo/logo.svg": "6a750f4e003c11353cc7",
+  "Logo/logo-sandp.png": "6a76f44f0027ae1b1d38",
   "Logo/quotes.png": "6a750f50003378797606",
   "Logo/X.png": "6a750f5300080187c9ce",
   "ServiceAndParts/serviceBanner.png": "6a750f57000c87fd9bfc",

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { Client, Databases, Storage, ID, Query } from "node-appwrite";
 import { toCarDocument, type CarWriteInput } from "@/lib/appwrite/cars";
 import { requireAdmin } from "@/lib/appwrite/auth";
@@ -62,6 +63,29 @@ async function replaceImages(
       }),
     ),
   );
+}
+
+/**
+ * Drop the cached HTML for every page that lists or shows cars.
+ *
+ * Public pages are statically rendered with `revalidate = 60`. Without this,
+ * an admin edit wouldn't show up for up to a minute — and a delete would leave
+ * the car visible on the homepage, which looks like the delete failed.
+ *
+ * `revalidatePath("/cars/[slug]", "page")` invalidates every car detail page
+ * at once rather than needing the specific slug.
+ */
+function revalidateCarPages(slug?: string) {
+  try {
+    revalidatePath("/"); // homepage: arrivals + budget sections
+    revalidatePath("/cars"); // listing
+    revalidatePath("/cars/[slug]", "page"); // all detail pages
+    revalidatePath("/admin/cars"); // admin list
+    if (slug) revalidatePath(`/cars/${slug}`);
+  } catch (e) {
+    // Never fail a successful write because cache invalidation hiccuped.
+    console.error("revalidate failed:", e);
+  }
 }
 
 // ── POST: create or update a car (+ its image rows) ──────────────────────
@@ -182,6 +206,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    revalidateCarPages(doc.slug);
     return NextResponse.json({ carId: savedId });
   } catch (e: any) {
     console.error("cars POST:", e);
@@ -235,6 +260,7 @@ export async function DELETE(req: NextRequest) {
     );
     await databases.deleteDocument(DB_ID, CARS, carId);
 
+    revalidateCarPages();
     return NextResponse.json({
       ok: true,
       filesDeleted,

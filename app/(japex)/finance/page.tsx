@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import FinanceClient from "./FinaceClient";
-
 export const metadata: Metadata = {
   title: "Finance | Japex Motors",
   description:

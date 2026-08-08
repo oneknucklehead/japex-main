@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Client, Storage, Databases, ID, Query } from "node-appwrite";
+import { revalidatePath } from "next/cache";
+import {
+  Client,
+  Storage,
+  Databases,
+  ID,
+  Query,
+  Permission,
+  Role,
+} from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
 import { requireAdmin } from "@/lib/appwrite/auth";
 
@@ -94,6 +103,10 @@ export async function POST(req: NextRequest) {
       BUCKET_ID,
       ID.unique(),
       InputFile.fromBuffer(buffer, file.name),
+      // Explicit public read. Files inherit bucket permissions only while
+      // fileSecurity is off; being explicit means an upload can't end up
+      // private if that setting is ever flipped.
+      [Permission.read(Role.any())],
     );
     if (!created?.$id) {
       return NextResponse.json(
@@ -209,6 +222,11 @@ export async function DELETE(req: NextRequest) {
     // 3. Delete the catalog row last
     await databases.deleteDocument(DB_ID, COLLECTION, id);
 
+    try {
+      revalidatePath("/cars/[slug]", "page");
+    } catch (e) {
+      console.error("revalidate failed:", e);
+    }
     return NextResponse.json({ ok: true, carsUpdated: affected.length });
   } catch (e: any) {
     console.error("popular-features DELETE:", e);

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { Client, Databases, ID, Query } from "node-appwrite";
 import { requireAdmin } from "@/lib/appwrite/auth";
 
@@ -60,6 +61,15 @@ function pick(collection: Collection, data: Record<string, any>) {
   return out;
 }
 
+/** FAQs and testimonials both render on the homepage. */
+function revalidateContentPages() {
+  try {
+    revalidatePath("/");
+  } catch (e) {
+    console.error("revalidate failed:", e);
+  }
+}
+
 // ── POST: create ─────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   // These routes use the API key, which bypasses all permissions.
@@ -86,6 +96,7 @@ export async function POST(req: NextRequest) {
       ID.unique(),
       pick(collection, data ?? {}),
     );
+    revalidateContentPages();
     return NextResponse.json({ document: { ...doc, id: doc.$id } });
   } catch (e: any) {
     console.error("content POST:", e?.message);
@@ -124,6 +135,7 @@ export async function PATCH(req: NextRequest) {
       id,
       pick(collection, data ?? {}),
     );
+    revalidateContentPages();
     return NextResponse.json({ document: { ...doc, id: doc.$id } });
   } catch (e: any) {
     console.error("content PATCH:", e?.message);
@@ -156,6 +168,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "id required" }, { status: 400 });
 
     await admin().deleteDocument(DB_ID, collection, id);
+    revalidateContentPages();
     return NextResponse.json({ ok: true });
   } catch (e: any) {
     console.error("content DELETE:", e?.message);
