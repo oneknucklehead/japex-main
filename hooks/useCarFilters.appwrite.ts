@@ -88,23 +88,36 @@ function buildBaseQueries(filters: CarFilters): string[] {
   const q: string[] = [Query.equal("is_published", true)];
 
   if (filters.make?.length) q.push(Query.equal("make", filters.make));
-  if (filters.bodyTypes?.length) q.push(Query.equal("body_type", filters.bodyTypes));
-  if (filters.fuelTypes?.length) q.push(Query.equal("fuel_type", filters.fuelTypes));
-  if (filters.transmissions?.length) q.push(Query.equal("transmission", filters.transmissions));
-  if (filters.driveTypes?.length) q.push(Query.equal("drive_type", filters.driveTypes));
+  if (filters.bodyTypes?.length)
+    q.push(Query.equal("body_type", filters.bodyTypes));
+  if (filters.fuelTypes?.length)
+    q.push(Query.equal("fuel_type", filters.fuelTypes));
+  if (filters.transmissions?.length)
+    q.push(Query.equal("transmission", filters.transmissions));
+  if (filters.driveTypes?.length)
+    q.push(Query.equal("drive_type", filters.driveTypes));
   if (filters.seats?.length) q.push(Query.equal("seats", filters.seats));
   if (filters.doors?.length) q.push(Query.equal("doors", filters.doors));
-  if (filters.colors?.length) q.push(Query.equal("color_exterior", filters.colors));
-  if (filters.condition?.length) q.push(Query.equal("condition", filters.condition));
-  if (filters.availability?.length) q.push(Query.equal("availability", filters.availability));
+  if (filters.colors?.length)
+    q.push(Query.equal("color_exterior", filters.colors));
+  if (filters.condition?.length)
+    q.push(Query.equal("condition", filters.condition));
+  if (filters.availability?.length)
+    q.push(Query.equal("availability", filters.availability));
   if (filters.isFeatured) q.push(Query.equal("is_featured", true));
 
-  if (filters.priceMin != null) q.push(Query.greaterThanEqual("price", filters.priceMin));
-  if (filters.priceMax != null) q.push(Query.lessThanEqual("price", filters.priceMax));
-  if (filters.yearMin != null) q.push(Query.greaterThanEqual("year", filters.yearMin));
-  if (filters.yearMax != null) q.push(Query.lessThanEqual("year", filters.yearMax));
-  if (filters.kmMin != null) q.push(Query.greaterThanEqual("odometer_km", filters.kmMin));
-  if (filters.kmMax != null) q.push(Query.lessThanEqual("odometer_km", filters.kmMax));
+  if (filters.priceMin != null)
+    q.push(Query.greaterThanEqual("price", filters.priceMin));
+  if (filters.priceMax != null)
+    q.push(Query.lessThanEqual("price", filters.priceMax));
+  if (filters.yearMin != null)
+    q.push(Query.greaterThanEqual("year", filters.yearMin));
+  if (filters.yearMax != null)
+    q.push(Query.lessThanEqual("year", filters.yearMax));
+  if (filters.kmMin != null)
+    q.push(Query.greaterThanEqual("odometer_km", filters.kmMin));
+  if (filters.kmMax != null)
+    q.push(Query.lessThanEqual("odometer_km", filters.kmMax));
 
   return q;
 }
@@ -113,13 +126,27 @@ function buildBaseQueries(filters: CarFilters): string[] {
 function buildSortQueries(sortBy: CarFilters["sortBy"]): string[] {
   const q = [Query.orderAsc("availability_rank")];
   switch (sortBy) {
-    case "price_asc":  q.push(Query.orderAsc("price")); break;
-    case "price_desc": q.push(Query.orderDesc("price")); break;
-    case "km_asc":     q.push(Query.orderAsc("odometer_km")); break;
-    case "km_desc":    q.push(Query.orderDesc("odometer_km")); break;
-    case "year_desc":  q.push(Query.orderDesc("year")); break;
-    case "year_asc":   q.push(Query.orderAsc("year")); break;
-    case "newest":     q.push(Query.orderDesc("$createdAt")); break;
+    case "price_asc":
+      q.push(Query.orderAsc("price"));
+      break;
+    case "price_desc":
+      q.push(Query.orderDesc("price"));
+      break;
+    case "km_asc":
+      q.push(Query.orderAsc("odometer_km"));
+      break;
+    case "km_desc":
+      q.push(Query.orderDesc("odometer_km"));
+      break;
+    case "year_desc":
+      q.push(Query.orderDesc("year"));
+      break;
+    case "year_asc":
+      q.push(Query.orderAsc("year"));
+      break;
+    case "newest":
+      q.push(Query.orderDesc("$createdAt"));
+      break;
     default:
       q.push(Query.orderDesc("is_featured"));
       q.push(Query.orderDesc("$createdAt"));
@@ -136,9 +163,47 @@ function matchesAllFeatures(doc: any, wanted: string[]) {
   return wanted.every((f) => have.includes(f));
 }
 
+/**
+ * A term matches if it appears ANYWHERE (mid-word included) in the car's
+ * identifying fields: make, model, variant, year, VIN.
+ *
+ * Description is deliberately EXCLUDED.
+ *
+ * `search_blob` includes the description, and descriptions are long prose full
+ * of numbers, dates and measurements. Searching them meant a short term like
+ * "1" or "06" matched a dozen cars through text nobody was searching on —
+ * results that look broken even though the match was technically real.
+ *
+ * The identifying fields are short and structured, so substring matching over
+ * them behaves predictably: "iac" finds Hiace, "206" finds GDH206 variants and
+ * VINs containing 206, "0602" finds VIN 06020. A broad term like "1" still
+ * returns several cars, but every one of them genuinely contains a 1 in its
+ * name, variant, year or VIN — which is the honest answer to a one-character
+ * search.
+ */
 function matchesAllTerms(doc: any, terms: string[]) {
-  const blob = (doc.search_blob || "").toLowerCase();
-  return terms.every((t) => blob.includes(t));
+  // Year included so "2020" works as a search. Description omitted on purpose.
+  const haystack = [doc.make, doc.model, doc.variant, doc.year, doc.vin]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  // Separator-free copy of the VIN ONLY, so "KDH206-1234567" is also findable
+  // as "KDH2061234567".
+  //
+  // Stripping separators across the whole haystack was wrong: joining the
+  // fields together created matches that span a boundary — "( 38120 ) 38120"
+  // collapsing to "3812038120" invented a "2038" that exists in neither the
+  // variant nor the VIN. Compacting only the VIN keeps the convenience without
+  // the phantom matches.
+  const vinCompact = `${doc.vin || ""}`.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+  return terms.every((term) => {
+    const t = term.toLowerCase();
+    if (haystack.includes(t)) return true;
+    const tc = t.replace(/[^a-z0-9]/g, "");
+    return Boolean(tc) && vinCompact.includes(tc);
+  });
 }
 
 export function useCarFilters(filters: CarFilters, page: number = 1) {
@@ -159,7 +224,8 @@ export function useCarFilters(filters: CarFilters, page: number = 1) {
       const featureFilter = filters.features ?? [];
 
       // Anything not expressible server-side forces the wide-fetch path.
-      const needsClientFiltering = searchTerms.length > 0 || featureFilter.length > 0;
+      const needsClientFiltering =
+        searchTerms.length > 0 || featureFilter.length > 0;
 
       const base = buildBaseQueries(filters);
       const sort = buildSortQueries(filters.sortBy);
@@ -179,14 +245,31 @@ export function useCarFilters(filters: CarFilters, page: number = 1) {
         totalCount = res.total;
       } else {
         // ── Wide-fetch path: narrow server-side, AND in memory, paginate ──
+        // No Query.search here, deliberately.
+        //
+        // Appwrite's fulltext index only covers search_blob, and it tokenises
+        // rather than substring-matches — so narrowing server-side on the first
+        // term would exclude every VIN match before the client filter ever ran.
+        // A VIN typed in full wouldn't tokenise reliably, and a partial VIN
+        // never would.
+        //
+        // Instead the server applies the structured filters (make, price, year,
+        // availability...) and the text match happens in memory across
+        // search_blob + vin. That also makes matching substring-based, which is
+        // strictly more permissive than before — every previously-matching
+        // query still matches.
+        //
+        // Cost: up to SEARCH_FETCH_LIMIT documents fetched while a search is
+        // active. Fine at current inventory; revisit past ~500 published cars.
         const wide = [...base, ...sort, Query.limit(SEARCH_FETCH_LIMIT)];
-        if (searchTerms.length) wide.push(Query.search("search_blob", searchTerms[0]));
 
         const res = await databases.listDocuments(DB_ID, CARS, wide);
 
         let matched = res.documents as any[];
-        if (searchTerms.length > 1) matched = matched.filter((d) => matchesAllTerms(d, searchTerms));
-        if (featureFilter.length) matched = matched.filter((d) => matchesAllFeatures(d, featureFilter));
+        if (searchTerms.length)
+          matched = matched.filter((d) => matchesAllTerms(d, searchTerms));
+        if (featureFilter.length)
+          matched = matched.filter((d) => matchesAllFeatures(d, featureFilter));
 
         totalCount = matched.length;
         const from = (page - 1) * PAGE_SIZE;

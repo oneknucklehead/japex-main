@@ -396,7 +396,7 @@ export default function FilterSidebar({ filters, onChange, total }: Props) {
             <div className="relative flex items-center justify-between">
               <input
                 type="text"
-                placeholder="Search Brands, Models..."
+                placeholder="Search Brands, Models, VIN..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={(e) =>
