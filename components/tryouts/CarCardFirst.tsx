@@ -11,15 +11,16 @@ import { getPreviewUrl } from "@/utils/helpers";
 
 interface Props {
   car: Car & { car_images?: any[] };
+  priority?: boolean;
 }
 
-export default function CarCardFirst({ car }: Props) {
+export default function CarCardFirst({ car, priority }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(50);
   const mouseY = useMotionValue(50);
   const href = `/cars/${car?.slug}`;
   const coverImage = getCoverImage(car);
-  const priority = car?.is_featured;
+  // const priority = car?.is_featured;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
