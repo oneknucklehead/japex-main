@@ -1,7 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import herotext from "../assets/herotext.png";
 import GlowingTransparentdiv from "./GlowingTransparentdiv";
 import { getAssetsStorageUrl } from "@/utils/helpers";
@@ -27,9 +33,6 @@ const POSTER_DESKTOP = getAssetsStorageUrl("Homepage/hero-poster-latest.jpg", {
 });
 const POSTER_MOBILE = getAssetsStorageUrl(
   "Homepage/hero-poster-mobile-latest.jpg",
-  {
-    width: 800,
-  },
 );
 
 /**
@@ -91,9 +94,51 @@ export default function HeroBanner() {
   // Crossfade the poster out once real frames are on screen. Driven by the
   // video's own "playing" event — an external system callback.
   const [playing, setPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   useEffect(() => {
     setPlaying(false);
   }, [variant]);
+
+  // Force muted on the element, then ask it to play.
+  //
+  // React treats `muted` as a DOM property rather than an attribute, so the
+  // server-rendered HTML frequently ships `autoplay playsinline` WITHOUT
+  // `muted`. Safari then sees an unmuted autoplay request, blocks it per its
+  // autoplay policy, and shows native controls — which are untappable here
+  // because the element is pointer-events-none. Chrome is laxer, so this only
+  // ever surfaces on Safari and iOS.
+  //
+  // Setting .muted directly guarantees the property is true before play() is
+  // called, which is what the policy actually checks.
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+
+    el.muted = true;
+    el.defaultMuted = true;
+
+    const attempt = () => {
+      const p = el.play();
+      // Older Safari returns undefined rather than a promise.
+      if (p && typeof p.catch === "function") {
+        p.catch(() => {
+          // Autoplay refused (Low Power Mode, for instance). The poster stays
+          // visible, which is a reasonable fallback — better than a stuck
+          // control overlay.
+        });
+      }
+    };
+
+    attempt();
+
+    // iOS sometimes refuses until the tab is actually visible.
+    const onVisible = () => {
+      if (document.visibilityState === "visible") attempt();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [variant, showVideo]);
 
   return (
     <section className="relative w-full h-full min-h-svh overflow-hidden bg-black">
@@ -106,7 +151,6 @@ export default function HeroBanner() {
           alt=""
           fill
           priority
-          loading="eager"
           sizes="100vw"
           className={`object-cover object-center transition-opacity duration-700 ${
             playing ? "opacity-0" : "opacity-100"
@@ -116,11 +160,14 @@ export default function HeroBanner() {
         {showVideo && (
           <video
             key={variant}
+            ref={videoRef}
             autoPlay
             muted
+            // `muted` here is for React's benefit; the effect above sets the
+            // property directly, which is what Safari's autoplay check reads.
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
             poster={poster}
             disablePictureInPicture
             inert
