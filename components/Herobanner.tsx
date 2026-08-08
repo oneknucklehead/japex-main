@@ -22,9 +22,14 @@ const VIDEO_DESKTOP_WEBM = getAssetsStorageUrl(
   "Homepage/hero-desktop-latest.webm",
 );
 const VIDEO_MOBILE_MP4 = getAssetsStorageUrl("Homepage/hero-mobile-latest.mp4");
-const POSTER_DESKTOP = getAssetsStorageUrl("Homepage/hero-poster-latest.jpg");
+const POSTER_DESKTOP = getAssetsStorageUrl("Homepage/hero-poster-latest.jpg", {
+  width: 1600,
+});
 const POSTER_MOBILE = getAssetsStorageUrl(
   "Homepage/hero-poster-mobile-latest.jpg",
+  {
+    width: 800,
+  },
 );
 
 /**
@@ -101,6 +106,7 @@ export default function HeroBanner() {
           alt=""
           fill
           priority
+          loading="eager"
           sizes="100vw"
           className={`object-cover object-center transition-opacity duration-700 ${
             playing ? "opacity-0" : "opacity-100"
