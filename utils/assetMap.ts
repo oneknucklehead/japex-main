@@ -3,10 +3,10 @@
 // Regenerate after adding assets, then copy to utils/assetMap.ts
 
 export const ASSET_MAP: Record<string, string> = {
-  "About/aboutBanner.png": "6a750ef3000731a1de8c",
-  "About/aboutBanner2.png": "6a750ef900170141220c",
-  "Contact/contactBanner.png": "6a750f04000d248d34f0",
-  "Finance/financeBanner.jpg": "6a750f090021ba9e1353",
+  "About/aboutBanner.webp": "6a7742380011f480a497",
+  "About/aboutBanner2.webp": "6a7742380011fdd5c101",
+  "Contact/contactBanner.webp": "6a7742380011f3605344",
+  "Finance/financeBanner.webp": "6a7742380011f47d435f",
   "Footer/footerCar.png": "6a750f0d001bc00aa977",
   "Footer/footerlogo.png": "6a750f10001a91024e42",
   "Footer/japexWhiteStrip.png": "6a750f12000e7ef42c99",
@@ -14,7 +14,7 @@ export const ASSET_MAP: Record<string, string> = {
   "Homepage/checkmark.png": "6a750f16000fa8fbad0d",
   "Homepage/CTABanner1.jpeg": "6a750f190020805a758c",
   "Homepage/CTABanner2.jpeg": "6a750f1b001ba5b3752b",
-  "Homepage/finance2.png": "6a750f1c003a9ad10047",
+  "Homepage/finance2.webp": "6a77409f0011d71a863c",
   "Homepage/hero-desktop-latest.mp4": "6a750f21002cc3ee4c64",
   "Homepage/hero-desktop-latest.webm": "6a750f230026ea8ffb88",
   "Homepage/hero-mobile-latest.mp4": "6a750f26003e547ce635",
@@ -42,6 +42,6 @@ export const ASSET_MAP: Record<string, string> = {
   "Logo/logo-sandp.png": "6a76f44f0027ae1b1d38",
   "Logo/quotes.png": "6a750f50003378797606",
   "Logo/X.png": "6a750f5300080187c9ce",
-  "ServiceAndParts/serviceBanner.png": "6a750f57000c87fd9bfc",
-  "ServiceAndParts/serviceBanner2.png": "6a750f5e0027176fc3f8",
+  "ServiceAndParts/serviceBanner.webp": "6a773eb10003bcd1efb6",
+  "ServiceAndParts/serviceBanner2.webp": "6a773f6c0004f9dd62cd",
 };

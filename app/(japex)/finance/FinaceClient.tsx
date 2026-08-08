@@ -24,7 +24,9 @@ const stagger = {
 };
 
 // ── Images ──────────────────────────────────────────────────────────────────
-const HERO_IMAGE = getAssetsStorageUrl("Finance/financeBanner.jpg");
+const HERO_IMAGE = getAssetsStorageUrl("Finance/financeBanner.webp", {
+  width: 1200,
+});
 
 // ── Data ────────────────────────────────────────────────────────────────────
 const FINANCE_STEPS = [

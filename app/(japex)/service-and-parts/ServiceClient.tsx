@@ -1,9 +1,7 @@
 "use client";
 
 import Container from "@/components/Container";
-import GetInTouch from "@/components/GetInTouch";
 import GlowingTransparentDivTestimonial from "@/components/GlowingTransparentDivTestimonial";
-import GlowingTransparentNoBackground from "@/components/GlowingTransparentNoBackground";
 import { getAssetsStorageUrl } from "@/utils/helpers";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -24,8 +22,17 @@ const stagger = {
 };
 
 // ── Images ──────────────────────────────────────────────────────────────────
-const HERO_IMAGE = getAssetsStorageUrl("ServiceAndParts/serviceBanner.png");
-const MATTERS_IMAGE = getAssetsStorageUrl("ServiceAndParts/serviceBanner2.png");
+// These source files are 19.4 MB and 10.5 MB. Served through Appwrite at a
+// sensible width they land around 100 KB each.
+const HERO_IMAGE = getAssetsStorageUrl("ServiceAndParts/serviceBanner.webp", {
+  width: 1200,
+});
+const MATTERS_IMAGE = getAssetsStorageUrl(
+  "ServiceAndParts/serviceBanner2.webp",
+  {
+    width: 1200,
+  },
+);
 
 // ── Data ────────────────────────────────────────────────────────────────────
 const STATS = [
@@ -267,7 +274,7 @@ const ArrowButton = ({
 );
 
 export default function ServiceClient() {
-  const logo = getAssetsStorageUrl("Logo/logo-sandp.png");
+  const logo = getAssetsStorageUrl("Logo/logo-sandp.png", { width: 1200 });
 
   return (
     <div className="min-h-screen overflow-hidden bg-black font-dm-sans">

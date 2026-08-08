@@ -9,8 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.10.2",
-    "@supabase/supabase-js": "^2.103.0",
     "@tailwindcss/vite": "^4.3.0",
     "appwrite": "^26.2.0",
     "embla-carousel-react": "^8.6.0",

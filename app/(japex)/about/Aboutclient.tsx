@@ -23,8 +23,12 @@ const stagger = {
 };
 
 // ── Images ──────────────────────────────────────────────────────────────────
-const HERO_IMAGE = getAssetsStorageUrl("About/aboutBanner.png");
-const STORY_IMAGE = getAssetsStorageUrl("About/aboutBanner2.png");
+const HERO_IMAGE = getAssetsStorageUrl("About/aboutBanner.webp", {
+  width: 1200,
+});
+const STORY_IMAGE = getAssetsStorageUrl("About/aboutBanner2.webp", {
+  width: 1200,
+});
 
 // ── Data ────────────────────────────────────────────────────────────────────
 const STATS = [

@@ -7,7 +7,9 @@ import { getAssetsStorageUrl } from "@/utils/helpers";
 
 const BannerGrid = () => {
   const image1 = getAssetsStorageUrl("Homepage/carparts.png");
-  const image2 = getAssetsStorageUrl("Homepage/finance2.png");
+  const image2 = getAssetsStorageUrl("Homepage/finance2.webp", {
+    width: 1200,
+  });
   return (
     <div className="px-6 sm:px-5 md:px-6">
       <Container>

@@ -7,19 +7,19 @@ import { formatOdometer, formatPrice, getCoverImage } from "@/utils/helpers";
 import type { Car } from "@/types/car";
 import Image from "next/image";
 import Link from "next/link";
+import { getPreviewUrl } from "@/utils/helpers";
 
 interface Props {
   car: Car & { car_images?: any[] };
-  priority?: boolean;
 }
 
-export default function CarCardFirst({ car, priority }: Props) {
+export default function CarCardFirst({ car }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(50);
   const mouseY = useMotionValue(50);
   const href = `/cars/${car?.slug}`;
   const coverImage = getCoverImage(car);
-  // const priority = car?.is_featured;
+  const priority = car?.is_featured;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -82,7 +82,10 @@ export default function CarCardFirst({ car, priority }: Props) {
           <div className="relative w-full aspect-video overflow-hidden">
             {coverImage ? (
               <Image
-                src={coverImage}
+                // Card thumbnails are ~320px wide on screen; the source photos
+                // average 662 KB. 640px covers retina and drops each card to
+                // roughly 60 KB.
+                src={getPreviewUrl(coverImage, { width: 640 })}
                 alt={`${car?.year} ${car?.make} ${car?.model}`}
                 fill
                 className="p-1.5 sm:p-2 rounded-[20px] sm:rounded-[24px] md:rounded-[28px] object-cover transition-transform duration-500"
@@ -150,11 +153,6 @@ export default function CarCardFirst({ car, priority }: Props) {
                     </h3>
                   </BlurRevealText>
                 </div>
-                <BlurRevealText delay={0.5}>
-                  <p className="text-center text-white/70 tracking-wider wrap-break-word text-xs md:text-sm">
-                    {car?.vin && `VIN: ${car?.vin}`}
-                  </p>
-                </BlurRevealText>
 
                 {/* Specs row */}
                 <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 my-2 text-xs sm:text-sm">

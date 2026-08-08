@@ -18,10 +18,50 @@ function appwriteFileUrl(bucketId: string, fileId: string): string {
 }
 
 /**
+ * Appwrite image transformation. Returns a resized, re-encoded variant served
+ * from Appwrite's CDN instead of the full-size original.
+ *
+ * Card thumbnails don't need 4000px camera JPEGs — this is the difference
+ * between a 2 MB download and roughly 80 KB. It also spares Next's optimiser
+ * from downloading the original just to shrink it.
+ */
+export function getPreviewUrl(
+  viewUrl: string,
+  {
+    width = 640,
+    quality = 80,
+    output = "webp",
+  }: {
+    width?: number;
+    quality?: number;
+    output?: "webp" | "jpg" | "png" | "avif";
+  } = {},
+): string {
+  if (!viewUrl?.includes("/files/")) return viewUrl;
+  const preview = viewUrl.replace("/view?", "/preview?");
+  return `${preview}&width=${width}&quality=${quality}&output=${output}`;
+}
+
+/**
  * Site assets — logos, banners, hero video, UI graphics.
  * Takes the same path it always did, e.g. "Homepage/lightshardleft.png".
  */
-export function getAssetsStorageUrl(path: string): string {
+/**
+ * Site assets — logos, banners, hero video, UI graphics.
+ *
+ * Pass a `width` to get an Appwrite-transformed variant instead of the
+ * original. Worth doing for anything large: several banners are 7-19 MB PNGs,
+ * and Next's optimiser has to download the whole thing before it can resize —
+ * on the server, on first request. Handing it (or the browser) a pre-sized
+ * WebP removes that entirely.
+ *
+ * Videos and SVGs are returned untouched; Appwrite's preview endpoint only
+ * transforms raster images.
+ */
+export function getAssetsStorageUrl(
+  path: string,
+  opts?: { width?: number; quality?: number },
+): string {
   const fileId = ASSET_MAP[path];
   if (!fileId) {
     // Loud in development, silent in production: a missing asset should be
@@ -34,7 +74,15 @@ export function getAssetsStorageUrl(path: string): string {
     }
     return "";
   }
-  return appwriteFileUrl("assets", fileId);
+
+  const url = appwriteFileUrl("assets", fileId);
+  if (!opts?.width) return url;
+
+  // Leave videos and vectors alone — nothing to resize, and asking Appwrite to
+  // transform them returns an error rather than the file.
+  if (/\.(mp4|webm|mov|svg)$/i.test(path)) return url;
+
+  return getPreviewUrl(url, { width: opts.width, quality: opts.quality });
 }
 
 /**

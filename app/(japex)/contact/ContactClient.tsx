@@ -58,7 +58,9 @@ const staggerContainer = {
 };
 
 // ── Images ──────────────────────────────────────────────────────────────────
-const HERO_IMAGE = getAssetsStorageUrl("Contact/contactBanner.png");
+const HERO_IMAGE = getAssetsStorageUrl("Contact/contactBanner.webp", {
+  width: 1200,
+});
 const EMPTY_FORM = { name: "", number: "", email: "", message: "" };
 // ── Shared styles ───────────────────────────────────────────────────────────
 
