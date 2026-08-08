@@ -43,8 +43,10 @@ const ExploreLatestArrivalsClient = ({ cars }: Props) => {
             <h1 className="font-bold font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center px-2 sm:px-4 md:px-0">
               Explore our latest arrivals
             </h1>
-            <p className="font-bricolage text-brand-white-alternate font-semibold text-sm sm:text-base md:text-lg text-center mt-2 mb-5 sm:mb-6 px-2 sm:px-4 md:px-0">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed?
+            <p className="font-bricolage max-w-3xl text-brand-white-alternate font-semibold text-sm sm:text-base md:text-lg text-center mt-2 mb-5 sm:mb-6 px-2 sm:px-4 md:px-0 mx-auto">
+              Japanese reliability, built for Australian adventures. Discover
+              quality imports chosen for reliability, comfort, and the freedom
+              to explore further.
             </p>
 
             {/* Category buttons */}

@@ -126,7 +126,7 @@ function CarsPageInner() {
                         damping: 30,
                         stiffness: 300,
                       }}
-                      className="fixed top-0 left-0 h-[100svh] w-[85%] max-w-80 bg-black border-r border-white/10 z-50 overflow-y-auto xl:hidden"
+                      className="fixed top-0 left-0 h-svh w-[85%] max-w-80 bg-black border-r border-white/10 z-50 overflow-y-auto xl:hidden"
                     >
                       <div className="flex items-center justify-between p-4 border-b border-white/10 sticky top-0 bg-black z-10">
                         <span className="font-bold text-white font-montserrat">
@@ -284,7 +284,7 @@ function CarsPageInner() {
                           delay: Math.min(i * 0.05, 0.25),
                         }}
                       >
-                        <CarCardFirst car={car} />
+                        <CarCardFirst car={car} priority={i < 3} />
                       </motion.div>
                     ))}
                   </motion.div>

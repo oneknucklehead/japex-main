@@ -150,6 +150,11 @@ export default function CarCardFirst({ car, priority }: Props) {
                     </h3>
                   </BlurRevealText>
                 </div>
+                <BlurRevealText delay={0.5}>
+                  <p className="text-center text-white/70 tracking-wider wrap-break-word text-xs md:text-sm">
+                    {car?.vin && `VIN: ${car?.vin}`}
+                  </p>
+                </BlurRevealText>
 
                 {/* Specs row */}
                 <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 my-2 text-xs sm:text-sm">

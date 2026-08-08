@@ -42,8 +42,10 @@ const CollectionBudgetwiseClient = ({ cars }: Props) => {
           <h1 className="font-bold font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center px-2 sm:px-4 md:px-0">
             Tailored to Your Budget, Without Compromise
           </h1>
-          <p className="font-bricolage text-brand-white-alternate font-semibold text-sm sm:text-base md:text-lg text-center mt-2 mb-5 sm:mb-6 px-2 sm:px-4 md:px-0">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed?
+          <p className="font-bricolage max-w-3xl mx-auto text-brand-white-alternate font-semibold text-sm sm:text-base md:text-lg text-center mt-2 mb-5 sm:mb-6 px-2 sm:px-4 md:px-0">
+            Whether you're planning your first road trip or upgrading to a
+            premium camper, we'll help you find the right vehicle to match your
+            budget and lifestyle.
           </p>
 
           {/* Price range buttons */}
