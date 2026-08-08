@@ -152,7 +152,8 @@ export default function WhyWeStandOut() {
                 height={1080}
                 sizes="(max-width: 640px) 90vw, (max-width: 1024px) 60vw, 512px"
                 className="w-full h-auto object-contain drop-shadow-2xl"
-                priority
+                priority={false}
+                loading="lazy"
               />
             </motion.div>
           </div>

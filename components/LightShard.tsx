@@ -31,6 +31,7 @@ export default function LightShard({
         width={1920}
         height={1080}
         priority
+        loading="eager"
         className="w-full h-full object-cover object-center"
       />
     </motion.div>

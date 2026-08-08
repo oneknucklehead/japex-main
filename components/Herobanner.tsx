@@ -150,7 +150,8 @@ export default function HeroBanner() {
           src={poster}
           alt=""
           fill
-          priority
+          priority={true}
+          loading="eager"
           sizes="100vw"
           className={`object-cover object-center transition-opacity duration-700 ${
             playing ? "opacity-0" : "opacity-100"
@@ -170,7 +171,7 @@ export default function HeroBanner() {
             preload="auto"
             poster={poster}
             disablePictureInPicture
-            inert
+            // inert
             onPlaying={() => setPlaying(true)}
             className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
           >
@@ -213,10 +214,11 @@ export default function HeroBanner() {
           <Image
             src={heroBlackJapexLogo}
             alt="Japex Motors"
-            width={1920}
-            height={1080}
+            width={705}
+            height={101}
             sizes="(max-width: 768px) 90vw, 50vw"
-            priority
+            priority={true}
+            loading="eager"
             className="w-full h-auto object-contain object-center"
           />
           {/* <p

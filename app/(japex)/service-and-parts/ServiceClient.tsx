@@ -219,7 +219,7 @@ const SkeletonImage = ({
         alt={alt}
         fill
         priority={priority}
-        loading={priority ? undefined : "lazy"}
+        loading={priority ? "eager" : "lazy"}
         sizes="(max-width: 1024px) 100vw, 45vw"
         onLoad={() => setLoaded(true)}
         className={`object-cover object-center transition-opacity duration-700 ${
@@ -321,7 +321,7 @@ export default function ServiceClient() {
                 <SkeletonImage
                   src={HERO_IMAGE}
                   alt="Japex Motors workshop technicians at work"
-                  priority
+                  priority={true}
                 />
               </div>
               {/* </motion.div> */}

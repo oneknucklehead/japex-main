@@ -212,7 +212,7 @@ const SkeletonImage = ({
         alt={alt}
         fill
         priority={priority}
-        loading={priority ? undefined : "lazy"}
+        loading={priority ? "eager" : "lazy"}
         sizes="(max-width: 1024px) 100vw, 45vw"
         onLoad={() => setLoaded(true)}
         className={`object-cover object-center transition-opacity duration-700 ${
@@ -267,7 +267,7 @@ export default function FinanceClient() {
                 <SkeletonImage
                   src={HERO_IMAGE}
                   alt="Japex Motors finance — driving away in a Japanese import"
-                  priority
+                  priority={true}
                 />
               </div>
               {/* </motion.div> */}

@@ -56,6 +56,8 @@ export default function ServiceCardTwo({
           src={image}
           alt=""
           fill
+          priority={false}
+          loading="lazy"
           className="object-contain object-bottom"
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 640px"
         />

@@ -137,7 +137,7 @@ const SkeletonImage = ({
         alt={alt}
         fill
         priority={priority}
-        loading={priority ? undefined : "lazy"}
+        loading={priority ? "eager" : "lazy"}
         sizes="(max-width: 1024px) 100vw, 45vw"
         onLoad={() => setLoaded(true)}
         className={`object-cover object-center transition-opacity duration-700 ${
@@ -231,7 +231,7 @@ export default function ContactClient() {
                 <SkeletonImage
                   src={HERO_IMAGE}
                   alt="The Japex Motors team at the Gosford yard"
-                  priority
+                  priority={true}
                 />
               </div>
               {/* </motion.div> */}
@@ -290,6 +290,8 @@ export default function ContactClient() {
                     height={1080}
                     sizes="(max-width: 640px) 90vw, (max-width: 1024px) 60vw, 512px"
                     className="h-auto w-full object-contain drop-shadow-2xl"
+                    priority={false}
+                    loading="lazy"
                   />
                 </motion.div>
               </div>

@@ -39,6 +39,7 @@ export default function FooterJapex() {
             alt=""
             width={1920}
             height={1080}
+            loading="lazy"
             className="h-auto w-full object-contain"
           />
         </motion.div>
@@ -54,6 +55,7 @@ export default function FooterJapex() {
             alt=""
             width={1920}
             height={1080}
+            loading="lazy"
             className="h-auto w-full object-contain"
           />
         </motion.div>
@@ -73,6 +75,7 @@ export default function FooterJapex() {
             width={1920}
             height={1080}
             priority={false}
+            loading="lazy"
             className="h-auto w-full object-contain"
           />
         </motion.div>
@@ -95,6 +98,7 @@ export default function FooterJapex() {
             alt="Japex Motors vehicle"
             width={1920}
             height={1080}
+            loading="lazy"
             className="h-auto w-full object-contain"
             priority={false}
           />
