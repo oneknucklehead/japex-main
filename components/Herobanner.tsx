@@ -21,6 +21,12 @@ const BADGES = [
 // Hosted alongside the other Supabase assets. Adjust the paths if you drop
 // these in /public instead (then use "/video/hero-desktop.mp4" etc).
 const heroBlackJapexLogo = getAssetsStorageUrl("Homepage/japexBlackStrip1.png");
+
+// Intrinsic size of the logo artwork. Used to reserve its space before the
+// image loads — without it the element has zero height and everything below
+// shifts down when it arrives.
+const LOGO_W = 1920;
+const LOGO_H = 1080;
 const VIDEO_DESKTOP_MP4 = getAssetsStorageUrl(
   "Homepage/hero-desktop-latest.mp4",
 );
@@ -96,6 +102,19 @@ export default function HeroBanner() {
   const [playing, setPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Don't render <video> during SSR.
+  //
+  // useMediaQuery falls back to `true` (desktop) on the server, so the markup
+  // shipped to a phone contained the DESKTOP sources. The browser began
+  // fetching both of those, then hydration flipped `variant` to "mobile",
+  // `key={variant}` remounted the element, and it fetched the mobile file too.
+  // Net result on a phone: 8.5 MB of video for a 1.9 MB clip.
+  //
+  // Waiting for mount costs nothing visually — the poster is already painted
+  // and is the LCP element — and guarantees exactly one variant is requested.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   useEffect(() => {
     setPlaying(false);
   }, [variant]);
@@ -150,15 +169,14 @@ export default function HeroBanner() {
           src={poster}
           alt=""
           fill
-          priority={true}
-          loading="eager"
+          priority
           sizes="100vw"
           className={`object-cover object-center transition-opacity duration-700 ${
             playing ? "opacity-0" : "opacity-100"
           }`}
         />
 
-        {showVideo && (
+        {mounted && showVideo && (
           <video
             key={variant}
             ref={videoRef}
@@ -168,10 +186,14 @@ export default function HeroBanner() {
             // property directly, which is what Safari's autoplay check reads.
             loop
             playsInline
-            preload="auto"
+            // "metadata", not "auto". On mobile the hero video is ~1.9 MB and
+            // preload="auto" starts fetching all of it immediately, competing
+            // with the poster — which IS the LCP element. Metadata is enough to
+            // start playback; the browser streams the rest as it plays.
+            preload="metadata"
             poster={poster}
             disablePictureInPicture
-            // inert
+            inert
             onPlaying={() => setPlaying(true)}
             className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
           >
@@ -210,6 +232,10 @@ export default function HeroBanner() {
       </div>
 
       <div className="absolute px-4 md:px-8 inset-0 flex flex-col items-center justify-center h-fit w-full max-w-3xl text-center mx-auto z-10 pt-28 sm:pt-32 md:pt-40">
+        {/* aspect-ratio reserves the logo's box before the file arrives, so the
+            button below doesn't jump down once it loads. The ratio must match
+            the artwork — update both this and the width/height below if the
+            logo is ever replaced. */}
         <div className="hero-rise w-full max-w-[80%] sm:max-w-md md:max-w-2xl lg:max-w-3xl mb-2 md:mb-4">
           <Image
             src={heroBlackJapexLogo}
@@ -221,14 +247,13 @@ export default function HeroBanner() {
             loading="eager"
             className="w-full h-auto object-contain object-center"
           />
-          {/* <p
+        </div>
+        {/* <p
             className="hero-rise font-montserrat font-medium text-xs sm:text-sm md:text-xl text-white"
             style={{ animationDelay: "0.12s" }}
           >
             Buy and sell cars with confidence and ease.
           </p> */}
-        </div>
-
         <button
           type="button"
           className="hero-rise group flex gap-3 sm:gap-4 w-fit cursor-pointer items-center justify-center bg-brand-primary text-white font-montserrat font-bold text-sm pl-4 pr-2 py-2 rounded-full hover:bg-red-700 active:scale-97 transition-all duration-300 mt-4"

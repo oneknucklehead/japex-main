@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 
-import BannerGrid from "@/sections/home/BannerGrid";
+// import BannerGrid from "@/sections/home/BannerGrid";
 import CollectionBudgetwise from "@/sections/home/CollectionBudgetwise";
 import ExploreLatestArrivals from "@/sections/home/ExploreLatestArrivals";
-import Faqs from "@/sections/home/Faqs";
-import WhyWeStandOut from "@/sections/home/WhyWeStandOut";
-import CallExpertCard from "@/components/Callexpertcard";
+// import Faqs from "@/sections/home/Faqs";
+// import WhyWeStandOut from "@/sections/home/WhyWeStandOut";
+// import CallExpertCard from "@/components/Callexpertcard";
 import LightShard from "@/components/LightShard";
 import HeroBanner from "@/components/Herobanner";
+import dynamic from "next/dynamic";
 
 // Revalidate every 60s.
 //
@@ -26,6 +27,11 @@ export const metadata: Metadata = {
   description:
     "Japex Motors brings the best of Japanese automotive culture to the Central Coast — precision-sourced vehicles, custom-finished in-house, expertly complied, and backed end to end.",
 };
+
+const WhyWeStandOut = dynamic(() => import("@/sections/home/WhyWeStandOut"));
+const BannerGrid = dynamic(() => import("@/sections/home/BannerGrid"));
+const CallExpertCard = dynamic(() => import("@/components/Callexpertcard"));
+const Faqs = dynamic(() => import("@/sections/home/Faqs"));
 
 export default function Home() {
   return (
