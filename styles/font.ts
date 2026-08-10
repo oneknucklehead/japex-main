@@ -35,7 +35,7 @@ export const koulen = Koulen({
   variable: "--font-koulen",
   subsets: ["latin"],
   display: "swap",
-  preload: false,
+  preload: true,
 });
 
 export const poppins = Poppins({
