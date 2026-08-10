@@ -146,9 +146,9 @@ export default function FaqAccordion({ faqs }: Props) {
           >
             Frequently Asked Questions
           </motion.h2>
-          <p className="text-center font-semibold text-sm sm:text-base md:text-lg text-brand-gray mb-8 sm:mb-10 px-2 sm:px-0">
+          {/* <p className="text-center font-semibold text-sm sm:text-base md:text-lg text-brand-gray mb-8 sm:mb-10 px-2 sm:px-0">
             Lorem ipsum dolor sit amet, consectetur sed?
-          </p>
+          </p> */}
 
           {/* FAQ list */}
           {!faqs?.length ? (
