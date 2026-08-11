@@ -2,7 +2,7 @@
 
 import Container from "@/components/Container";
 import GlowingTransparentDivTestimonial from "@/components/GlowingTransparentDivTestimonial";
-import { getAssetsStorageUrl } from "@/utils/helpers";
+import { getAssetsStorageUrl, getPreviewUrl } from "@/utils/helpers";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -215,11 +215,12 @@ const SkeletonImage = ({
       </div>
 
       <Image
-        src={src}
+        src={getPreviewUrl(src, { width: 640 })}
         alt={alt}
         fill
         priority={priority}
         loading={priority ? "eager" : "lazy"}
+        unoptimized
         sizes="(max-width: 1024px) 100vw, 45vw"
         onLoad={() => setLoaded(true)}
         className={`object-cover object-center transition-opacity duration-700 ${

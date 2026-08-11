@@ -58,6 +58,7 @@ export default function ServiceCardTwo({
           fill
           priority={false}
           loading="lazy"
+          unoptimized
           className="object-contain object-bottom"
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 640px"
         />

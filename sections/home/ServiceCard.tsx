@@ -22,7 +22,7 @@ export default function ServiceCard({
       initial="rest"
       whileHover="hover"
       animate="rest"
-      className="relative group/service flex w-full flex-col rounded-3xl sm:rounded-4xl bg-black min-h-85 sm:min-h-0 sm:aspect-4/3 mt-10 sm:mt-12 md:mt-16"
+      className="relative h-fit group/service flex w-full flex-col rounded-3xl sm:rounded-4xl bg-black min-h-85 sm:min-h-0 sm:aspect-4/3 mt-10 sm:mt-12 md:mt-16"
       style={{
         boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.25)",
       }}
@@ -58,6 +58,7 @@ export default function ServiceCard({
           fill
           priority={false}
           loading="lazy"
+          unoptimized
           className="object-contain object-bottom"
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 640px"
         />

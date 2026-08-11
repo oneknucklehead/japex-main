@@ -2,8 +2,9 @@
 
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
+import { getPreviewUrl } from "@/utils/helpers";
 
 interface CarImage {
   id: string;
@@ -72,7 +73,7 @@ export default function CarImageGallery({ images, carName }: Props) {
               >
                 {img.url ? (
                   <Image
-                    src={img.url}
+                    src={getPreviewUrl(img.url, { width: 1280 })}
                     alt={img.alt || carName}
                     fill
                     className="object-cover"
@@ -165,11 +166,14 @@ export default function CarImageGallery({ images, carName }: Props) {
               >
                 {img.url ? (
                   <Image
-                    src={img.url}
+                    src={getPreviewUrl(img.url, { width: 160 })}
                     alt={img.alt || `${carName} ${i + 1}`}
                     fill
                     className="object-cover"
                     sizes="80px"
+                    unoptimized
+                    priority={false}
+                    loading="lazy"
                   />
                 ) : (
                   <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">

@@ -5,6 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import GlowingTransparentDivTestimonial from "../GlowingTransparentDivTestimonial";
+import { getPreviewUrl } from "@/utils/helpers";
 
 interface PopularFeature {
   id: string;
@@ -124,11 +125,13 @@ export default function PopularFeaturesCarousel({
                 {f.image_url && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <Image
-                    src={f.image_url}
+                    src={getPreviewUrl(f.image_url, { width: 640 })}
                     alt={f.name}
                     width={1920}
                     height={1080}
                     priority={false}
+                    loading="lazy"
+                    unoptimized
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 )}

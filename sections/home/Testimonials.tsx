@@ -60,6 +60,7 @@ const Testimonials = async () => {
                     // sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
                     priority={false}
                     loading="lazy"
+                    unoptimized
                     className="w-full h-full object-contain"
                   />
                 </div>

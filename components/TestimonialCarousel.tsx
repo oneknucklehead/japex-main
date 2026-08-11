@@ -101,6 +101,7 @@ const TestimonialCard = ({
                 height={1080}
                 priority={false}
                 loading="lazy"
+                unoptimized
                 className="w-full h-full object-contain"
               />
             </div>

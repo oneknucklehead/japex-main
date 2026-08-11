@@ -16,6 +16,7 @@ import {
   formatOdometer,
   formatPrice,
   getAssetsStorageUrl,
+  getPreviewUrl,
 } from "@/utils/helpers";
 import type { Car } from "@/types/car";
 import CarImageGallery from "@/components/Cars/CarImageGallery";
@@ -453,11 +454,14 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                     </div>
                     <div className="flex items-center gap-4">
                       <Image
-                        src={googleLogo}
+                        src={getPreviewUrl(googleLogo, { width: 120 })}
                         width={1920}
                         height={1080}
                         alt="Google logo"
                         className="w-16"
+                        priority={false}
+                        loading="lazy"
+                        unoptimized
                       />
                       <div className="flex">
                         {[...Array(5)].map((_, i) => (
@@ -963,11 +967,14 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                   </div>
                   <div className="flex items-center gap-4">
                     <Image
-                      src={googleLogo}
+                      src={getPreviewUrl(googleLogo, { width: 640 })}
                       width={1920}
                       height={1080}
                       alt="Google logo"
                       className="w-16"
+                      priority={false}
+                      loading="lazy"
+                      unoptimized
                     />
                     <div className="flex">
                       {[...Array(5)].map((_, i) => (

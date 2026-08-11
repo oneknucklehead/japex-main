@@ -154,6 +154,7 @@ export default function WhyWeStandOut() {
                 className="w-full h-auto object-contain drop-shadow-2xl"
                 priority={false}
                 loading="lazy"
+                unoptimized
               />
             </motion.div>
           </div>
@@ -180,6 +181,9 @@ export default function WhyWeStandOut() {
                       width={1920}
                       height={1080}
                       sizes="72px"
+                      loading="lazy"
+                      unoptimized
+                      priority={false}
                       className="w-full h-full object-contain"
                     />
                   )}

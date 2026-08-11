@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 
-// import BannerGrid from "@/sections/home/BannerGrid";
 import CollectionBudgetwise from "@/sections/home/CollectionBudgetwise";
 import ExploreLatestArrivals from "@/sections/home/ExploreLatestArrivals";
-// import Faqs from "@/sections/home/Faqs";
-// import WhyWeStandOut from "@/sections/home/WhyWeStandOut";
-// import CallExpertCard from "@/components/Callexpertcard";
 import LightShard from "@/components/LightShard";
 import HeroBanner from "@/components/Herobanner";
 import dynamic from "next/dynamic";

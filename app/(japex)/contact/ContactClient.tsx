@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { getAssetsStorageUrl } from "@/utils/helpers";
+import { getAssetsStorageUrl, getPreviewUrl } from "@/utils/helpers";
 import Container from "@/components/Container";
 import { submitContactForm } from "@/lib/submitContactForm";
 // ── Motion presets ──────────────────────────────────────────────────────────
@@ -133,11 +133,12 @@ const SkeletonImage = ({
       </div>
 
       <Image
-        src={src}
+        src={getPreviewUrl(src, { width: 640 })}
         alt={alt}
         fill
         priority={priority}
         loading={priority ? "eager" : "lazy"}
+        unoptimized
         sizes="(max-width: 1024px) 100vw, 45vw"
         onLoad={() => setLoaded(true)}
         className={`object-cover object-center transition-opacity duration-700 ${
@@ -284,7 +285,7 @@ export default function ContactClient() {
                   className="relative z-20 mt-4 sm:mt-6 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg"
                 >
                   <Image
-                    src={heroCar}
+                    src={getPreviewUrl(heroCar, { width: 640 })}
                     alt=""
                     width={1920}
                     height={1080}
