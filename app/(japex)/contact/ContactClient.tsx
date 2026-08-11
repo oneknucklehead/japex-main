@@ -292,6 +292,7 @@ export default function ContactClient() {
                     className="h-auto w-full object-contain drop-shadow-2xl"
                     priority={false}
                     loading="lazy"
+                    unoptimized
                   />
                 </motion.div>
               </div>

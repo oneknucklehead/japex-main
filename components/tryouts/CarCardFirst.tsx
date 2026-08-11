@@ -89,10 +89,11 @@ export default function CarCardFirst({ car, priority }: Props) {
                 src={getPreviewUrl(coverImage, { width: 640 })}
                 alt={`${car?.year} ${car?.make} ${car?.model}`}
                 fill
-                className="p-1.5 sm:p-2 rounded-[20px] sm:rounded-[24px] md:rounded-[28px] object-cover transition-transform duration-500"
+                className="p-1.5 sm:p-2 rounded-[20px] sm:rounded-3xl md:rounded-[28px] object-cover transition-transform duration-500"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 priority={priority}
                 loading={priority ? "eager" : "lazy"}
+                unoptimized
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center bg-white/5">

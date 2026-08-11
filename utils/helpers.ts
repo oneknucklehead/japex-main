@@ -29,12 +29,12 @@ export function getPreviewUrl(
   viewUrl: string,
   {
     width = 640,
-    quality = 80,
+    quality = 75,
     output = "webp",
   }: {
     width?: number;
     quality?: number;
-    output?: "webp" | "jpg" | "png" | "avif";
+    output?: "avif" | "webp" | "jpg" | "png";
   } = {},
 ): string {
   if (!viewUrl?.includes("/files/")) return viewUrl;

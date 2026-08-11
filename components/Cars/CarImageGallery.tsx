@@ -78,6 +78,8 @@ export default function CarImageGallery({ images, carName }: Props) {
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 55vw"
                     priority={i === 0}
+                    loading={i === 0 ? "eager" : "lazy"}
+                    unoptimized
                   />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
