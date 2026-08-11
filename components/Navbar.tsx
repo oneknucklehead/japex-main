@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { getAssetsStorageUrl } from "@/utils/helpers";
+import { getAssetsStorageUrl, getPreviewUrl } from "@/utils/helpers";
 
 const NAV_LINKS = [
   "Find a Car",
@@ -100,10 +100,10 @@ const Navbar = () => {
           className={`relative z-50 shrink-0 transition-all duration-300 ${logoSizeClass}`}
         >
           <Image
-            src={logoUrl}
+            src={getPreviewUrl(logoUrl, { width: 120 })}
             alt="JAPEX Motors"
-            width={1920}
-            height={1080}
+            width={80}
+            height={80}
             className="object-contain w-full h-auto"
             sizes="(max-width: 640px) 5rem, (max-width: 1024px) 7rem, 6rem"
             priority

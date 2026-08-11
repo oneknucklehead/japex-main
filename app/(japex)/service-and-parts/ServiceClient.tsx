@@ -666,7 +666,7 @@ export default function ServiceClient() {
                 <div className="relative mx-auto grid grid-cols-1 gap-10 md:gap-12 md:grid-cols-2 items-center">
                   <div className="flex items-center justify-center">
                     <Image
-                      src={logo}
+                      src={getPreviewUrl(logo, { width: 640 })}
                       alt="JAPEX Motors"
                       width={1920}
                       height={1080}
