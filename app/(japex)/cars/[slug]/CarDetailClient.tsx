@@ -455,8 +455,8 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                     <div className="flex items-center gap-4">
                       <Image
                         src={getPreviewUrl(googleLogo, { width: 120 })}
-                        width={1920}
-                        height={1080}
+                        width={80}
+                        height={80}
                         alt="Google logo"
                         className="w-16"
                         priority={false}
@@ -967,9 +967,9 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                   </div>
                   <div className="flex items-center gap-4">
                     <Image
-                      src={getPreviewUrl(googleLogo, { width: 640 })}
-                      width={1920}
-                      height={1080}
+                      src={getPreviewUrl(googleLogo, { width: 120 })}
+                      width={80}
+                      height={80}
                       alt="Google logo"
                       className="w-16"
                       priority={false}

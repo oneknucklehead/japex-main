@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Container from "./Container";
-import { getAssetsStorageUrl } from "@/utils/helpers";
+import { getAssetsStorageUrl, getPreviewUrl } from "@/utils/helpers";
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   show: (i: number = 0) => ({
@@ -35,7 +35,7 @@ export default function FooterJapex() {
           className="pointer-events-none -rotate-45 -ml-10 absolute bottom-0 left-0 w-1/2 max-w-xs sm:max-w-sm lg:max-w-md"
         >
           <Image
-            src={lightshardLeft}
+            src={getPreviewUrl(lightshardLeft, { width: 1200 })}
             alt=""
             width={1920}
             height={1080}
@@ -53,7 +53,7 @@ export default function FooterJapex() {
           className="pointer-events-none rotate-45 -mr-16 absolute bottom-0 right-0 w-1/2 max-w-xs sm:max-w-sm lg:max-w-md"
         >
           <Image
-            src={lightshardRight}
+            src={getPreviewUrl(lightshardRight, { width: 1200 })}
             alt=""
             width={1920}
             height={1080}
@@ -74,7 +74,7 @@ export default function FooterJapex() {
           className="relative z-10 px-4 max-w-4xl"
         >
           <Image
-            src={footerLogo}
+            src={getPreviewUrl(footerLogo, { width: 1200 })}
             alt="Japex Motors"
             width={1920}
             height={1080}
@@ -99,7 +99,7 @@ export default function FooterJapex() {
           className="relative z-10 -mt-2 w-[75%] max-w-4xl sm:w-[70%] sm:-mt-8 lg:w-[60%] "
         >
           <Image
-            src={footerCar}
+            src={getPreviewUrl(footerCar, { width: 1200 })}
             alt="Japex Motors vehicle"
             width={1920}
             height={1080}

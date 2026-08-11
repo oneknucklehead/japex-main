@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import GlowingTransparentDivTestimonial from "./GlowingTransparentDivTestimonial";
-import { getAssetsStorageUrl } from "@/utils/helpers";
+import { getAssetsStorageUrl, getPreviewUrl } from "@/utils/helpers";
 
 interface Testimonial {
   id: string;
@@ -95,10 +95,10 @@ const TestimonialCard = ({
             </div>
             <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 opacity-50 shrink-0">
               <Image
-                src={quotes}
+                src={getPreviewUrl(quotes, { width: 120 })}
                 alt=""
-                width={1920}
-                height={1080}
+                width={80}
+                height={80}
                 priority={false}
                 loading="lazy"
                 unoptimized

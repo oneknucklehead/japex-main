@@ -10,7 +10,7 @@ import {
 } from "react";
 import herotext from "../assets/herotext.png";
 import GlowingTransparentdiv from "./GlowingTransparentdiv";
-import { getAssetsStorageUrl } from "@/utils/helpers";
+import { getAssetsStorageUrl, getPreviewUrl } from "@/utils/helpers";
 
 const BADGES = [
   "5 Years warranty",
@@ -166,10 +166,12 @@ export default function HeroBanner() {
         {/* Poster — paints immediately, stays put if the video never plays */}
         <Image
           key={poster}
-          src={poster}
+          src={getPreviewUrl(poster, { width: 1920 })}
           alt=""
           fill
           priority
+          unoptimized
+          loading="eager"
           sizes="100vw"
           className={`object-cover object-center transition-opacity duration-700 ${
             playing ? "opacity-0" : "opacity-100"
@@ -238,13 +240,14 @@ export default function HeroBanner() {
             logo is ever replaced. */}
         <div className="hero-rise w-full max-w-[80%] sm:max-w-md md:max-w-2xl lg:max-w-3xl mb-2 md:mb-4">
           <Image
-            src={heroBlackJapexLogo}
+            src={getPreviewUrl(heroBlackJapexLogo, { width: 1200 })}
             alt="Japex Motors"
             width={705}
             height={101}
             sizes="(max-width: 768px) 90vw, 50vw"
             priority={true}
             loading="eager"
+            unoptimized
             className="w-full h-auto object-contain object-center"
           />
         </div>
