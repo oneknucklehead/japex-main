@@ -257,7 +257,7 @@ export default function HeroBanner() {
           >
             Buy and sell cars with confidence and ease.
           </p> */}
-        <button
+        {/* <button
           type="button"
           className="hero-rise group flex gap-3 sm:gap-4 w-fit cursor-pointer items-center justify-center bg-brand-primary text-white font-montserrat font-bold text-sm pl-4 pr-2 py-2 rounded-full hover:bg-red-700 active:scale-97 transition-all duration-300 mt-4"
           style={{ animationDelay: "0.24s" }}
@@ -278,7 +278,7 @@ export default function HeroBanner() {
               <path d="M7 17 17 7" />
             </svg>
           </span>
-        </button>
+        </button> */}
       </div>
     </section>
   );

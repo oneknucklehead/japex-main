@@ -16,12 +16,12 @@ import {
   formatOdometer,
   formatPrice,
   getAssetsStorageUrl,
-  getPreviewUrl,
 } from "@/utils/helpers";
 import type { Car } from "@/types/car";
 import CarImageGallery from "@/components/Cars/CarImageGallery";
 import PopularFeaturesCarousel from "@/components/Cars/PopularFeaturesCarousel";
 import EnquiryModal from "@/components/Cars/EnquiryModal";
+import TestDriveModal from "@/components/Cars/TestDriveModal";
 import Container from "@/components/Container";
 import { AssuranceIcon } from "@/components/Icons/Icons";
 import GlowingTransparentdiv from "@/components/GlowingTransparentdiv";
@@ -73,6 +73,7 @@ const SpecificationsPill = ({ label }: { label: string }) => (
 
 export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
   const [enquiryOpen, setEnquiryOpen] = useState(false);
+  const [testDriveOpen, setTestDriveOpen] = useState(false);
 
   const carName = `${car.year} ${car.make} ${car.model}`;
   // Est. monthly repayment (simple 5yr @ 7.9% p.a.)
@@ -387,9 +388,10 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                               <motion.button
                                 whileHover={{ y: -1 }}
                                 whileTap={{ scale: 0.98 }}
+                                onClick={() => setTestDriveOpen(true)}
                                 className="cursor-pointer w-full bg-brand-primary hover:bg-red-700 text-white font-bold py-3.5 rounded-full transition-colors duration-300"
                               >
-                                Get started
+                                Book a test drive
                               </motion.button>
                               {/* <motion.button
                           whileTap={{ scale: 0.98 }}
@@ -454,14 +456,11 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                     </div>
                     <div className="flex items-center gap-4">
                       <Image
-                        src={getPreviewUrl(googleLogo, { width: 120 })}
-                        width={80}
-                        height={80}
+                        src={googleLogo}
+                        width={1920}
+                        height={1080}
                         alt="Google logo"
                         className="w-16"
-                        priority={false}
-                        loading="lazy"
-                        unoptimized
                       />
                       <div className="flex">
                         {[...Array(5)].map((_, i) => (
@@ -902,9 +901,10 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                           <>
                             <motion.button
                               whileTap={{ scale: 0.98 }}
+                              onClick={() => setTestDriveOpen(true)}
                               className="cursor-pointer w-full bg-brand-primary hover:bg-red-700 text-white font-bold py-3.5 rounded-full transition-colors duration-300"
                             >
-                              Get started
+                              Book a test drive
                             </motion.button>
                             {/* <motion.button
                           whileTap={{ scale: 0.98 }}
@@ -967,14 +967,11 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                   </div>
                   <div className="flex items-center gap-4">
                     <Image
-                      src={getPreviewUrl(googleLogo, { width: 120 })}
-                      width={80}
-                      height={80}
+                      src={googleLogo}
+                      width={1920}
+                      height={1080}
                       alt="Google logo"
                       className="w-16"
-                      priority={false}
-                      loading="lazy"
-                      unoptimized
                     />
                     <div className="flex">
                       {[...Array(5)].map((_, i) => (
@@ -1057,6 +1054,20 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
             carId={car.id}
             carName={carName}
             onClose={() => setEnquiryOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {testDriveOpen && (
+          <TestDriveModal
+            carId={car.id}
+            carName={carName}
+            carVariant={car.variant}
+            carPrice={car.price}
+            carSlug={car.slug}
+            carImage={car.car_images?.[0]?.url}
+            onClose={() => setTestDriveOpen(false)}
           />
         )}
       </AnimatePresence>

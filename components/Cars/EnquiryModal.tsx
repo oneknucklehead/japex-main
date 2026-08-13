@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ID } from "appwrite";
-import { createClient, DB_ID } from "@/lib/appwrite/client";
 
 interface Props {
   carId: string;
@@ -27,20 +25,28 @@ export default function EnquiryModal({ carId, carName, onClose }: Props) {
     setLoading(true);
     setError("");
 
-    // The enquiries collection grants create to anyone (it's a public form),
-    // so this writes directly from the browser — no server route needed.
-    // It deliberately grants no read permission, so submissions aren't
-    // publicly listable.
+    // Posted to /api/forms rather than written straight to Appwrite, so the
+    // record and the email notification to the dealership happen together —
+    // a saved enquiry nobody is told about is worse than useless.
     try {
-      const { databases } = createClient();
-      await databases.createDocument(DB_ID, "enquiries", ID.unique(), {
-        car_id: carId,
-        name: form.name.trim(),
-        email: form.email.trim(),
-        phone: form.phone.trim(),
-        message: form.message.trim() || `I am interested in the ${carName}.`,
-        is_read: false,
+      const res = await fetch("/api/forms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kind: "enquiry",
+          carId,
+          carName,
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          message: form.message || `I am interested in the ${carName}.`,
+        }),
       });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
       setSuccess(true);
     } catch (err) {
       console.error("Enquiry submission failed:", err);

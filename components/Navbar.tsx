@@ -100,13 +100,14 @@ const Navbar = () => {
           className={`relative z-50 shrink-0 transition-all duration-300 ${logoSizeClass}`}
         >
           <Image
-            src={getPreviewUrl(logoUrl, { width: 120 })}
+            src={getPreviewUrl(logoUrl, { width: 640 })}
             alt="JAPEX Motors"
-            width={80}
-            height={80}
+            width={600}
+            height={600}
             className="object-contain w-full h-auto"
             sizes="(max-width: 640px) 5rem, (max-width: 1024px) 7rem, 6rem"
             priority
+            unoptimized
           />
         </Link>
 

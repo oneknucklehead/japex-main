@@ -1,6 +1,3 @@
-import { ID } from "appwrite";
-import { createClient, DB_ID } from "@/lib/appwrite/client";
-
 export type ContactSource = "contact_page" | "cta";
 
 export interface ContactFormValues {
@@ -39,18 +36,30 @@ export async function submitContactForm(
     return { ok: false, error: "That email address doesn't look right." };
   }
 
-  // contact_submissions grants create to anyone (public form) but no read,
-  // so this writes straight from the browser without exposing submissions.
+  // Posted to /api/forms so the submission is stored AND emailed to the
+  // dealership in one request.
   try {
-    const { databases } = createClient();
-    await databases.createDocument(DB_ID, "contact_submissions", ID.unique(), {
-      name,
-      phone,
-      email,
-      message,
-      source,
-      is_read: false,
+    const res = await fetch("/api/forms", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        kind: "contact",
+        name,
+        phone,
+        email,
+        message,
+        source,
+      }),
     });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return {
+        ok: false,
+        error:
+          data.error ??
+          "Something went wrong sending your message. Please try again.",
+      };
+    }
     return { ok: true };
   } catch (error) {
     console.error("Contact form submission failed:", error);
