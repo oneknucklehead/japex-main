@@ -164,15 +164,6 @@ const CheckIcon = () => (
   </svg>
 );
 
-/**
- * Image with a shimmer skeleton underneath that fades out once the image has
- * decoded. Pass `priority` for above-the-fold instances (it becomes the LCP
- * candidate, so deferring the request would only delay first paint); leave it
- * off below the fold and it falls through to native lazy loading.
- *
- * `className` controls sizing — an aspect ratio for standalone use, or
- * `h-full` to fill a flex/grid parent whose height comes from a sibling.
- */
 const SkeletonImage = ({
   src,
   alt,
