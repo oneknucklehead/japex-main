@@ -167,7 +167,7 @@ export default function ImageUploader({
                 Drop images here or click to upload
               </p>
               <p className="text-xs text-gray-400">
-                PNG, JPG, WEBP up to 10MB each
+                PNG, JPG, WEBP — resized automatically
               </p>
             </div>
           )}
@@ -196,6 +196,7 @@ export default function ImageUploader({
                       src={img.url}
                       alt={img.alt || "Car image"}
                       fill
+                      unoptimized
                       className="object-cover"
                       sizes="200px"
                       onError={() =>

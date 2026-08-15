@@ -1,5 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Client, Storage, ID, Query, Databases } from "node-appwrite";
+import {
+  Client,
+  Storage,
+  ID,
+  Query,
+  Databases,
+  Permission,
+  Role,
+} from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
 import { requireAdmin } from "@/lib/appwrite/auth";
 
@@ -14,7 +22,10 @@ const API_KEY = process.env.APPWRITE_API_KEY;
 const DB_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID || "japex";
 const BUCKET_ID = "car-images";
 
-const MAX_BYTES = 10 * 1024 * 1024;
+// The cap applies to the file BEFORE resizing. It can be generous now that
+// everything is re-encoded on the way in — a 25 MB camera JPEG becomes a
+// ~150 KB WebP, so rejecting it would only inconvenience the dealer.
+const MAX_BYTES = 25 * 1024 * 1024;
 const ALLOWED = [
   "image/jpeg",
   "image/jpg",
@@ -26,6 +37,62 @@ const ALLOWED = [
 // doesn't end in one of these is rejected by Appwrite, so catch it here with a
 // clear message instead of a cryptic server error.
 const ALLOWED_EXT = ["jpg", "jpeg", "png", "webp", "avif"];
+
+// Every upload is re-encoded before it reaches storage.
+//
+// Dealer photos come straight off a camera or phone — the migration found a
+// 703 KB median and files up to 5 MB, for images displayed at ~320px in a card.
+// Transformations hide that at delivery time, but the originals still cost
+// storage, upload time, and (as the 19 MB service banner proved) can be large
+// enough to break Appwrite's transformer outright.
+//
+// Resizing here means the problem can't come back: no oversized file ever
+// enters the bucket in the first place.
+const MAX_WIDTH = 1600; // generous for a full-screen gallery view
+const WEBP_QUALITY = 82; // visually indistinguishable from the original here
+
+/**
+ * Re-encode to WebP at MAX_WIDTH. Returns the original buffer unchanged if
+ * sharp isn't installed or the image can't be processed — a failed resize must
+ * never block an upload, since an oversized image beats no image.
+ */
+async function optimiseImage(
+  buffer: Buffer,
+  filename: string,
+): Promise<{ buffer: Buffer; filename: string; note?: string }> {
+  // Resolved at runtime, hidden from the bundler: a static import would make
+  // sharp a hard build dependency even for deployments that don't want it.
+  let sharp: any;
+  try {
+    const req = eval("require") as NodeRequire;
+    sharp = req("sharp");
+  } catch {
+    console.warn("sharp is not installed — uploading the original unresized.");
+    return { buffer, filename, note: "not resized (sharp missing)" };
+  }
+
+  try {
+    const out = await sharp(buffer)
+      .rotate() // honour EXIF orientation, or phone photos arrive sideways
+      .resize({ width: MAX_WIDTH, withoutEnlargement: true })
+      .webp({ quality: WEBP_QUALITY })
+      .toBuffer();
+
+    // Keep whichever is smaller. A small, already-optimised WebP can come out
+    // bigger after a re-encode.
+    if (out.length >= buffer.length) {
+      return { buffer, filename, note: "kept original (already smaller)" };
+    }
+
+    return {
+      buffer: out,
+      filename: filename.replace(/\.[^.]+$/, "") + ".webp",
+    };
+  } catch (e: any) {
+    console.error("Image optimisation failed, uploading original:", e?.message);
+    return { buffer, filename, note: "not resized (processing failed)" };
+  }
+}
 
 function admin() {
   const client = new Client()
@@ -128,7 +195,7 @@ export async function POST(req: NextRequest) {
 
     for (const file of files) {
       if (file.size > MAX_BYTES) {
-        failed.push({ name: file.name, reason: "larger than 10MB" });
+        failed.push({ name: file.name, reason: "larger than 25MB" });
         continue;
       }
       if (file.type && !ALLOWED.includes(file.type.toLowerCase())) {
@@ -148,11 +215,30 @@ export async function POST(req: NextRequest) {
       }
 
       try {
-        const buffer = Buffer.from(await file.arrayBuffer());
+        const raw = Buffer.from(await file.arrayBuffer());
+        const { buffer, filename, note } = await optimiseImage(raw, file.name);
+
+        if (note) {
+          console.warn(`${file.name}: ${note}`);
+        } else {
+          const saved = (
+            ((raw.length - buffer.length) / raw.length) *
+            100
+          ).toFixed(0);
+          console.log(
+            `${file.name}: ${(raw.length / 1024).toFixed(0)}KB -> ` +
+              `${(buffer.length / 1024).toFixed(0)}KB (${saved}% smaller)`,
+          );
+        }
+
         const created: any = await storage.createFile(
           BUCKET_ID,
           ID.unique(),
-          InputFile.fromBuffer(buffer, file.name),
+          InputFile.fromBuffer(buffer, filename),
+          // Explicit public read. Files inherit bucket permissions only while
+          // fileSecurity is off; being explicit means an upload can't end up
+          // private if that setting is ever flipped.
+          [Permission.read(Role.any())],
         );
 
         if (!created?.$id) {

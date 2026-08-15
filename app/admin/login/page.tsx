@@ -69,7 +69,7 @@ export default function AdminLogin() {
             Sign in
           </h2>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} autoComplete="on" className="space-y-4">
             <div>
               <label className="text-xs font-semibold text-gray-400 block mb-1.5">
                 Email
@@ -78,6 +78,7 @@ export default function AdminLogin() {
                 type="email"
                 required
                 value={email}
+                autoComplete="username"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@japexmotors.com"
                 className="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-red-500 transition-colors placeholder:text-gray-600"
@@ -92,6 +93,7 @@ export default function AdminLogin() {
                 type="password"
                 required
                 value={password}
+                autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-red-500 transition-colors placeholder:text-gray-600"

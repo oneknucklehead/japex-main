@@ -27,7 +27,43 @@ const DB_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID || "japex";
 const BUCKET_ID = "car-images";
 const COLLECTION = "popular_features";
 
-const MAX_BYTES = 10 * 1024 * 1024;
+// Applies before resizing — see optimiseImage below.
+const MAX_BYTES = 25 * 1024 * 1024;
+const MAX_WIDTH = 1200; // feature tiles render at ~25% width
+const WEBP_QUALITY = 82;
+
+/**
+ * Re-encode to WebP. Falls back to the original buffer if sharp is missing or
+ * the image can't be processed — a failed resize shouldn't block an upload.
+ *
+ * The migration found 3-5 MB PNGs in this catalog for illustrations displayed
+ * at a few hundred pixels; this stops that recurring.
+ */
+async function optimiseImage(buffer: Buffer, filename: string) {
+  let sharp: any;
+  try {
+    const req = eval("require") as NodeRequire;
+    sharp = req("sharp");
+  } catch {
+    console.warn("sharp is not installed — uploading the original unresized.");
+    return { buffer, filename };
+  }
+  try {
+    const out = await sharp(buffer)
+      .rotate()
+      .resize({ width: MAX_WIDTH, withoutEnlargement: true })
+      .webp({ quality: WEBP_QUALITY })
+      .toBuffer();
+    if (out.length >= buffer.length) return { buffer, filename };
+    return {
+      buffer: out,
+      filename: filename.replace(/\.[^.]+$/, "") + ".webp",
+    };
+  } catch (e: any) {
+    console.error("Image optimisation failed, uploading original:", e?.message);
+    return { buffer, filename };
+  }
+}
 const ALLOWED_EXT = ["jpg", "jpeg", "png", "webp", "avif"];
 
 function admin() {
@@ -81,7 +117,7 @@ export async function POST(req: NextRequest) {
     }
     if (file.size > MAX_BYTES) {
       return NextResponse.json(
-        { error: "Image is larger than 10MB." },
+        { error: "Image is larger than 25MB." },
         { status: 400 },
       );
     }
@@ -98,11 +134,16 @@ export async function POST(req: NextRequest) {
     const { storage, databases } = admin();
 
     // 1. upload
-    const buffer = Buffer.from(await file.arrayBuffer());
+    const raw = Buffer.from(await file.arrayBuffer());
+    const { buffer, filename } = await optimiseImage(raw, file.name);
+    console.log(
+      `${file.name}: ${(raw.length / 1024).toFixed(0)}KB -> ${(buffer.length / 1024).toFixed(0)}KB`,
+    );
+
     const created: any = await storage.createFile(
       BUCKET_ID,
       ID.unique(),
-      InputFile.fromBuffer(buffer, file.name),
+      InputFile.fromBuffer(buffer, filename),
       // Explicit public read. Files inherit bucket permissions only while
       // fileSecurity is off; being explicit means an upload can't end up
       // private if that setting is ever flipped.
