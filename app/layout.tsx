@@ -4,6 +4,8 @@ import "./globals.css";
 import { bricolage, dm_sans, koulen, montserrat, poppins } from "@/styles/font";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.japexmotors.com.au"),
+  alternates: { canonical: "./" },
   title: "Japex Motors",
   description: "Buy and sell cars with confidence and ease.",
 };
