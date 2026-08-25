@@ -123,12 +123,19 @@ export async function POST(req: NextRequest) {
           { status: 400 },
         );
       }
+      if (!/^[0-9+()\s-]{8,20}$/.test(phone)) {
+        return NextResponse.json(
+          { error: "Invalid phone number." },
+          { status: 400 },
+        );
+      }
       const carName = str(payload.carName, 200);
       const date = str(payload.preferred_date, 20);
       const time = str(payload.preferred_time, 30);
       const notes = str(payload.notes, 5000);
 
       await databases.createDocument(DB_ID, "test_drives", ID.unique(), {
+        vin: str(payload.vin, 32),
         car_id: str(payload.carId, 64),
         car_name: carName,
         car_slug: str(payload.carSlug, 200),
@@ -157,6 +164,7 @@ export async function POST(req: NextRequest) {
         replyTo: email,
         rows: [
           ["Vehicle", carName],
+          ["VIN", str(payload.vin, 32)],
           ["Date", readableDate],
           ["Time", time],
           ["Name", name],

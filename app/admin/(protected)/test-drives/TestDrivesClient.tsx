@@ -5,6 +5,7 @@ import Link from "next/link";
 
 export interface Booking {
   id: string;
+  vin: string;
   car_id: string;
   car_name: string;
   car_slug: string;
@@ -160,6 +161,9 @@ export default function TestDrivesClient({
                     )}
                   </p>
                 )}
+                {/* {b.vin && ( */}
+                <p className="text-xs text-gray-400 mt-0.5">VIN: {b.vin}</p>
+                {/* )} */}
                 <p className="text-xs text-gray-400 mt-0.5">
                   Requested {new Date(b.created_at).toLocaleDateString("en-AU")}
                 </p>

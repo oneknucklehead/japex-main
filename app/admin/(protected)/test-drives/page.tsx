@@ -11,9 +11,9 @@ export default async function AdminTestDrivesPage() {
     Query.orderDesc("$createdAt"),
     Query.limit(1000),
   ]);
-
   const bookings = (res.documents as any[]).map((d) => ({
     id: d.$id,
+    vin: d.vin,
     car_id: d.car_id,
     car_name: d.car_name,
     car_slug: d.car_slug,

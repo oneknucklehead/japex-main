@@ -6,10 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 interface Props {
   carId: string;
   carName: string;
+  vin: string;
   onClose: () => void;
 }
 
-export default function EnquiryModal({ carId, carName, onClose }: Props) {
+export default function EnquiryModal({ vin, carId, carName, onClose }: Props) {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -34,6 +35,7 @@ export default function EnquiryModal({ carId, carName, onClose }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           kind: "enquiry",
+          vin,
           carId,
           carName,
           name: form.name,
@@ -112,7 +114,7 @@ export default function EnquiryModal({ carId, carName, onClose }: Props) {
             </div>
 
             <p className="text-xs text-gray-400 mb-4 bg-gray-50 rounded-xl px-3 py-2 font-medium">
-              Re: {carName}
+              Re: {carName} ({vin})
             </p>
 
             <form onSubmit={submit} className="space-y-3">

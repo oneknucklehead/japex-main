@@ -6,6 +6,7 @@ import Image from "next/image";
 import { formatPrice, getPreviewUrl } from "@/utils/helpers";
 
 interface Props {
+  vin: string;
   carId: string;
   carName: string;
   carVariant?: string;
@@ -203,8 +204,9 @@ function Calendar({
     </div>
   );
 }
-
+const PHONE_CHARS = /[^0-9+()\s-]/g;
 export default function TestDriveModal({
+  vin,
   carId,
   carName,
   carVariant,
@@ -214,6 +216,7 @@ export default function TestDriveModal({
   onClose,
 }: Props) {
   const [form, setForm] = useState({
+    vin: vin,
     name: "",
     phone: "",
     email: "",
@@ -243,6 +246,7 @@ export default function TestDriveModal({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           kind: "test_drive",
+          vin: vin ?? null,
           carId,
           carName,
           carSlug: carSlug ?? "",
@@ -307,7 +311,7 @@ export default function TestDriveModal({
             {/* header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/10 sticky top-0 bg-[#150606] z-10">
               <h3 className="text-lg font-bold text-white font-poppins">
-                Book a Test Drive
+                Book a Test Drive ({vin})
               </h3>
               <button
                 onClick={onClose}
@@ -429,46 +433,77 @@ export default function TestDriveModal({
                     Contact details
                   </p>
                   <div className="space-y-2.5">
-                    {[
-                      {
-                        key: "name",
-                        label: "Full Name",
-                        type: "text",
-                        required: true,
-                      },
-                      {
-                        key: "phone",
-                        label: "Mobile Number",
-                        type: "tel",
-                        required: true,
-                      },
-                      {
-                        key: "email",
-                        label: "Email",
-                        type: "email",
-                        required: true,
-                      },
-                      {
-                        key: "postcode",
-                        label: "Postcode",
-                        type: "text",
-                        required: false,
-                      },
-                    ].map(({ key, label, type, required }) => (
-                      <input
-                        key={key}
-                        type={type}
-                        required={required}
-                        value={form[key as keyof typeof form]}
-                        onChange={(e) =>
-                          setForm((f) => ({ ...f, [key]: e.target.value }))
-                        }
-                        placeholder={label}
-                        className={inputCls}
-                      />
-                    ))}
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      value={form.name}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, name: e.target.value }))
+                      }
+                      placeholder="Full Name"
+                      autoComplete="name"
+                      className={inputCls}
+                    />
+
+                    <input
+                      type="tel"
+                      name="phone"
+                      required
+                      inputMode="tel"
+                      // `pattern` only fires on submit — it never blocks a keystroke. The
+                      // onChange filter below is what actually stops letters appearing.
+                      // Both kept: pattern also catches paste-then-submit and enforces length.
+                      pattern="[0-9+()\s-]{8,20}"
+                      title="Digits, spaces, +, - and ( ) only"
+                      autoComplete="tel"
+                      value={form.phone}
+                      onChange={(e) =>
+                        setForm((f) => ({
+                          ...f,
+                          phone: e.target.value.replace(PHONE_CHARS, ""),
+                        }))
+                      }
+                      placeholder="Mobile Number"
+                      className={inputCls}
+                    />
+
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      autoComplete="email"
+                      value={form.email}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, email: e.target.value }))
+                      }
+                      placeholder="Email"
+                      className={inputCls}
+                    />
+
+                    <input
+                      type="text"
+                      name="postcode"
+                      inputMode="numeric"
+                      // pattern="\d"
+                      title="Australian postcode"
+                      // maxLength={4}
+                      autoComplete="postal-code"
+                      value={form.postcode}
+                      onChange={(e) =>
+                        // Digits only, capped at 4 — Australian postcodes are always 4 digits.
+                        setForm((f) => ({
+                          ...f,
+                          postcode: e.target.value,
+                        }))
+                      }
+                      placeholder="Postcode"
+                      className={inputCls}
+                    />
+
                     <textarea
                       rows={2}
+                      name="notes"
                       value={form.notes}
                       onChange={(e) =>
                         setForm((f) => ({ ...f, notes: e.target.value }))

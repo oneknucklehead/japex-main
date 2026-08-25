@@ -191,7 +191,7 @@ export default function CarCardFirst({ car, priority }: Props) {
                     <div className="flex flex-col items-start min-w-0">
                       {car?.availability === "Sold out" ? (
                         <p className="text-lg sm:text-xl md:text-2xl font-bold ml-1.5 sm:ml-2 whitespace-nowrap">
-                          Sold Out
+                          Sold
                         </p>
                       ) : (
                         <div className="flex flex-col items-start ml-1.5 sm:ml-2">

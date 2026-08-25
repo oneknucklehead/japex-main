@@ -291,9 +291,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                                 </div>
                               ) : (
                                 <div className="flex gap-2 items-center">
-                                  <p className="text-4xl font-black ">
-                                    Sold Out
-                                  </p>
+                                  <p className="text-4xl font-black ">Sold</p>
                                 </div>
                               )}
                               {/* {car.availability === "Sold out"  */}
@@ -808,7 +806,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
                               </div>
                             ) : (
                               <div className="flex gap-2 items-center">
-                                <p className="text-4xl font-black ">Sold Out</p>
+                                <p className="text-4xl font-black ">Sold</p>
                               </div>
                             )}
                             {/* {car.availability === "Sold out"  */}
@@ -1051,6 +1049,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
       <AnimatePresence>
         {enquiryOpen && (
           <EnquiryModal
+            vin={car.vin}
             carId={car.id}
             carName={carName}
             onClose={() => setEnquiryOpen(false)}
@@ -1061,6 +1060,7 @@ export default function CarDetailClient({ car, popularFeatures = [] }: Props) {
       <AnimatePresence>
         {testDriveOpen && (
           <TestDriveModal
+            vin={car.vin}
             carId={car.id}
             carName={carName}
             carVariant={car.variant}

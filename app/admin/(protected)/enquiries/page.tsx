@@ -1,5 +1,6 @@
 import { Query } from "node-appwrite";
 import { createAdminClient, DB_ID } from "@/lib/appwrite/server";
+import Link from "next/link";
 
 export default async function AdminEnquiriesPage() {
   const { databases } = createAdminClient();
@@ -20,7 +21,13 @@ export default async function AdminEnquiriesPage() {
       Query.limit(1000),
     ]);
     for (const c of carRes.documents as any[]) {
-      carsById[c.$id] = { make: c.make, model: c.model, year: c.year };
+      carsById[c.$id] = {
+        slug: c.slug,
+        make: c.make,
+        model: c.model,
+        year: c.year,
+        vin: c.vin,
+      };
     }
   }
 
@@ -30,7 +37,6 @@ export default async function AdminEnquiriesPage() {
     created_at: e.$createdAt,
     cars: e.car_id ? (carsById[e.car_id] ?? null) : null,
   }));
-
   // Mark all as read. Appwrite has no bulk update, so this patches each unread
   // document; the route does it server-side with the API key.
   const unread = enquiries.filter((e) => !e.is_read);
@@ -60,13 +66,24 @@ export default async function AdminEnquiriesPage() {
               </div>
               <div className="text-right shrink-0">
                 {e.cars && (
-                  <p className="text-xs font-semibold text-red-600">
+                  <Link
+                    href={`/cars/${e.cars.slug}`}
+                    className="text-xs font-semibold text-red-600"
+                  >
                     {e.cars.year} {e.cars.make} {e.cars.model}
-                  </p>
+                  </Link>
                 )}
                 <p className="text-xs text-gray-400 mt-0.5">
                   {new Date(e.created_at).toLocaleDateString("en-AU")}
                 </p>
+                {/* {e.vin && (
+                  <p className="text-xs text-gray-400 mt-0.5">VIN: {e.vin}</p>
+                )}*/}
+                {e.cars && (
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    VIN: {e.cars.vin}
+                  </p>
+                )}
               </div>
             </div>
             <p className="text-sm text-gray-600 bg-gray-50 rounded-xl px-4 py-3">
