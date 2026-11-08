@@ -58,10 +58,10 @@ export default function FinanceCalculator({ car }: Props) {
               <h2 className="font-poppins text-4xl font-bold leading-tight sm:text-5xl">
                 Custom car financing that puts you in control.
               </h2>
-              <p className="font-dm-sans mt-6 max-w-md text-sm text-white/60 leading-relaxed">
+              {/* <p className="font-dm-sans mt-6 max-w-md text-sm text-white/60 leading-relaxed">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
+              </p> */}
 
               <ul className="mt-10 space-y-6">
                 {[
